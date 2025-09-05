@@ -16,4 +16,4 @@ This repo is to maintain updates on Agentic AI knowledge sharing.
 - Using LLM APIs
 - Hugging face to play with Datasets, Models
 - What basic skills are required to get into AgenticAI
-## Upcoming session: Basic on ML by Kamal (6th Aug: 4pm to 5:30pm)
+## Upcoming session: Basic on ML by Kamal (6th Sept: 4pm to 5:30pm)
