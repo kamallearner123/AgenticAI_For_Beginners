@@ -1,7 +1,7 @@
 ----
 # Date: Sep 27th 2025
 # Session:
--Session covered working with datasets in Pandas, focusing on reading data, filtering, aggregation, replacement, and loading techniques.
+- Session covered working with datasets in Pandas, focusing on reading data, filtering, aggregation, replacement, and loading techniques.
 - We also explored data visualization using Matplotlib, learning how to present insights clearly through plots.
 
 # References:
