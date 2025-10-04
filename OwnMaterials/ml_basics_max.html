@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ML Basics — MAX Edition (Colorful • Example‑rich • Interactive)</title>
+<meta name="description" content="Everything ML basics in one page: many worked examples, color themes, real-time charts, ROC/PR tools, confusion heatmap, learning curves, regression and clustering playgrounds, CSV visualizer, deployment/MLOps, ethics.">
+<style>
+:root{
+  --bg:#ffffff; --fg:#0f172a; --muted:#475569; --border:#e5e7eb; --card:#f8fafc;
+  --primary:#1e40af; --accent:#10b981; --chip:#eef2ff; --shadow:0 16px 40px rgba(2,8,23,.12);
+}
+/* themes */
+:root[data-theme="emerald"]{ --primary:#065f46; --accent:#10b981; --chip:#d1fae5 }
+:root[data-theme="purple"]{ --primary:#6d28d9; --accent:#22d3ee; --chip:#ede9fe }
+:root[data-theme="orange"]{ --primary:#c2410c; --accent:#f59e0b; --chip:#ffedd5 }
+:root[data-theme="rose"]{ --primary:#be123c; --accent:#fb7185; --chip:#ffe4e6 }
+:root[data-theme="indigo"]{ --primary:#3730a3; --accent:#60a5fa; --chip:#e0e7ff }
+:root[data-theme="slate"]{ --primary:#334155; --accent:#0ea5e9; --chip:#e2e8f0 }
+:root[data-theme="gold"]{ --primary:#a16207; --accent:#fbbf24; --chip:#fef3c7 }
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,'Helvetica Neue',Arial}
+a{color:var(--primary);text-decoration:none} a:hover{text-decoration:underline}
+.header{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,#fff,rgba(255,255,255,.94));backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1200px;margin:auto;display:flex;gap:16px;align-items:center;padding:12px 16px}
+.logo{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:var(--shadow)}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+.nav a{padding:8px 10px;border-radius:8px} .nav a:hover{background:var(--chip)}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:28px 0}
+.hero .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 8px 0;font-size:2rem} .hero p{margin:0;color:var(--muted)}
+.hero-graphic{aspect-ratio:16/10;border:1px dashed var(--border);border-radius:16px;display:grid;place-items:center;background:#fff}
+.badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:var(--chip);color:#111827;border:1px solid var(--border)}
+.section{padding:26px 0} .section h2{margin:0 0 10px} .section p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:16px 0}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 6px}
+.small{color:var(--muted);font-size:14px}
+.btn{display:inline-block;padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer}
+.btn.primary{border-color:var(--primary);background:var(--primary);color:#fff}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--border);border-bottom-width:2px;background:#fff;border-radius:6px;padding:1px 6px}
+pre, code{font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.code{background:#0b1020;color:#e5e7eb;border-radius:12px;padding:12px;border:1px solid #0b1020;overflow:auto;position:relative}
+button.copy{position:absolute;right:8px;top:8px;padding:6px 8px;border-radius:8px;border:1px solid #334155;background:#111827;color:#e5e7eb;cursor:pointer;font-size:12px}
+button.copy.copied{background:#064e3b;border-color:#065f46}
+blockquote{margin:0;padding:12px;border-left:4px solid var(--primary);background:#f1f5f9;border-radius:8px}
+canvas.chart{width:100%;height:260px;display:block;border:1px solid var(--border);border-radius:12px;background:#fff}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.theme{display:flex;gap:8px;flex-wrap:wrap}
+.theme button{padding:6px 10px;border-radius:999px;border:1px solid var(--border);cursor:pointer;background:#fff}
+.theme .active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.kv{display:grid;grid-template-columns:160px 1fr;gap:8px} .kv div{padding:4px 0;border-bottom:1px dashed #e5e7eb}
+hr.sep{border:0;border-top:1px solid #e5e7eb;margin:10px 0}
+@media (max-width:900px){ .hero{grid-template-columns:1fr} .kv{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">ML</div>
+    <div>
+      <div style="font-weight:800">ML Basics — MAX Edition</div>
+      <div class="small">Color themes • Many worked examples • Real‑time & interactive charts</div>
+    </div>
+    <nav class="nav">
+      <a href="#themes">Themes</a>
+      <a href="#examples">Examples</a>
+      <a href="#realtime">Live charts</a>
+      <a href="#threshold">Threshold Lab</a>
+      <a href="#confmat">Confusion Heatmap</a>
+      <a href="#rocpr">ROC/PR Curves</a>
+      <a href="#learncurves">Learning Curves</a>
+      <a href="#regplay">Regression Lab</a>
+      <a href="#kmeans">K‑Means Lab</a>
+      <a href="#uploader">CSV Visualizer</a>
+      <a href="#mlops">MLOps</a>
+      <a href="#ethics">Ethics</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- HERO -->
+  <section class="hero section">
+    <div class="panel">
+      <h1>Make ML concrete with vibrant visuals & hands‑on demos</h1>
+      <p>Use this single page as a mini‑course and a toolkit. Copy code, switch themes, stream metrics, tweak thresholds, plot curves, and play with synthetic data.</p>
+      <div class="badges"><span class="badge">White background</span><span class="badge">Clean CSS</span><span class="badge">No frameworks</span></div>
+      <div class="controls">
+        <a class="btn primary" href="#examples">Jump to Examples</a>
+        <a class="btn" href="#realtime">See Live Charts</a>
+      </div>
+    </div>
+    <div class="hero-graphic">
+      <svg width="92%" viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Data → Model → Prediction → Feedback">
+        <defs><linearGradient id="g1" x1="0" x2="1"><stop stop-color="#60a5fa"/><stop offset="1" stop-color="#a7f3d0"/></linearGradient></defs>
+        <rect x="20" y="30" width="150" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="95" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Data</text>
+        <circle cx="60" cy="95" r="8" fill="#93c5fd"/><circle cx="95" cy="110" r="8" fill="#6ee7b7"/><circle cx="120" cy="85" r="8" fill="#60a5fa"/>
+        <path d="M170 85 L215 85" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="215" y="30" width="150" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="290" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Model</text>
+        <rect x="250" y="78" width="85" height="35" rx="8" fill="url(#g1)"/>
+        <path d="M365 85 L410 85" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="410" y="30" width="150" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="485" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Prediction</text>
+        <rect x="450" y="82" width="80" height="30" rx="8" fill="#10b981"/>
+        <path d="M485 140 C 500 200, 200 200, 170 110" stroke="#94a3b8" stroke-dasharray="6 6" fill="none" marker-end="url(#arrow)"/>
+        <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L6,3 z" fill="#0ea5e9"/></marker></defs>
+      </svg>
+    </div>
+  </section>
+
+  <!-- THEMES -->
+  <section class="section" id="themes">
+    <h2>Add colors — Theme switcher</h2>
+    <p class="small">Pick a palette you like. The white background stays; accents update.</p>
+    <div class="theme">
+      <button class="active" data-theme="default">Default</button>
+      <button data-theme="emerald">Emerald</button>
+      <button data-theme="purple">Purple</button>
+      <button data-theme="orange">Orange</button>
+      <button data-theme="rose">Rose</button>
+      <button data-theme="indigo">Indigo</button>
+      <button data-theme="slate">Slate</button>
+      <button data-theme="gold">Gold</button>
+    </div>
+  </section>
+
+  <!-- WORKED EXAMPLES -->
+  <section class="section" id="examples">
+    <h2>Worked examples — step by step</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>1) House Price Prediction (Regression)</h3>
+        <ol class="small">
+          <li>Collect past sales with features: <em>area, rooms, city</em>.</li>
+          <li>Preprocess: one‑hot city, scale numeric features.</li>
+          <li>Baseline: Linear Regression → tune with Gradient Boosting.</li>
+          <li>Evaluate: RMSE / MAE, R². Cross‑validate.</li>
+          <li>Deploy: package a pipeline; monitor seasonal drift.</li>
+        </ol>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LinearRegression
+pre = ColumnTransformer([("num", StandardScaler(), ["area","rooms"]),
+                         ("cat", OneHotEncoder(handle_unknown="ignore"), ["city"])])
+pipe = Pipeline([("pre", pre), ("model", LinearRegression())])</code></pre>
+      </div>
+
+      <div class="card">
+        <h3>2) Spam Detection (Classification)</h3>
+        <ol class="small">
+          <li>Prep: TF‑IDF with uni/bi‑grams; class weights for imbalance.</li>
+          <li>Model: Logistic Regression; monitor precision/recall, PR‑AUC.</li>
+          <li>Threshold: tune for business risk.</li>
+        </ol>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.pipeline import Pipeline
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+pipe = Pipeline([("tfidf", TfidfVectorizer(ngram_range=(1,2))),
+                 ("clf", LogisticRegression(max_iter=300, class_weight="balanced"))])</code></pre>
+      </div>
+
+      <div class="card">
+        <h3>3) Customer Segmentation (Clustering)</h3>
+        <ol class="small">
+          <li>Engineer RFM features per customer.</li>
+          <li>Scale features; loop k=2..8; pick k via silhouette.</li>
+          <li>Validate profiles; name segments (“VIP”, “At‑risk”).</li>
+        </ol>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+best_k = max(range(2,9), key=lambda k: silhouette_score(X, KMeans(k, n_init="auto").fit_predict(X)))</code></pre>
+      </div>
+
+      <div class="card">
+        <h3>4) Time‑Series Sales Forecast</h3>
+        <ol class="small">
+          <li>Features: lagged sales, day‑of‑week, holidays.</li>
+          <li>Validation: rolling TimeSeriesSplit; avoid leakage.</li>
+          <li>Baseline: naive “yesterday”; compare with SARIMAX.</li>
+        </ol>
+        <pre class="code"><button class="copy" onclick="Copy(this)">Copy</button><code>from sklearn.model_selection import TimeSeriesSplit
+import statsmodels.api as sm
+tscv = TimeSeriesSplit(n_splits=5)
+model = sm.tsa.statespace.SARIMAX(y, order=(1,1,1), seasonal_order=(1,1,1,7)).fit()</code></pre>
+      </div>
+
+      <div class="card">
+        <h3>5) Image Classification (CNN)</h3>
+        <ol class="small">
+          <li>Normalize pixels; augment with flips/crops.</li>
+          <li>CNN: Conv→Pool→Dense; monitor val accuracy.</li>
+          <li>Prevent overfit: dropout, L2, early stopping.</li>
+        </ol>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import tensorflow as tf
+m = tf.keras.Sequential([
+  tf.keras.layers.Conv2D(32,3,activation='relu',input_shape=(28,28,1)),
+  tf.keras.layers.MaxPooling2D(), tf.keras.layers.Flatten(),
+  tf.keras.layers.Dense(64,activation='relu'),
+  tf.keras.layers.Dropout(0.3),
+  tf.keras.layers.Dense(10,activation='softmax')
+])</code></pre>
+      </div>
+
+      <div class="card">
+        <h3>6) Fraud / Anomaly Detection</h3>
+        <ol class="small">
+          <li>Rare positives → anomaly detection or cost‑sensitive clf.</li>
+          <li>Use precision‑recall, not accuracy.</li>
+          <li>Human‑in‑the‑loop review for top alerts.</li>
+        </ol>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.ensemble import IsolationForest
+iso = IsolationForest(contamination=0.01, random_state=42).fit(X)</code></pre>
+      </div>
+
+      <div class="card">
+        <h3>7) Recommendations (SVD)</h3>
+        <ol class="small">
+          <li>Build user×item matrix → SVD → nearest neighbors.</li>
+          <li>Cold‑start → use popularity & content features.</li>
+        </ol>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.decomposition import TruncatedSVD
+svd = TruncatedSVD(n_components=64, random_state=0).fit(user_item_sparse)</code></pre>
+      </div>
+
+      <div class="card">
+        <h3>8) Survival (Churn Time) — Overview</h3>
+        <p class="small">Predict time‑to‑event; censoring aware. Use lifelines/Cox, or tree‑based survival models.</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code># Pseudocode for Cox model
+# from lifelines import CoxPHFitter
+# cph = CoxPHFitter().fit(df, duration_col="tenure", event_col="churned")</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE STREAMING -->
+  <section class="section" id="realtime">
+    <h2>Live charts (training metrics)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Streaming accuracy & loss</h3>
+        <canvas id="streamChart" class="chart"></canvas>
+        <div class="controls">
+          <button class="btn" id="startStream">Start</button>
+          <button class="btn" id="stopStream">Stop</button>
+          <button class="btn" id="resetStream">Reset</button>
+          <button class="btn" id="saveStream">Download PNG</button>
+        </div>
+        <div class="small">Simulated every 0.5s. Blue: accuracy ↑ • Red: loss ↓.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THRESHOLD LAB -->
+  <section class="section" id="threshold">
+    <h2>Threshold lab (see precision/recall trade‑off)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Adjust threshold</h3>
+        <input id="thr" type="range" min="0" max="100" value="50" />
+        <div class="small">Threshold: <span id="thrVal">0.50</span></div>
+        <canvas id="thrChart" class="chart"></canvas>
+        <div class="kv small" id="thrStats"></div>
+        <div class="controls"><button class="btn" id="saveThr">Download PNG</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONFUSION HEATMAP -->
+  <section class="section" id="confmat">
+    <h2>Confusion matrix heatmap (interactive)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>2×2 Heatmap</h3>
+        <canvas id="cmChart" class="chart"></canvas>
+        <div class="small">Colors scale with counts. Derived from the same scores as Threshold lab.</div>
+        <div class="controls"><button class="btn" id="saveCM">Download PNG</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROC/PR CURVES -->
+  <section class="section" id="rocpr">
+    <h2>ROC & PR curves (computed from synthetic scores)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>ROC curve</h3>
+        <canvas id="rocChart" class="chart"></canvas>
+        <div class="small" id="rocInfo"></div>
+        <div class="controls"><button class="btn" id="saveROC">Download PNG</button></div>
+      </div>
+      <div class="card">
+        <h3>PR curve</h3>
+        <canvas id="prChart" class="chart"></canvas>
+        <div class="small" id="prInfo"></div>
+        <div class="controls"><button class="btn" id="savePR">Download PNG</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEARNING CURVES -->
+  <section class="section" id="learncurves">
+    <h2>Learning curves (data size vs score)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Simulated train vs validation</h3>
+        <canvas id="lcChart" class="chart"></canvas>
+        <div class="controls">
+          <label class="small">Noise <input id="lcNoise" type="range" min="0" max="100" value="20"></label>
+          <label class="small">Complexity <input id="lcComplex" type="range" min="0" max="100" value="50"></label>
+          <button class="btn" id="saveLC">Download PNG</button>
+        </div>
+        <div class="small">Use sliders to see under/overfitting patterns.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGRESSION PLAYGROUND -->
+  <section class="section" id="regplay">
+    <h2>Regression lab (scatter + fitted line)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Generate data & fit</h3>
+        <div class="controls">
+          <label class="small">Points <input id="rgN" type="range" min="10" max="500" value="120"></label>
+          <label class="small">Noise <input id="rgNoise" type="range" min="0" max="100" value="25"></label>
+          <button class="btn" id="rgRefill">New data</button>
+          <button class="btn" id="saveRG">Download PNG</button>
+        </div>
+        <canvas id="rgChart" class="chart"></canvas>
+        <div class="kv small" id="rgStats"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- K-MEANS PLAYGROUND -->
+  <section class="section" id="kmeans">
+    <h2>K‑Means clustering (playground)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Generate clusters & iterate</h3>
+        <div class="controls">
+          <label class="small">k <input id="kmK" type="range" min="2" max="8" value="3"></label>
+          <label class="small">Points <input id="kmN" type="range" min="60" max="800" value="250"></label>
+          <button class="btn" id="kmGen">New data</button>
+          <button class="btn" id="kmStep">Step</button>
+          <button class="btn" id="kmRun">Run</button>
+          <button class="btn" id="saveKM">Download PNG</button>
+        </div>
+        <canvas id="kmChart" class="chart"></canvas>
+        <div class="small">Blue dots = data; colored X = centroids. Press “Run” to iterate until stable.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CSV UPLOADER VISUALIZER -->
+  <section class="section" id="uploader">
+    <h2>Upload a CSV → live chart</h2>
+    <p class="small">Upload a CSV with two columns (index,value). We’ll animate the series on a chart.</p>
+    <input type="file" id="csvFile" accept=".csv" />
+    <div class="controls"><button class="btn" id="playCsv">Play</button> <button class="btn" id="pauseCsv">Pause</button> <button class="btn" id="resetCsv">Reset</button> <button class="btn" id="saveCSV">Download PNG</button></div>
+    <canvas id="csvChart" class="chart"></canvas>
+    <div class="small" id="csvInfo"></div>
+  </section>
+
+  <!-- MLOps -->
+  <section class="section" id="mlops">
+    <h2>MLOps — what to track & automate</h2>
+    <div class="grid">
+      <div class="card"><h3>Reproducibility</h3><ul class="small"><li>Data & code versions</li><li>Environment pinning</li><li>Random seeds</li></ul></div>
+      <div class="card"><h3>Experiment tracking</h3><ul class="small"><li>Hyperparams</li><li>Metrics & artifacts</li><li>Dashboards</li></ul></div>
+      <div class="card"><h3>Monitoring</h3><ul class="small"><li>Input/output drift</li><li>Latency, cost, errors</li><li>Fairness & slices</li></ul></div>
+      <div class="card"><h3>Retraining policy</h3><p class="small">Thresholds → alert → review → retrain → A/B → promote.</p></div>
+      <div class="card"><h3>Serving</h3><ul class="small"><li>Batch vs real‑time</li><li>Shadow deploy</li><li>Canary & rollbacks</li></ul></div>
+    </div>
+  </section>
+
+  <!-- Ethics -->
+  <section class="section" id="ethics">
+    <h2>Ethics, fairness & privacy — quick checklist</h2>
+    <div class="grid">
+      <div class="card"><h3>Data</h3><ul class="small"><li>Provenance & consent</li><li>Purpose limitation</li><li>Retention policy</li></ul></div>
+      <div class="card"><h3>Fairness</h3><ul class="small"><li>Parity of error rates</li><li>Calibration per group</li><li>Bias audits pre‑launch</li></ul></div>
+      <div class="card"><h3>Privacy</h3><ul class="small"><li>PII minimization</li><li>Anonymization & aggregation</li><li>Access controls</li></ul></div>
+    </div>
+  </section>
+
+  <footer>Use <span class="kbd">Ctrl</span>/<span class="kbd">⌘</span>+<span class="kbd">F</span> to find anything • Print to save a PDF handout</footer>
+</main>
+
+<script>
+// THEME SWITCHER
+document.querySelectorAll('.theme button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.theme button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const theme = btn.dataset.theme;
+    if (theme==='default') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('ml_theme', theme);
+  });
+});
+const savedTheme = localStorage.getItem('ml_theme');
+if (savedTheme && savedTheme!=='default') {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const b = document.querySelector('.theme button[data-theme="'+savedTheme+'"]');
+  if (b){ document.querySelectorAll('.theme button').forEach(x=>x.classList.remove('active')); b.classList.add('active'); }
+}
+
+// COPY BUTTON
+function copyCode(btn){
+  const pre = btn.closest('pre.code'); if(!pre) return;
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.classList.add('copied'); btn.textContent='Copied';
+    setTimeout(()=>{ btn.classList.remove('copied'); btn.textContent='Copy'; }, 1200);
+  });
+}
+window.copyCode = copyCode;
+
+// NAV smooth scroll
+document.querySelectorAll('.nav a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const id = a.getAttribute('href').slice(1), el = document.getElementById(id);
+    if(el){ e.preventDefault(); const y = el.getBoundingClientRect().top + window.scrollY - 70; window.scrollTo({top:y, behavior:'smooth'}); }
+  });
+});
+
+// ---------- Canvas helpers (no external libs) ----------
+function setupCanvas(c){ c.width = c.clientWidth*2; c.height = c.clientHeight*2; return c.getContext('2d'); }
+function axes(ctx, {xMax=100, yMin=0, yMax=1, yTicks=5, xLabel='x', yLabel='y'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.strokeStyle='#cbd5e1'; ctx.fillStyle='#64748b'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(50,10); ctx.lineTo(50,h-40); ctx.lineTo(w-20,h-40); ctx.stroke();
+  ctx.font='20px system-ui'; ctx.fillText(xLabel, w-50, h-12); ctx.fillText(yLabel, 8, 24);
+  // ticks
+  for(let i=0;i<=yTicks;i++){
+    const y = (h-40) - i*(h-50)/yTicks;
+    const val = (yMin + (i*(yMax-yMin)/yTicks)).toFixed(2);
+    ctx.fillText(val, 8, y+4);
+    ctx.beginPath(); ctx.moveTo(46,y); ctx.lineTo(50,y); ctx.stroke();
+  }
+}
+function line(ctx, pts, {xMax=100, yMin=0, yMax=1, color='#0ea5e9'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.strokeStyle = color; ctx.lineWidth=3; ctx.beginPath();
+  pts.forEach((p,i)=>{
+    const x = 50 + (p.x/xMax)*(w-70);
+    const y = (h-40) - ((p.y - yMin)/(yMax - yMin))*(h-50);
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+}
+function dots(ctx, pts, {xMax=1, yMin=0, yMax=1, r=4, color='#1f2937'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.fillStyle = color;
+  for(const p of pts){
+    const x = 50 + (p.x/xMax)*(w-70);
+    const y = (h-40) - ((p.y - yMin)/(yMax - yMin))*(h-50);
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  }
+}
+function bars(ctx, arr, {labels=['TN','FP','FN','TP'], colors=['#94a3b8','#ef4444','#f59e0b','#10b981']}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height; const pad=50;
+  const max = Math.max(...arr, 1);
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='#64748b'; ctx.font='20px system-ui';
+  for(let i=0;i<4;i++){
+    const x = pad + i*( (w-pad-30)/4 ) + 10;
+    const bh = (arr[i]/max)*(h-80);
+    ctx.fillStyle = colors[i];
+    ctx.fillRect(x, h-40-bh, 50, bh);
+    ctx.fillStyle='#111827'; ctx.fillText(labels[i], x, h-12);
+    ctx.fillText(arr[i], x, h-50-bh);
+  }
+}
+
+// ---------- Streaming metrics ----------
+const streamCanvas = document.getElementById('streamChart'); const sctx = setupCanvas(streamCanvas);
+let t=0, acc=[], loss=[], timer=null;
+function drawStream(){
+  axes(sctx,{xLabel:'step',yLabel:'score'});
+  line(sctx, acc, {xMax:200,yMin:0,yMax:1,color:'#0ea5e9'});
+  line(sctx, loss,{xMax:200,yMin:0,yMax:1,color:'#ef4444'});
+}
+function tick(){
+  t++;
+  const a = Math.min(0.99, 0.5 + 0.5*(1 - Math.exp(-t/30)) + (Math.random()-0.5)*0.02);
+  const l = Math.max(0.02, 1.2*Math.exp(-t/25) + (Math.random()-0.5)*0.05);
+  acc.push({x:t,y:a}); loss.push({x:t,y:l}); drawStream();
+}
+document.getElementById('startStream').onclick=()=>{ if(!timer) timer=setInterval(tick, 500); };
+document.getElementById('stopStream').onclick =()=>{ clearInterval(timer); timer=null; };
+document.getElementById('resetStream').onclick=()=>{ t=0; acc=[]; loss=[]; drawStream(); };
+document.getElementById('saveStream').onclick=()=>downloadCanvas(streamCanvas, 'stream_metrics.png'); drawStream();
+
+// ---------- Synthetic scores for threshold/ROC/PR/ConfMat ----------
+const n=600; let scores=[], labels=[];
+function genScores(){
+  scores=[]; labels=[];
+  for(let i=0;i<n;i++){
+    const y = Math.random()<0.3 ? 1:0; // 30% positives
+    const s = y ? (0.55 + Math.random()*0.45) : (Math.random()*0.6);
+    labels.push(y); scores.push(Math.max(0, Math.min(1, s)));
+  }
+}
+genScores();
+
+function statsAt(thr){
+  let tp=0, fp=0, fn=0, tn=0;
+  for(let i=0;i<n;i++){
+    const pred = (scores[i]>=thr)?1:0;
+    if(pred===1 && labels[i]===1) tp++;
+    if(pred===1 && labels[i]===0) fp++;
+    if(pred===0 && labels[i]===1) fn++;
+    if(pred===0 && labels[i]===0) tn++;
+  }
+  const prec = tp/(tp+fp||1), rec = tp/(tp+fn||1), fpr = fp/(fp+tn||1), tpr = rec;
+  const acc = (tp+tn)/n;
+  return {tp,fp,fn,tn,prec,rec,fpr,tpr,acc};
+}
+
+// Threshold lab chart (precision/recall vs thr)
+const thrCanvas = document.getElementById('thrChart'); const thctx = setupCanvas(thrCanvas);
+function drawThr(thr){
+  axes(thctx,{xLabel:'threshold', yLabel:'score', yMax:1, yMin:0});
+  let ptsP=[], ptsR=[], ptsA=[];
+  for(let i=0;i<=100;i++){
+    const s = statsAt(i/100);
+    ptsP.push({x:i, y:s.prec}); ptsR.push({x:i, y:s.rec}); ptsA.push({x:i, y:s.acc});
+  }
+  line(thctx, ptsP, {xMax:100,yMin:0,yMax:1,color:'#0ea5e9'}); // precision
+  line(thctx, ptsR, {xMax:100,yMin:0,yMax:1,color:'#10b981'}); // recall
+  line(thctx, ptsA, {xMax:100,yMin:0,yMax:1,color:'#f59e0b'}); // accuracy
+}
+const thrSlider = document.getElementById('thr'); const thrVal = document.getElementById('thrVal'); drawThr(0.5);
+function updateThr(){
+  const v = Number(thrSlider.value)/100; thrVal.textContent = v.toFixed(2);
+  const s = statsAt(v);
+  const kv = document.getElementById('thrStats');
+  kv.innerHTML = `
+    <div>Precision</div><div>${s.prec.toFixed(3)}</div>
+    <div>Recall</div><div>${s.rec.toFixed(3)}</div>
+    <div>Accuracy</div><div>${s.acc.toFixed(3)}</div>
+    <div>TP</div><div>${s.tp}</div>
+    <div>FP</div><div>${s.fp}</div>
+    <div>FN</div><div>${s.fn}</div>
+    <div>TN</div><div>${s.tn}</div>`;
+  // update confusion heatmap too
+  drawCM(s);
+}
+thrSlider.addEventListener('input', updateThr); updateThr();
+document.getElementById('saveThr').onclick=()=>downloadCanvas(thrCanvas, 'threshold_curves.png');
+
+// Confusion Matrix heatmap
+const cmCanvas = document.getElementById('cmChart'); const cmctx = setupCanvas(cmCanvas);
+function drawCM({tp,fp,fn,tn}){
+  const arr = [tn, fp, fn, tp];
+  bars(cmctx, arr, {labels:['TN','FP','FN','TP']});
+}
+document.getElementById('saveCM').onclick=()=>downloadCanvas(cmCanvas, 'confusion_heatmap.png');
+
+// ROC & PR curves with AUC
+const rocCanvas = document.getElementById('rocChart'); const roctx = setupCanvas(rocCanvas);
+const prCanvas  = document.getElementById('prChart');  const prctx = setupCanvas(prCanvas);
+
+function sortByScore(){ // descending scores
+  const idx = Array.from(scores.keys()).sort((a,b)=>scores[b]-scores[a]);
+  return idx.map(i=>({s:scores[i], y:labels[i]}));
+}
+function getCurves(){
+  const arr = sortByScore();
+  let tp=0, fp=0, fn=labels.filter(x=>x===1).length, tn=labels.filter(x=>x===0).length;
+  const roc=[], pr=[]; let lastS=Infinity;
+  for(const {s,y} of arr){
+    if (s!==lastS){ // record point
+      const tpr = tp/(tp+fn||1), fpr = fp/(fp+tn||1);
+      const prec = tp/(tp+fp||1), rec = tp/(tp+fn||1);
+      roc.push({x:fpr, y:tpr}); pr.push({x:rec, y:prec});
+      lastS = s;
+    }
+    if(y===1){ tp++; fn--; } else { fp++; tn--; }
+  }
+  roc.push({x:1,y:1}); pr.push({x:1,y:pr.at(-1)?.y||1});
+  return {roc, pr};
+}
+function auc(points){ // trapezoid over x in [0,1]
+  let A=0; for(let i=1;i<points.length;i++){ const x0=points[i-1].x, y0=points[i-1].y, x1=points[i].x, y1=points[i].y; A += (x1-x0)*(y0+y1)/2; } return A;
+}
+function drawROC_PR(){
+  const {roc, pr} = getCurves();
+  axes(roctx,{xLabel:'FPR', yLabel:'TPR'}); line(roctx, roc.map(p=>({x:p.x*100,y:p.y})), {xMax:100,yMin:0,yMax:1,color:'#0ea5e9'});
+  axes(prctx,{xLabel:'Recall', yLabel:'Precision'}); line(prctx, pr.map(p=>({x:p.x*100,y:p.y})), {xMax:100,yMin:0,yMax:1,color:'#10b981'});
+  document.getElementById('rocInfo').textContent = 'ROC AUC ≈ ' + auc(roc).toFixed(3);
+  document.getElementById('prInfo').textContent  = 'PR AUC ≈ '  + auc(pr).toFixed(3);
+}
+drawROC_PR();
+document.getElementById('saveROC').onclick=()=>downloadCanvas(rocCanvas, 'roc_curve.png');
+document.getElementById('savePR').onclick =()=>downloadCanvas(prCanvas,  'pr_curve.png');
+
+// Learning curves (simulated)
+const lcCanvas = document.getElementById('lcChart'); const lcctx = setupCanvas(lcCanvas);
+function drawLC(){
+  const noise = Number(document.getElementById('lcNoise').value)/100;
+  const k = Number(document.getElementById('lcComplex').value)/100; // higher = more complex model
+  const xs = [20,40,60,80,120,160,220,300,400,500,700,900,1200];
+  const train=[], val=[];
+  let base = 0.6 + 0.35*(1-Math.exp(-xs[0]/200));
+  for(const n of xs){
+    const tr = Math.min(0.99, 0.65 + 0.35*(1-Math.exp(-n/(250*(1-k+0.2)))) - 0.05*noise + (Math.random()-0.5)*0.01);
+    const va = Math.min(0.98, 0.55 + 0.4*(1-Math.exp(-n/(300*(1-0.5*k+0.2)))) - 0.1*noise + (Math.random()-0.5)*0.01);
+    train.push({x:n, y:tr}); val.push({x:n, y:va});
+  }
+  axes(lcctx,{xLabel:'n (train size)', yLabel:'score', yMin:0, yMax:1});
+  line(lcctx, train.map((p,i)=>({x:i, y:p.y})), {xMax:xs.length-1,yMin:0,yMax:1,color:'#0ea5e9'});
+  line(lcctx, val.map((p,i)=>({x:i, y:p.y})),   {xMax:xs.length-1,yMin:0,yMax:1,color:'#f59e0b'});
+}
+document.getElementById('lcNoise').addEventListener('input', drawLC);
+document.getElementById('lcComplex').addEventListener('input', drawLC);
+document.getElementById('saveLC').onclick=()=>downloadCanvas(lcCanvas, 'learning_curves.png');
+drawLC();
+
+// Regression playground
+const rgCanvas = document.getElementById('rgChart'); const rgctx = setupCanvas(rgCanvas);
+let rgData=[];
+function genRegData(){
+  const N = Number(document.getElementById('rgN').value);
+  const noise = Number(document.getElementById('rgNoise').value)/100;
+  rgData=[];
+  for(let i=0;i<N;i++){
+    const x = i/(N-1); const y = 0.2 + 0.8*x + (Math.random()-0.5)*0.3*noise; // linear + noise
+    rgData.push({x,y});
+  }
+}
+function fitOLS(data){ // simple linear regression y = a + b x
+  const n = data.length; let sx=0, sy=0, sxx=0, sxy=0;
+  for(const p of data){ sx+=p.x; sy+=p.y; sxx+=p.x*p.x; sxy+=p.x*p.y; }
+  const b = (n*sxy - sx*sy) / (n*sxx - sx*sx + 1e-9);
+  const a = (sy - b*sx)/n;
+  let sse=0; for(const p of data){ const e = p.y - (a + b*p.x); sse += e*e; }
+  const rmse = Math.sqrt(sse/n);
+  return {a,b,rmse};
+}
+function drawReg(){
+  axes(rgctx,{xLabel:'x', yLabel:'y', yMin:0, yMax:1});
+  dots(rgctx, rgData, {xMax:1, yMin:0, yMax:1, r:3, color:'#1f2937'});
+  const {a,b,rmse} = fitOLS(rgData);
+  line(rgctx, [{x:0,y:a},{x:1,y:a+b}], {xMax:1,yMin:0,yMax:1,color:'#0ea5e9'});
+  document.getElementById('rgStats').innerHTML = `<div>y ≈ a + b x</div><div>a=${a.toFixed(3)}, b=${b.toFixed(3)}</div><div>RMSE</div><div>${rmse.toFixed(3)}</div>`;
+}
+document.getElementById('rgRefill').onclick=()=>{ genRegData(); drawReg(); };
+document.getElementById('rgN').addEventListener('input', ()=>{ genRegData(); drawReg(); });
+document.getElementById('rgNoise').addEventListener('input', ()=>{ genRegData(); drawReg(); });
+document.getElementById('saveRG').onclick=()=>downloadCanvas(rgCanvas, 'regression_fit.png');
+genRegData(); drawReg();
+
+// K-Means playground
+const kmCanvas = document.getElementById('kmChart'); const kmctx = setupCanvas(kmCanvas);
+let kmPts=[], kmC=[], kmTimer=null;
+function randn(){ // Box-Muller
+  let u=0,v=0; while(u===0) u=Math.random(); while(v===0) v=Math.random();
+  return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
+}
+function genClusters(){
+  const N = Number(document.getElementById('kmN').value);
+  kmPts=[];
+  const centers = [[0.3,0.3],[0.7,0.3],[0.5,0.7],[0.2,0.7],[0.8,0.6]];
+  for(let i=0;i<N;i++){
+    const c = centers[Math.floor(Math.random()*centers.length)];
+    const x = Math.min(0.98, Math.max(0.02, c[0] + 0.08*randn()));
+    const y = Math.min(0.98, Math.max(0.02, c[1] + 0.08*randn()));
+    kmPts.push({x,y, k:-1});
+  }
+  initCentroids();
+}
+function initCentroids(){
+  const k = Number(document.getElementById('kmK').value);
+  kmC=[];
+  for(let i=0;i<k;i++){
+    const p = kmPts[Math.floor(Math.random()*kmPts.length)];
+    kmC.push({x:p.x,y:p.y});
+  }
+}
+function assign(){
+  for(const p of kmPts){
+    let best=-1, bd=1e9;
+    for(let i=0;i<kmC.length;i++){
+      const c=kmC[i]; const d=(p.x-c.x)*(p.x-c.x)+(p.y-c.y)*(p.y-c.y);
+      if(d<bd){ bd=d; best=i; }
+    }
+    p.k=best;
+  }
+}
+function update(){
+  const sums = Array.from({length:kmC.length},()=>({x:0,y:0,n:0}));
+  for(const p of kmPts){ const s=sums[p.k]; s.x+=p.x; s.y+=p.y; s.n++; }
+  for(let i=0;i<kmC.length;i++){ const s=sums[i]; if(s.n>0){ kmC[i].x=s.x/s.n; kmC[i].y=s.y/s.n; } }
+}
+function drawKM(){
+  const w = kmctx.canvas.width, h = kmctx.canvas.height;
+  kmctx.clearRect(0,0,w,h);
+  // axes as border
+  kmctx.strokeStyle='#cbd5e1'; kmctx.strokeRect(40,10,w-60,h-50);
+  const colors=['#0ea5e9','#10b981','#f59e0b','#ef4444','#8b5cf6','#14b8a6','#f43f5e','#22d3ee'];
+  for(const p of kmPts){
+    const x=40 + p.x*(w-60), y=10 + (1-p.y)*(h-50);
+    kmctx.fillStyle = p.k>=0 ? colors[p.k%colors.length] : '#1f2937';
+    kmctx.beginPath(); kmctx.arc(x,y,3,0,Math.PI*2); kmctx.fill();
+  }
+  // centroids
+  kmctx.lineWidth=3;
+  for(let i=0;i<kmC.length;i++){
+    const c=kmC[i]; const x=40 + c.x*(w-60), y=10 + (1-c.y)*(h-50);
+    kmctx.strokeStyle = colors[i%colors.length]; kmctx.beginPath();
+    kmctx.moveTo(x-8,y-8); kmctx.lineTo(x+8,y+8); kmctx.moveTo(x+8,y-8); kmctx.lineTo(x-8,y+8); kmctx.stroke();
+  }
+}
+function stepKM(){ assign(); update(); drawKM(); }
+function runKM(){ if(kmTimer) return; kmTimer=setInterval(()=>{ const before = JSON.stringify(kmC); stepKM(); if(JSON.stringify(kmC)===before){ clearInterval(kmTimer); kmTimer=null; } }, 400); }
+document.getElementById('kmGen').onclick=()=>{ genClusters(); drawKM(); };
+document.getElementById('kmStep').onclick=stepKM;
+document.getElementById('kmRun').onclick=runKM;
+document.getElementById('kmK').addEventListener('input', ()=>{ initCentroids(); drawKM(); });
+document.getElementById('kmN').addEventListener('input', ()=>{ genClusters(); drawKM(); });
+document.getElementById('saveKM').onclick=()=>downloadCanvas(kmCanvas, 'kmeans.png');
+genClusters(); drawKM();
+
+// CSV visualizer
+const csvCanvas = document.getElementById('csvChart'); const cctx = setupCanvas(csvCanvas);
+let csvRows=[], csvIdx=0, csvTimer=null, csvYmin=0, csvYmax=1;
+document.getElementById('csvFile').addEventListener('change', async (e)=>{
+  const file = e.target.files[0]; if(!file) return;
+  const text = await file.text();
+  const lines = text.trim().split(/\r?\n/);
+  csvRows = [];
+  for(const line of lines){
+    const [ix,val] = line.split(','); const x = Number(ix), y = Number(val);
+    if(!Number.isNaN(x) && !Number.isNaN(y)) csvRows.push({x,y});
+  }
+  csvIdx=0;
+  csvYmin = Math.min(...csvRows.map(p=>p.y)); csvYmax = Math.max(...csvRows.map(p=>p.y));
+  document.getElementById('csvInfo').textContent = `Loaded ${csvRows.length} points — x:[${csvRows[0].x}..${csvRows.at(-1).x}] y:[${csvYmin}..${csvYmax}]`;
+  drawLineCSV([]);
+});
+function drawLineCSV(data){
+  axes(cctx,{xLabel:'index', yLabel:'value', yMin:csvYmin, yMax:csvYmax});
+  const w = cctx.canvas.width, h = cctx.canvas.height;
+  cctx.strokeStyle='#1e40af'; cctx.lineWidth=2; cctx.beginPath();
+  for(let i=0;i<data.length;i++){
+    const p = data[i];
+    const x = 50 + ((p.x - csvRows[0].x)/(csvRows.at(-1).x - csvRows[0].x))*(w-70);
+    const y = (h-40) - ((p.y - csvYmin)/(csvYmax - csvYmin || 1))*(h-50);
+    if(i===0) cctx.moveTo(x,y); else cctx.lineTo(x,y);
+  }
+  cctx.stroke();
+}
+function playCsv(){
+  if(!csvRows.length || csvTimer) return;
+  csvTimer = setInterval(()=>{
+    csvIdx = Math.min(csvRows.length, csvIdx+5);
+    drawLineCSV(csvRows.slice(0,csvIdx));
+    if(csvIdx>=csvRows.length){ clearInterval(csvTimer); csvTimer=null; }
+  }, 200);
+}
+document.getElementById('playCsv').onclick=playCsv;
+document.getElementById('pauseCsv').onclick=()=>{ clearInterval(csvTimer); csvTimer=null; };
+document.getElementById('resetCsv').onclick=()=>{ clearInterval(csvTimer); csvTimer=null; csvIdx=0; cctx.clearRect(0,0,csvCanvas.width,csvCanvas.height); };
+document.getElementById('saveCSV').onclick=()=>downloadCanvas(csvCanvas, 'csv_chart.png');
+
+// Download helper
+function downloadCanvas(canvas, filename){
+  const a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png'); a.download = filename; a.click();
+}
+</script>
+</body>
+</html>

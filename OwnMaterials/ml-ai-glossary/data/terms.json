@@ -1,0 +1,1304 @@
+[
+  {
+    "id": 1,
+    "term": "Accuracy",
+    "category": "Evaluation",
+    "definition": "Proportion of correct predictions among all predictions.",
+    "example": "If a classifier made 90 correct predictions out of 100, its accuracy is 90%."
+  },
+  {
+    "id": 2,
+    "term": "Precision",
+    "category": "Evaluation",
+    "definition": "Among predicted positives, how many are truly positive.",
+    "example": "Email spam filter: of 50 emails it flagged as spam, 45 were actually spam \u2192 precision = 45/50 = 0.9."
+  },
+  {
+    "id": 3,
+    "term": "Recall (Sensitivity)",
+    "category": "Evaluation",
+    "definition": "Among true positives, how many did we correctly identify.",
+    "example": "Of 60 spam emails, the filter caught 45 \u2192 recall = 45/60 = 0.75."
+  },
+  {
+    "id": 4,
+    "term": "F1-score",
+    "category": "Evaluation",
+    "definition": "Harmonic mean of precision and recall; balances the two.",
+    "example": "If precision=0.9 and recall=0.75, F1 \u2248 0.81."
+  },
+  {
+    "id": 5,
+    "term": "ROC Curve",
+    "category": "Evaluation",
+    "definition": "Plot of TPR vs FPR at various thresholds.",
+    "example": "Used to visualize classifier trade-offs across thresholds."
+  },
+  {
+    "id": 6,
+    "term": "AUC (Area Under ROC)",
+    "category": "Evaluation",
+    "definition": "Probability a classifier ranks a random positive higher than a random negative.",
+    "example": "AUC=0.95 suggests strong separation power."
+  },
+  {
+    "id": 7,
+    "term": "PR Curve",
+    "category": "Evaluation",
+    "definition": "Precision vs Recall plot across thresholds.",
+    "example": "Useful for highly imbalanced datasets like fraud detection."
+  },
+  {
+    "id": 8,
+    "term": "Confusion Matrix",
+    "category": "Evaluation",
+    "definition": "Table showing TP, FP, TN, FN counts.",
+    "example": "Evaluates classification performance at a fixed threshold."
+  },
+  {
+    "id": 9,
+    "term": "Cross-Validation",
+    "category": "Evaluation",
+    "definition": "Technique to estimate model generalization by splitting data into folds.",
+    "example": "5-fold CV trains on 4 folds and validates on the 5th, rotating 5 times."
+  },
+  {
+    "id": 10,
+    "term": "Bias",
+    "category": "Theory",
+    "definition": "Systematic error causing a model to miss relevant relations.",
+    "example": "Linear model on a non-linear problem may show high bias."
+  },
+  {
+    "id": 11,
+    "term": "Variance",
+    "category": "Theory",
+    "definition": "Sensitivity to small fluctuations in the training set.",
+    "example": "Overly complex model that changes a lot with new data has high variance."
+  },
+  {
+    "id": 12,
+    "term": "Bias\u2013Variance Tradeoff",
+    "category": "Theory",
+    "definition": "Balancing underfitting (high bias) and overfitting (high variance).",
+    "example": "Choose model capacity and regularization to achieve best generalization."
+  },
+  {
+    "id": 13,
+    "term": "Overfitting",
+    "category": "Theory",
+    "definition": "Model learns noise and memorizes training data, hurting generalization.",
+    "example": "Training accuracy 99% but test accuracy 75%."
+  },
+  {
+    "id": 14,
+    "term": "Underfitting",
+    "category": "Theory",
+    "definition": "Model is too simple to capture patterns.",
+    "example": "Linear model for XOR fails to learn decision boundary."
+  },
+  {
+    "id": 15,
+    "term": "Regularization",
+    "category": "Technique",
+    "definition": "Constrains model complexity to reduce overfitting.",
+    "example": "Add L2 penalty to linear regression weights."
+  },
+  {
+    "id": 16,
+    "term": "L1 Regularization (Lasso)",
+    "category": "Technique",
+    "definition": "Adds absolute value penalty to weights; encourages sparsity.",
+    "example": "Feature selection in high-dimensional data."
+  },
+  {
+    "id": 17,
+    "term": "L2 Regularization (Ridge)",
+    "category": "Technique",
+    "definition": "Adds squared penalty to weights; shrinks coefficients.",
+    "example": "Stabilizes linear regression with multicollinearity."
+  },
+  {
+    "id": 18,
+    "term": "Elastic Net",
+    "category": "Technique",
+    "definition": "Combination of L1 and L2 penalties.",
+    "example": "Balances sparsity and stability."
+  },
+  {
+    "id": 19,
+    "term": "Hyperparameter",
+    "category": "Practice",
+    "definition": "Configuration not learned from data; set before training.",
+    "example": "Learning rate, number of layers, C in SVM."
+  },
+  {
+    "id": 20,
+    "term": "Grid Search",
+    "category": "Practice",
+    "definition": "Exhaustive search over hyperparameter combinations.",
+    "example": "Try {C}\u00d7{gamma} for SVM and choose best via CV."
+  },
+  {
+    "id": 21,
+    "term": "Random Search",
+    "category": "Practice",
+    "definition": "Samples random hyperparameter combinations.",
+    "example": "Often more efficient than grid in high dimensions."
+  },
+  {
+    "id": 22,
+    "term": "Bayesian Optimization",
+    "category": "Practice",
+    "definition": "Builds surrogate model of performance to choose next hyperparameters.",
+    "example": "Speeds up hyperparameter tuning using Gaussian Processes or TPE."
+  },
+  {
+    "id": 23,
+    "term": "Learning Rate",
+    "category": "Optimization",
+    "definition": "Step size for parameter updates during training.",
+    "example": "Too high diverges; too low trains slowly."
+  },
+  {
+    "id": 24,
+    "term": "Momentum",
+    "category": "Optimization",
+    "definition": "Accelerates SGD by dampening oscillations using past gradients.",
+    "example": "Helps faster convergence in ravines."
+  },
+  {
+    "id": 25,
+    "term": "Adam",
+    "category": "Optimization",
+    "definition": "Adaptive moment estimation optimizer combining momentum and RMSProp.",
+    "example": "Default choice for many deep learning tasks."
+  },
+  {
+    "id": 26,
+    "term": "RMSProp",
+    "category": "Optimization",
+    "definition": "Adaptive learning rate method using moving average of squared gradients.",
+    "example": "Works well for non-stationary objectives."
+  },
+  {
+    "id": 27,
+    "term": "SGD",
+    "category": "Optimization",
+    "definition": "Updates model using small random batches.",
+    "example": "Common baseline optimizer; can generalize well."
+  },
+  {
+    "id": 28,
+    "term": "Batch Size",
+    "category": "Optimization",
+    "definition": "Number of samples per gradient update.",
+    "example": "Larger batches use more memory but can be faster on GPU."
+  },
+  {
+    "id": 29,
+    "term": "Epoch",
+    "category": "Practice",
+    "definition": "One full pass over the training dataset.",
+    "example": "Training for 20 epochs cycles through data 20 times."
+  },
+  {
+    "id": 30,
+    "term": "Early Stopping",
+    "category": "Technique",
+    "definition": "Stop training when validation metric stops improving.",
+    "example": "Prevents overfitting while saving time."
+  },
+  {
+    "id": 31,
+    "term": "Feature Engineering",
+    "category": "Data",
+    "definition": "Creating input features to improve learning.",
+    "example": "Extracting TF\u2011IDF features from text."
+  },
+  {
+    "id": 32,
+    "term": "Feature Scaling",
+    "category": "Data",
+    "definition": "Transform features to similar ranges.",
+    "example": "Standardization (z\u2011score) for SVM and KNN."
+  },
+  {
+    "id": 33,
+    "term": "Normalization",
+    "category": "Data",
+    "definition": "Rescale vectors to unit norm.",
+    "example": "L2 normalization for text feature vectors."
+  },
+  {
+    "id": 34,
+    "term": "Standardization",
+    "category": "Data",
+    "definition": "Subtract mean and divide by std deviation.",
+    "example": "Makes features zero-mean unit-variance."
+  },
+  {
+    "id": 35,
+    "term": "One-Hot Encoding",
+    "category": "Data",
+    "definition": "Binary vector per category.",
+    "example": "City=\u2018NY\u2019\u2192 [0,1,0] for [LA, NY, SF]."
+  },
+  {
+    "id": 36,
+    "term": "Label Encoding",
+    "category": "Data",
+    "definition": "Map categories to integers.",
+    "example": "Red\u21920, Green\u21921, Blue\u21922."
+  },
+  {
+    "id": 37,
+    "term": "Imputation",
+    "category": "Data",
+    "definition": "Fill missing values with estimates.",
+    "example": "Fill age with median value."
+  },
+  {
+    "id": 38,
+    "term": "Outlier",
+    "category": "Data",
+    "definition": "Observation distant from others.",
+    "example": "Transaction of $1,000,000 among $10\u2013$500 purchases."
+  },
+  {
+    "id": 39,
+    "term": "PCA (Principal Component Analysis)",
+    "category": "Dimensionality",
+    "definition": "Linear technique to project data onto fewer orthogonal components.",
+    "example": "Compress 100D data to 2D for visualization."
+  },
+  {
+    "id": 40,
+    "term": "t\u2011SNE",
+    "category": "Dimensionality",
+    "definition": "Nonlinear technique to visualize high-dimensional data.",
+    "example": "Clusters of handwritten digits in 2D."
+  },
+  {
+    "id": 41,
+    "term": "UMAP",
+    "category": "Dimensionality",
+    "definition": "Nonlinear manifold learning preserving global/local structure.",
+    "example": "Visualize embeddings of documents."
+  },
+  {
+    "id": 42,
+    "term": "k\u2011NN (k-Nearest Neighbors)",
+    "category": "Model",
+    "definition": "Predict based on majority/average of nearest k points.",
+    "example": "Classify iris species using Euclidean distance."
+  },
+  {
+    "id": 43,
+    "term": "Linear Regression",
+    "category": "Model",
+    "definition": "Predicts continuous value with linear relationship.",
+    "example": "Predict house price from area."
+  },
+  {
+    "id": 44,
+    "term": "Logistic Regression",
+    "category": "Model",
+    "definition": "Binary classification via sigmoid of linear function.",
+    "example": "Predict if a customer will churn (yes/no)."
+  },
+  {
+    "id": 45,
+    "term": "Ridge Regression",
+    "category": "Model",
+    "definition": "Linear regression with L2 penalty.",
+    "example": "Control overfitting with many correlated features."
+  },
+  {
+    "id": 46,
+    "term": "Lasso Regression",
+    "category": "Model",
+    "definition": "Linear regression with L1 penalty.",
+    "example": "Performs feature selection automatically."
+  },
+  {
+    "id": 47,
+    "term": "Decision Tree",
+    "category": "Model",
+    "definition": "Tree of decisions based on feature splits.",
+    "example": "Classify loan approval based on rules."
+  },
+  {
+    "id": 48,
+    "term": "Random Forest",
+    "category": "Model",
+    "definition": "Ensemble of decision trees using bagging & feature randomness.",
+    "example": "Improves robustness over a single tree."
+  },
+  {
+    "id": 49,
+    "term": "Gradient Boosting",
+    "category": "Model",
+    "definition": "Sequentially adds trees to correct previous errors.",
+    "example": "XGBoost/LightGBM/CatBoost implement variants."
+  },
+  {
+    "id": 50,
+    "term": "XGBoost",
+    "category": "Model",
+    "definition": "Efficient gradient boosted tree library.",
+    "example": "Wins many structured data competitions."
+  },
+  {
+    "id": 51,
+    "term": "LightGBM",
+    "category": "Model",
+    "definition": "Gradient boosting with histogram-based splits and leaf-wise growth.",
+    "example": "Fast on large datasets with many features."
+  },
+  {
+    "id": 52,
+    "term": "CatBoost",
+    "category": "Model",
+    "definition": "Boosting library with categorical handling.",
+    "example": "Strong performance without heavy preprocessing."
+  },
+  {
+    "id": 53,
+    "term": "SVM (Support Vector Machine)",
+    "category": "Model",
+    "definition": "Maximizes margin between classes; supports kernels.",
+    "example": "RBF kernel for non-linear boundaries."
+  },
+  {
+    "id": 54,
+    "term": "Naive Bayes",
+    "category": "Model",
+    "definition": "Probabilistic classifier assuming feature independence.",
+    "example": "Spam detection with bag-of-words."
+  },
+  {
+    "id": 55,
+    "term": "K\u2011Means",
+    "category": "Clustering",
+    "definition": "Partitions data into k clusters by minimizing within-cluster variance.",
+    "example": "Group customers into segments."
+  },
+  {
+    "id": 56,
+    "term": "Hierarchical Clustering",
+    "category": "Clustering",
+    "definition": "Builds tree (dendrogram) of nested clusters.",
+    "example": "Visualize gene expression relationships."
+  },
+  {
+    "id": 57,
+    "term": "DBSCAN",
+    "category": "Clustering",
+    "definition": "Density-based clustering that finds arbitrary shaped clusters and noise.",
+    "example": "Identify anomalies as outliers."
+  },
+  {
+    "id": 58,
+    "term": "GMM (Gaussian Mixture Model)",
+    "category": "Clustering",
+    "definition": "Probabilistic clustering with mixture of Gaussians.",
+    "example": "Soft-assign points to clusters."
+  },
+  {
+    "id": 59,
+    "term": "Reinforcement Learning",
+    "category": "RL",
+    "definition": "Agent learns by interacting to maximize cumulative reward.",
+    "example": "Training a robot to walk via trial-and-error."
+  },
+  {
+    "id": 60,
+    "term": "Markov Decision Process (MDP)",
+    "category": "RL",
+    "definition": "Framework with states, actions, transition probabilities, rewards.",
+    "example": "Modeling gridworld navigation."
+  },
+  {
+    "id": 61,
+    "term": "Q\u2011Learning",
+    "category": "RL",
+    "definition": "Model-free RL learning action-value function.",
+    "example": "Learn driving policy in a simulator."
+  },
+  {
+    "id": 62,
+    "term": "Policy Gradient",
+    "category": "RL",
+    "definition": "Optimizes parameterized policy directly via expected return gradient.",
+    "example": "REINFORCE, PPO for continuous control."
+  },
+  {
+    "id": 63,
+    "term": "PPO (Proximal Policy Optimization)",
+    "category": "RL",
+    "definition": "Stable policy gradient method with clipped objective.",
+    "example": "Popular in robotics and games."
+  },
+  {
+    "id": 64,
+    "term": "Deep Learning",
+    "category": "DL",
+    "definition": "Neural networks with many layers learning hierarchical features.",
+    "example": "CNNs for images; Transformers for text."
+  },
+  {
+    "id": 65,
+    "term": "Perceptron",
+    "category": "DL",
+    "definition": "Simplest neuron: weighted sum + activation.",
+    "example": "Linear binary classifier."
+  },
+  {
+    "id": 66,
+    "term": "Activation Function",
+    "category": "DL",
+    "definition": "Non-linear function applied to neuron output.",
+    "example": "ReLU, sigmoid, tanh, GELU."
+  },
+  {
+    "id": 67,
+    "term": "ReLU",
+    "category": "DL",
+    "definition": "Rectified Linear Unit: max(0, x).",
+    "example": "Speeds deep nets, avoids vanishing gradients."
+  },
+  {
+    "id": 68,
+    "term": "Batch Normalization",
+    "category": "DL",
+    "definition": "Normalizes layer inputs to stabilize training.",
+    "example": "Allows higher learning rates."
+  },
+  {
+    "id": 69,
+    "term": "Dropout",
+    "category": "DL",
+    "definition": "Randomly zeroes units to prevent co-adaptation.",
+    "example": "Reduces overfitting in CNNs/MLPs."
+  },
+  {
+    "id": 70,
+    "term": "CNN (Convolutional Neural Network)",
+    "category": "DL",
+    "definition": "Uses convolutions to capture spatial patterns.",
+    "example": "Image classification/segmentation."
+  },
+  {
+    "id": 71,
+    "term": "RNN (Recurrent Neural Network)",
+    "category": "DL",
+    "definition": "Processes sequences with recurrent connections.",
+    "example": "Language modeling and time-series."
+  },
+  {
+    "id": 72,
+    "term": "LSTM",
+    "category": "DL",
+    "definition": "RNN variant with gates to combat vanishing gradients.",
+    "example": "Text generation from character sequences."
+  },
+  {
+    "id": 73,
+    "term": "GRU",
+    "category": "DL",
+    "definition": "Simpler gated RNN with comparable performance to LSTM.",
+    "example": "Speech recognition models."
+  },
+  {
+    "id": 74,
+    "term": "Transformer",
+    "category": "DL",
+    "definition": "Sequence model relying on self-attention, no recurrence.",
+    "example": "BERT, GPT for NLP tasks."
+  },
+  {
+    "id": 75,
+    "term": "Self-Attention",
+    "category": "DL",
+    "definition": "Weights tokens based on pairwise interactions.",
+    "example": "Finds long-range dependencies in text."
+  },
+  {
+    "id": 76,
+    "term": "Positional Encoding",
+    "category": "DL",
+    "definition": "Injects order information into Transformers.",
+    "example": "Sine/cosine or learned embeddings for positions."
+  },
+  {
+    "id": 77,
+    "term": "Embedding",
+    "category": "DL",
+    "definition": "Dense vector representation of discrete items.",
+    "example": "Word embeddings capture semantics."
+  },
+  {
+    "id": 78,
+    "term": "Autoencoder",
+    "category": "DL",
+    "definition": "Learns to compress and reconstruct inputs.",
+    "example": "Denoising images by removing noise."
+  },
+  {
+    "id": 79,
+    "term": "Variational Autoencoder (VAE)",
+    "category": "DL",
+    "definition": "Probabilistic autoencoder modeling latent distribution.",
+    "example": "Generate new images similar to training set."
+  },
+  {
+    "id": 80,
+    "term": "GAN (Generative Adversarial Network)",
+    "category": "DL",
+    "definition": "Generator vs Discriminator in adversarial training.",
+    "example": "Synthesize realistic faces."
+  },
+  {
+    "id": 81,
+    "term": "Diffusion Model",
+    "category": "DL",
+    "definition": "Generative model reversing a noising process.",
+    "example": "Image generation like Stable Diffusion."
+  },
+  {
+    "id": 82,
+    "term": "Loss Function",
+    "category": "Optimization",
+    "definition": "Objective minimized during training.",
+    "example": "Cross-entropy for classification, MSE for regression."
+  },
+  {
+    "id": 83,
+    "term": "Cross-Entropy",
+    "category": "Optimization",
+    "definition": "Measures distance between predicted and true distributions.",
+    "example": "Used for multi-class classification."
+  },
+  {
+    "id": 84,
+    "term": "MSE (Mean Squared Error)",
+    "category": "Optimization",
+    "definition": "Average squared difference between predictions and targets.",
+    "example": "Regression tasks like price prediction."
+  },
+  {
+    "id": 85,
+    "term": "MAE (Mean Absolute Error)",
+    "category": "Optimization",
+    "definition": "Average absolute error; robust to outliers.",
+    "example": "Predicting median house prices."
+  },
+  {
+    "id": 86,
+    "term": "Log Loss",
+    "category": "Optimization",
+    "definition": "Cross-entropy for binary classification.",
+    "example": "Penalizes confident wrong predictions heavily."
+  },
+  {
+    "id": 87,
+    "term": "Gradient",
+    "category": "Math",
+    "definition": "Vector of partial derivatives of loss w.r.t. parameters.",
+    "example": "Backprop uses gradients for updates."
+  },
+  {
+    "id": 88,
+    "term": "Backpropagation",
+    "category": "DL",
+    "definition": "Efficient algorithm to compute gradients in networks.",
+    "example": "Trains deep neural networks."
+  },
+  {
+    "id": 89,
+    "term": "Exploding Gradients",
+    "category": "DL",
+    "definition": "Gradients grow too large causing instability.",
+    "example": "Mitigate with gradient clipping."
+  },
+  {
+    "id": 90,
+    "term": "Vanishing Gradients",
+    "category": "DL",
+    "definition": "Gradients shrink, slowing learning.",
+    "example": "Mitigate with ReLU/ResNets/LayerNorm."
+  },
+  {
+    "id": 91,
+    "term": "Layer Normalization",
+    "category": "DL",
+    "definition": "Normalizes across features within a layer.",
+    "example": "Common in Transformers."
+  },
+  {
+    "id": 92,
+    "term": "Residual Connection",
+    "category": "DL",
+    "definition": "Skip connection adding input to outputs.",
+    "example": "Improves gradient flow in deep nets."
+  },
+  {
+    "id": 93,
+    "term": "Data Augmentation",
+    "category": "Data",
+    "definition": "Transform training data to increase diversity.",
+    "example": "Random crops, flips for images."
+  },
+  {
+    "id": 94,
+    "term": "Transfer Learning",
+    "category": "DL",
+    "definition": "Fine-tune a pre-trained model on a new task.",
+    "example": "Use ImageNet pre-trained ResNet for medical images."
+  },
+  {
+    "id": 95,
+    "term": "Fine-Tuning",
+    "category": "DL",
+    "definition": "Continue training part/all of a pre-trained model.",
+    "example": "Freeze base, train classifier head."
+  },
+  {
+    "id": 96,
+    "term": "Zero-Shot Learning",
+    "category": "DL",
+    "definition": "Model performs unseen tasks using descriptions.",
+    "example": "Prompt LLM to classify new labels."
+  },
+  {
+    "id": 97,
+    "term": "Few-Shot Learning",
+    "category": "DL",
+    "definition": "Model learns new tasks from few examples.",
+    "example": "In-context learning in LLMs."
+  },
+  {
+    "id": 98,
+    "term": "Prompt Engineering",
+    "category": "NLP",
+    "definition": "Craft inputs to get desired outputs from LLMs.",
+    "example": "Provide examples and instructions in prompts."
+  },
+  {
+    "id": 99,
+    "term": "Tokenization",
+    "category": "NLP",
+    "definition": "Split text into tokens (words/subwords/chars).",
+    "example": "Byte-Pair Encoding (BPE) for subwords."
+  },
+  {
+    "id": 100,
+    "term": "Stemming",
+    "category": "NLP",
+    "definition": "Reduce words to roots crudely.",
+    "example": "running\u2192 run."
+  },
+  {
+    "id": 101,
+    "term": "Lemmatization",
+    "category": "NLP",
+    "definition": "Reduce words to dictionary form using POS/lexicon.",
+    "example": "better\u2192 good (adj)."
+  },
+  {
+    "id": 102,
+    "term": "TF\u2011IDF",
+    "category": "NLP",
+    "definition": "Weights terms by frequency and rarity.",
+    "example": "Search ranking and text classification."
+  },
+  {
+    "id": 103,
+    "term": "Bag of Words",
+    "category": "NLP",
+    "definition": "Represents text as word counts, ignoring order.",
+    "example": "Simple baseline for sentiment."
+  },
+  {
+    "id": 104,
+    "term": "Word2Vec",
+    "category": "NLP",
+    "definition": "Learns word embeddings from context.",
+    "example": "King \u2212 Man + Woman \u2248 Queen."
+  },
+  {
+    "id": 105,
+    "term": "BERT",
+    "category": "NLP",
+    "definition": "Bidirectional Transformer encoder pre-trained by masking.",
+    "example": "Fine-tune for QA or NER."
+  },
+  {
+    "id": 106,
+    "term": "GPT",
+    "category": "NLP",
+    "definition": "Autoregressive Transformer decoder for generation.",
+    "example": "Text completion and code generation."
+  },
+  {
+    "id": 107,
+    "term": "N-gram",
+    "category": "NLP",
+    "definition": "Sequence of N tokens used to model language.",
+    "example": "Bigram model predicts next word using previous word."
+  },
+  {
+    "id": 108,
+    "term": "Perplexity",
+    "category": "NLP",
+    "definition": "Exponentiated average negative log-likelihood.",
+    "example": "Lower perplexity indicates better language model."
+  },
+  {
+    "id": 109,
+    "term": "BLEU Score",
+    "category": "NLP",
+    "definition": "Metric for machine translation via n-gram overlap.",
+    "example": "Compare model translation to references."
+  },
+  {
+    "id": 110,
+    "term": "ROUGE",
+    "category": "NLP",
+    "definition": "Recall-based metric for summarization overlap.",
+    "example": "Higher ROUGE-L indicates better summaries."
+  },
+  {
+    "id": 111,
+    "term": "Computer Vision",
+    "category": "CV",
+    "definition": "Field enabling machines to interpret images/videos.",
+    "example": "Object detection, segmentation, tracking."
+  },
+  {
+    "id": 112,
+    "term": "Object Detection",
+    "category": "CV",
+    "definition": "Locate and classify objects with bounding boxes.",
+    "example": "Detect cars and pedestrians in images."
+  },
+  {
+    "id": 113,
+    "term": "Semantic Segmentation",
+    "category": "CV",
+    "definition": "Classify each pixel into categories.",
+    "example": "Road vs sidewalk in self-driving."
+  },
+  {
+    "id": 114,
+    "term": "Instance Segmentation",
+    "category": "CV",
+    "definition": "Segment each object instance separately.",
+    "example": "Differentiate overlapping persons."
+  },
+  {
+    "id": 115,
+    "term": "YOLO",
+    "category": "CV",
+    "definition": "Real-time single-shot object detector.",
+    "example": "Fast detection in embedded devices."
+  },
+  {
+    "id": 116,
+    "term": "ResNet",
+    "category": "DL",
+    "definition": "Deep CNN using residual connections.",
+    "example": "Image classification with very deep networks."
+  },
+  {
+    "id": 117,
+    "term": "Vision Transformer (ViT)",
+    "category": "DL",
+    "definition": "Applies Transformer to image patches.",
+    "example": "Competes with CNNs on large datasets."
+  },
+  {
+    "id": 118,
+    "term": "Data Drift",
+    "category": "MLOps",
+    "definition": "Change in data distribution over time.",
+    "example": "Production inputs no longer match training data."
+  },
+  {
+    "id": 119,
+    "term": "Concept Drift",
+    "category": "MLOps",
+    "definition": "Change in relationship between inputs and targets.",
+    "example": "Fraud patterns evolve, degrading model."
+  },
+  {
+    "id": 120,
+    "term": "Model Monitoring",
+    "category": "MLOps",
+    "definition": "Track performance/data quality in production.",
+    "example": "Alert when prediction distribution shifts."
+  },
+  {
+    "id": 121,
+    "term": "Model Registry",
+    "category": "MLOps",
+    "definition": "Central store for model versions/metadata.",
+    "example": "Promote models from staging to prod."
+  },
+  {
+    "id": 122,
+    "term": "Feature Store",
+    "category": "MLOps",
+    "definition": "System to manage and serve features consistently.",
+    "example": "Offline/online parity for training/serving."
+  },
+  {
+    "id": 123,
+    "term": "CI/CD",
+    "category": "MLOps",
+    "definition": "Automated integration, testing, deployment pipelines.",
+    "example": "Blue\u2011green deploy for new model versions."
+  },
+  {
+    "id": 124,
+    "term": "A/B Testing",
+    "category": "Experimentation",
+    "definition": "Compare two variants statistically to pick winner.",
+    "example": "Test new recommendation model vs old."
+  },
+  {
+    "id": 125,
+    "term": "Bandits",
+    "category": "Experimentation",
+    "definition": "Adaptive experimentation balancing explore/exploit.",
+    "example": "Epsilon\u2011greedy for UI variants."
+  },
+  {
+    "id": 126,
+    "term": "Causal Inference",
+    "category": "Theory",
+    "definition": "Estimate cause\u2011effect, not just correlation.",
+    "example": "Uplift modeling for promotions."
+  },
+  {
+    "id": 127,
+    "term": "SHAP",
+    "category": "Explainability",
+    "definition": "Game\u2011theoretic feature attribution method.",
+    "example": "Explain each prediction with Shapley values."
+  },
+  {
+    "id": 128,
+    "term": "LIME",
+    "category": "Explainability",
+    "definition": "Local surrogate models to explain predictions.",
+    "example": "Approximate influence of features per instance."
+  },
+  {
+    "id": 129,
+    "term": "Partial Dependence Plot",
+    "category": "Explainability",
+    "definition": "Shows marginal effect of features on predictions.",
+    "example": "Understand how price changes affect demand."
+  },
+  {
+    "id": 130,
+    "term": "ICE Plot",
+    "category": "Explainability",
+    "definition": "Individual conditional expectation per record.",
+    "example": "Reveal heterogeneity hidden in PDP."
+  },
+  {
+    "id": 131,
+    "term": "Fairness",
+    "category": "Ethics",
+    "definition": "Ensure models don\u2019t produce unjust outcomes.",
+    "example": "Equal opportunity, demographic parity."
+  },
+  {
+    "id": 132,
+    "term": "Privacy",
+    "category": "Ethics",
+    "definition": "Protect user data with techniques and policy.",
+    "example": "Differential privacy in training."
+  },
+  {
+    "id": 133,
+    "term": "Federated Learning",
+    "category": "Privacy",
+    "definition": "Train models across devices without centralizing raw data.",
+    "example": "Smartphone keyboards improve locally."
+  },
+  {
+    "id": 134,
+    "term": "Differential Privacy",
+    "category": "Privacy",
+    "definition": "Bounds information leakage by adding noise.",
+    "example": "Release aggregate stats without reidentification."
+  },
+  {
+    "id": 135,
+    "term": "Knowledge Distillation",
+    "category": "Compression",
+    "definition": "Train smaller student model to mimic teacher.",
+    "example": "Mobile deployment of large models."
+  },
+  {
+    "id": 136,
+    "term": "Quantization",
+    "category": "Compression",
+    "definition": "Reduce precision of weights/activations.",
+    "example": "INT8 inference on edge devices."
+  },
+  {
+    "id": 137,
+    "term": "Pruning",
+    "category": "Compression",
+    "definition": "Remove unimportant weights/filters.",
+    "example": "Sparse networks for faster inference."
+  },
+  {
+    "id": 138,
+    "term": "On\u2011Device Inference",
+    "category": "Deployment",
+    "definition": "Run models on mobiles/edge for latency/privacy.",
+    "example": "Keyword spotting on a microphone chip."
+  },
+  {
+    "id": 139,
+    "term": "Latency",
+    "category": "Deployment",
+    "definition": "Time to produce a prediction.",
+    "example": "Aim <100 ms for UI interactions."
+  },
+  {
+    "id": 140,
+    "term": "Throughput",
+    "category": "Deployment",
+    "definition": "Predictions per second.",
+    "example": "Scale servers to handle 10k RPS."
+  },
+  {
+    "id": 141,
+    "term": "GPU",
+    "category": "Hardware",
+    "definition": "Parallel processor accelerating tensor ops.",
+    "example": "Train CNNs much faster than on CPU."
+  },
+  {
+    "id": 142,
+    "term": "TPU",
+    "category": "Hardware",
+    "definition": "Google\u2019s tensor processing unit for deep learning.",
+    "example": "Speeds up large-scale training."
+  },
+  {
+    "id": 143,
+    "term": "AutoML",
+    "category": "Automation",
+    "definition": "Automatic model selection, feature engineering, tuning.",
+    "example": "Try Auto-sklearn on tabular data."
+  },
+  {
+    "id": 144,
+    "term": "Meta\u2011Learning",
+    "category": "Research",
+    "definition": "\u2018Learning to learn\u2019 across tasks.",
+    "example": "Few-shot adaptation with MAML."
+  },
+  {
+    "id": 145,
+    "term": "Self\u2011Supervised Learning",
+    "category": "Research",
+    "definition": "Create labels from data itself.",
+    "example": "Contrastive learning from augmented views."
+  },
+  {
+    "id": 146,
+    "term": "Contrastive Learning",
+    "category": "Research",
+    "definition": "Bring representations of similar pairs closer, others apart.",
+    "example": "SimCLR/CLIP for images and text."
+  },
+  {
+    "id": 147,
+    "term": "CLIP",
+    "category": "Multimodal",
+    "definition": "Connect images and text via contrastive learning.",
+    "example": "Zero\u2011shot classification with prompts."
+  },
+  {
+    "id": 148,
+    "term": "Multimodal Learning",
+    "category": "Multimodal",
+    "definition": "Models that process multiple data types.",
+    "example": "Video models using audio and frames."
+  },
+  {
+    "id": 149,
+    "term": "Pipeline",
+    "category": "Practice",
+    "definition": "Series of data prep and modeling steps chained.",
+    "example": "scikit\u2011learn Pipeline for reproducibility."
+  },
+  {
+    "id": 150,
+    "term": "Reproducibility",
+    "category": "Practice",
+    "definition": "Ability to get same results with same code/data.",
+    "example": "Use random seeds, track environments."
+  },
+  {
+    "id": 151,
+    "term": "Data Leakage",
+    "category": "Pitfall",
+    "definition": "Training uses information unavailable at inference.",
+    "example": "Scaling using global mean across train+test."
+  },
+  {
+    "id": 152,
+    "term": "Class Imbalance",
+    "category": "Data",
+    "definition": "Unequal class frequencies causing biased learning.",
+    "example": "1% fraud rate skews accuracy metric."
+  },
+  {
+    "id": 153,
+    "term": "SMOTE",
+    "category": "Technique",
+    "definition": "Oversampling technique that synthesizes minority samples.",
+    "example": "Mitigate class imbalance in training."
+  },
+  {
+    "id": 154,
+    "term": "Ordinal Encoding",
+    "category": "Data",
+    "definition": "Encode ordered categories with integers reflecting order.",
+    "example": "Size: S=0, M=1, L=2."
+  },
+  {
+    "id": 155,
+    "term": "Time Series",
+    "category": "Domain",
+    "definition": "Data indexed in time order.",
+    "example": "Daily temperature readings."
+  },
+  {
+    "id": 156,
+    "term": "ARIMA",
+    "category": "Time Series",
+    "definition": "Autoregressive integrated moving average model.",
+    "example": "Forecast monthly sales."
+  },
+  {
+    "id": 157,
+    "term": "Prophet",
+    "category": "Time Series",
+    "definition": "Additive time series model by Meta for easy forecasting.",
+    "example": "Forecast website traffic seasonality."
+  },
+  {
+    "id": 158,
+    "term": "Seasonality",
+    "category": "Time Series",
+    "definition": "Periodic patterns over time.",
+    "example": "Weekly spikes every Monday."
+  },
+  {
+    "id": 159,
+    "term": "Stationarity",
+    "category": "Time Series",
+    "definition": "Statistical properties constant over time.",
+    "example": "Check with ADF test; difference if needed."
+  },
+  {
+    "id": 160,
+    "term": "Ensemble",
+    "category": "Model",
+    "definition": "Combine multiple models to improve performance.",
+    "example": "Blend gradient boosting and neural net outputs."
+  },
+  {
+    "id": 161,
+    "term": "Stacking",
+    "category": "Ensemble",
+    "definition": "Meta-model learns to combine base learners.",
+    "example": "Use logistic regression on predictions of RF, XGB."
+  },
+  {
+    "id": 162,
+    "term": "Bagging",
+    "category": "Ensemble",
+    "definition": "Train models on bootstrapped samples and average.",
+    "example": "Random Forest is bagging of trees."
+  },
+  {
+    "id": 163,
+    "term": "Out-of-Bag Error",
+    "category": "Ensemble",
+    "definition": "Validation error on samples not in a tree\u2019s bootstrap.",
+    "example": "Estimates generalization for Random Forest."
+  },
+  {
+    "id": 164,
+    "term": "Cold Start",
+    "category": "Recsys",
+    "definition": "Problem when new users/items lack interaction history.",
+    "example": "Recommend popular items initially."
+  },
+  {
+    "id": 165,
+    "term": "Collaborative Filtering",
+    "category": "Recsys",
+    "definition": "Uses user\u2013item interactions to recommend.",
+    "example": "Matrix factorization for movie ratings."
+  },
+  {
+    "id": 166,
+    "term": "Content\u2011Based Filtering",
+    "category": "Recsys",
+    "definition": "Recommend based on item/user features.",
+    "example": "Suggest similar articles by TF\u2011IDF."
+  },
+  {
+    "id": 167,
+    "term": "Matrix Factorization",
+    "category": "Recsys",
+    "definition": "Decompose rating matrix into latent factors.",
+    "example": "Netflix Prize\u2011style recommendations."
+  },
+  {
+    "id": 168,
+    "term": "Policy",
+    "category": "RL",
+    "definition": "Mapping from states to actions.",
+    "example": "Deterministic or stochastic policies in control."
+  },
+  {
+    "id": 169,
+    "term": "Reward",
+    "category": "RL",
+    "definition": "Signal indicating immediate gain of an action.",
+    "example": "Game score increase after move."
+  },
+  {
+    "id": 170,
+    "term": "State",
+    "category": "RL",
+    "definition": "Representation of environment at a time.",
+    "example": "Agent\u2019s position and velocity."
+  },
+  {
+    "id": 171,
+    "term": "Action Space",
+    "category": "RL",
+    "definition": "All possible actions an agent can take.",
+    "example": "Discrete moves or continuous torques."
+  },
+  {
+    "id": 172,
+    "term": "Exploration vs Exploitation",
+    "category": "RL",
+    "definition": "Balance trying new actions and using known good ones.",
+    "example": "Epsilon\u2011greedy strategy."
+  },
+  {
+    "id": 173,
+    "term": "Gradient Clipping",
+    "category": "Optimization",
+    "definition": "Limit gradient norms to stabilize training.",
+    "example": "Clip to 1.0 in RNN training."
+  },
+  {
+    "id": 174,
+    "term": "Learning Curve",
+    "category": "Evaluation",
+    "definition": "Plot of performance vs training size/epochs.",
+    "example": "Diagnose under/overfitting."
+  },
+  {
+    "id": 175,
+    "term": "Feature Importance",
+    "category": "Explainability",
+    "definition": "Score indicating a feature\u2019s contribution.",
+    "example": "Tree-based impurity or permutation importance."
+  },
+  {
+    "id": 176,
+    "term": "Permutation Importance",
+    "category": "Explainability",
+    "definition": "Decrease in performance when a feature is randomly permuted.",
+    "example": "Model-agnostic importance estimate."
+  },
+  {
+    "id": 177,
+    "term": "Hashing Trick",
+    "category": "Data",
+    "definition": "Map tokens to fixed-size indices via hash.",
+    "example": "Efficient for large vocabularies."
+  },
+  {
+    "id": 178,
+    "term": "Cosine Similarity",
+    "category": "Math",
+    "definition": "Measures angle between vectors (\u22121 to 1).",
+    "example": "Find similar documents by embeddings."
+  },
+  {
+    "id": 179,
+    "term": "Euclidean Distance",
+    "category": "Math",
+    "definition": "Straight-line distance in Euclidean space.",
+    "example": "k\u2011NN uses it for neighbor search."
+  },
+  {
+    "id": 180,
+    "term": "Hinge Loss",
+    "category": "Optimization",
+    "definition": "Loss used by SVMs for margin maximization.",
+    "example": "Penalizes points inside the margin."
+  },
+  {
+    "id": 181,
+    "term": "Huber Loss",
+    "category": "Optimization",
+    "definition": "Combines MSE and MAE; robust to outliers.",
+    "example": "Used in robust regression."
+  },
+  {
+    "id": 182,
+    "term": "One\u2011Cycle Policy",
+    "category": "Optimization",
+    "definition": "Learning rate schedule that rises then falls.",
+    "example": "Speeds training convergence."
+  },
+  {
+    "id": 183,
+    "term": "Cosine Decay",
+    "category": "Optimization",
+    "definition": "Learning rate schedule using cosine function.",
+    "example": "Common in Transformer training."
+  },
+  {
+    "id": 184,
+    "term": "Greedy Decoding",
+    "category": "NLP",
+    "definition": "Choose highest-probability token at each step.",
+    "example": "Simple but may be suboptimal."
+  },
+  {
+    "id": 185,
+    "term": "Beam Search",
+    "category": "NLP",
+    "definition": "Keep top\u2011k sequences during decoding.",
+    "example": "Improves translation quality over greedy."
+  },
+  {
+    "id": 186,
+    "term": "Top\u2011k/Top\u2011p Sampling",
+    "category": "NLP",
+    "definition": "Stochastic decoding limiting candidate tokens.",
+    "example": "More diverse text generation."
+  }
+]

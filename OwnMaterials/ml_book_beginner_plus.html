@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Machine Learning — Beginner’s Book (Expanded Edition)</title>
+<meta name="description" content="A richly detailed beginner ML book: types of ML, core concepts, workflow, metrics, cross‑validation, feature engineering, model zoo, and hands‑on scikit‑learn demos.">
+<style>
+:root{
+  --bg:#ffffff; --fg:#0f172a; --muted:#475569; --border:#e5e7eb; --card:#f8fafc;
+  --primary:#1e40af; --accent:#10b981; --chip:#eef2ff; --shadow:0 16px 40px rgba(2,8,23,.12);
+}
+:root[data-theme="emerald"]{ --primary:#065f46; --accent:#10b981; --chip:#d1fae5 }
+:root[data-theme="purple"]{ --primary:#6d28d9; --accent:#22d3ee; --chip:#ede9fe }
+:root[data-theme="orange"]{ --primary:#c2410c; --accent:#f59e0b; --chip:#ffedd5 }
+:root[data-theme="rose"]{ --primary:#be123c; --accent:#fb7185; --chip:#ffe4e6 }
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,'Helvetica Neue',Arial}
+a{color:var(--primary);text-decoration:none} a:hover{text-decoration:underline}
+.header{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,#fff,rgba(255,255,255,.94));backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1200px;margin:auto;display:flex;gap:16px;align-items:center;padding:12px 16px}
+.logo{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:var(--shadow)}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+.nav a{padding:8px 10px;border-radius:8px} .nav a:hover{background:var(--chip)}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:28px 0}
+.hero .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 8px 0;font-size:2rem} .hero p{margin:0;color:var(--muted)}
+.hero-graphic{aspect-ratio:16/10;border:1px dashed var(--border);border-radius:16px;display:grid;place-items:center;background:#fff}
+.badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:var(--chip);color:#111827;border:1px solid var(--border)}
+.section{padding:28px 0} .section h2{margin:0 0 10px} .section p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:16px 0}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 8px}
+.small{color:var(--muted);font-size:14px}
+.btn{display:inline-block;padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer}
+.btn.primary{border-color:var(--primary);background:var(--primary);color:#fff}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--border);border-bottom-width:2px;background:#fff;border-radius:6px;padding:1px 6px}
+pre, code{font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.code{background:#0b1020;color:#e5e7eb;border-radius:12px;padding:12px;border:1px solid #0b1020;overflow:auto;position:relative}
+button.copy{position:absolute;right:8px;top:8px;padding:6px 8px;border-radius:8px;border:1px solid #334155;background:#111827;color:#e5e7eb;cursor:pointer;font-size:12px}
+button.copy.copied{background:#064e3b;border-color:#065f46}
+blockquote{margin:0;padding:12px;border-left:4px solid var(--primary);background:#f1f5f9;border-radius:8px}
+details{border:1px solid var(--border);border-radius:10px;padding:10px;background:#fff}
+summary{cursor:pointer;font-weight:600}
+canvas.chart{width:100%;height:260px;display:block;border:1px solid var(--border);border-radius:12px;background:#fff}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.theme{display:flex;gap:8px;flex-wrap:wrap}
+.theme button{padding:6px 10px;border-radius:999px;border:1px solid var(--border);cursor:pointer;background:#fff}
+.theme .active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.toc{position:sticky;top:76px;align-self:start}
+.toc a{display:block;padding:6px 8px;border-radius:8px;margin:4px 0;border:1px solid var(--border);background:#fff}
+.toc a:hover{background:var(--chip)}
+.hero .panel .controls a{margin-right:6px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border:1px solid var(--border);padding:8px;text-align:left}
+.katex{font-family: ui-sans-serif}
+@media (max-width:900px){ .hero{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">ML</div>
+    <div>
+      <div style="font-weight:800">Machine Learning — Beginner’s Book (Expanded Edition)</div>
+      <div class="small">White background • More pictures • More graphs • More code • Super clear</div>
+    </div>
+    <nav class="nav">
+      <a href="#themes">Themes</a>
+      <a href="#types">Types</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#metrics">Metrics</a>
+      <a href="#cv">Cross‑Validation</a>
+      <a href="#features">Feature Eng</a>
+      <a href="#models">Model Zoo</a>
+      <a href="#demo">Hands‑on</a>
+      <a href="#tips">Tips</a>
+      <a href="#glossary">Glossary</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- HERO -->
+  <section class="hero section">
+    <div class="panel">
+      <h1>Learn ML with intuition + small demos</h1>
+      <p>We go from big‑picture ideas to hands‑on Python. Each section includes visuals, friendly analogies, and code you can copy into Colab or a local notebook.</p>
+      <div class="badges"><span class="badge">No external JS libs</span><span class="badge">Copy‑ready code</span><span class="badge">Sticky ToC</span></div>
+      <div class="controls">
+        <a class="btn primary" href="#types">Start with types</a>
+        <a class="btn" href="#demo">Jump to hands‑on</a>
+      </div>
+    </div>
+    <div class="hero-graphic">
+      <svg width="92%" viewBox="0 0 700 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Data → Model → Prediction → Feedback">
+        <defs><linearGradient id="g1" x1="0" x2="1"><stop stop-color="#60a5fa"/><stop offset="1" stop-color="#a7f3d0"/></linearGradient></defs>
+        <rect x="20" y="30" width="180" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="110" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Data</text>
+        <circle cx="70" cy="95" r="8" fill="#93c5fd"/><circle cx="110" cy="110" r="8" fill="#6ee7b7"/><circle cx="150" cy="85" r="8" fill="#60a5fa"/>
+        <path d="M200 85 L270 85" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="270" y="30" width="180" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="360" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Model</text>
+        <rect x="310" y="78" width="100" height="35" rx="8" fill="url(#g1)"/>
+        <path d="M450 85 L520 85" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="520" y="30" width="160" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="600" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Prediction</text>
+        <rect x="560" y="82" width="80" height="30" rx="8" fill="#10b981"/>
+        <path d="M600 140 C 620 200, 260 200, 210 110" stroke="#94a3b8" stroke-dasharray="6 6" fill="none" marker-end="url(#arrow)"/>
+        <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L6,3 z" fill="#0ea5e9"/></marker></defs>
+      </svg>
+    </div>
+  </section>
+
+  <!-- THEMES -->
+  <section class="section" id="themes">
+    <h2>Pick a color theme</h2>
+    <p class="small">White background always; only accent colors change.</p>
+    <div class="theme">
+      <button class="active" data-theme="default">Default (Blue/Teal)</button>
+      <button data-theme="emerald">Emerald</button>
+      <button data-theme="purple">Purple</button>
+      <button data-theme="orange">Orange</button>
+      <button data-theme="rose">Rose</button>
+    </div>
+  </section>
+
+  <!-- TOC + HOW TO -->
+  <section class="section" id="toc">
+    <div style="display:grid;grid-template-columns:280px 1fr;gap:20px">
+      <aside class="toc card">
+        <h3>Table of Contents</h3>
+        <a href="#types">1. Types of ML</a>
+        <a href="#workflow">2. Beginner Workflow</a>
+        <a href="#metrics">3. Metrics & Curves</a>
+        <a href="#cv">4. Cross‑Validation</a>
+        <a href="#features">5. Feature Engineering</a>
+        <a href="#models">6. Model Zoo</a>
+        <a href="#demo">7. Hands‑on: scikit‑learn</a>
+        <a href="#tips">8. Tips & Resources</a>
+        <a href="#glossary">9. Mini Glossary</a>
+      </aside>
+      <div class="card">
+        <h3>How to use this book</h3>
+        <p class="small">Scan the pictures to build intuition, then read the cards. Copy the code blocks into <b>Colab</b> or a local notebook. Try changing parameters and see what happens. Learning ML is like learning to cook: start simple, taste often, iterate.</p>
+        <details><summary>What laptop do I need?</summary><p class="small">Any recent laptop works for scikit‑learn. Neural networks can benefit from a GPU, but for classic ML you’re fine without one. Colab gives you a browser notebook for free.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPES -->
+  <section class="section" id="types">
+    <h2>1) Types of Machine Learning</h2>
+    <div class="grid">
+      <div class="card"><h3>Supervised Learning</h3><p class="small">You have inputs <em>X</em> and known answers <em>y</em>. The model learns a mapping X → y.</p>
+        <ul class="small"><li><b>Regression</b>: predict a number (house price).</li><li><b>Classification</b>: predict a category (spam / not spam).</li></ul>
+        <p class="small"><b>Everyday:</b> predicting delivery time from route and traffic.</p>
+      </div>
+      <div class="card"><h3>Unsupervised Learning</h3><p class="small">You have inputs <em>X</em> only. The model finds structure without labels.</p>
+        <ul class="small"><li><b>Clustering</b> (k‑Means): group similar customers.</li><li><b>Dimensionality reduction</b> (PCA): summarize many features.</li></ul>
+        <p class="small"><b>Everyday:</b> music app groups songs by “vibe”.</p>
+      </div>
+      <div class="card"><h3>Reinforcement Learning</h3><p class="small">An agent takes actions and gets rewards; it learns a policy to maximize long‑term reward.</p>
+        <ul class="small"><li>Games (chess, Go), robotics, recommendations.</li></ul>
+        <p class="small"><b>Everyday:</b> elevator learns to reduce waiting times.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKFLOW -->
+  <section class="section" id="workflow">
+    <h2>2) A friendly beginner workflow</h2>
+    <div class="grid">
+      <div class="card"><h3>Step 1: Define the question</h3><p class="small">What do you want to predict? <b>Success metric?</b> (MAE, F1, etc.) Who uses it? What’s a useful baseline?</p></div>
+      <div class="card"><h3>Step 2: Data & cleaning</h3><p class="small">Handle missing values, inconsistent units, duplicates. Split early to avoid leakage.</p></div>
+      <div class="card"><h3>Step 3: Features</h3><p class="small">Encode categories, scale numeric features, engineer simple ratios or counts. Keep it interpretable.</p></div>
+      <div class="card"><h3>Step 4: Train / tune</h3><p class="small">Try a baseline, then improve via cross‑validation. Log settings and scores.</p></div>
+      <div class="card"><h3>Step 5: Evaluate fairly</h3><p class="small">Use the <b>test set once</b>. Check slices (e.g., by region or user type) and calibration if you use probabilities.</p></div>
+      <div class="card"><h3>Step 6: Save & serve</h3><p class="small">Package the preprocessing + model in a <b>Pipeline</b>. Save with <code>joblib</code>. Monitor data drift and metrics.</p></div>
+    </div>
+
+    <div class="card">
+      <h3>Overfitting vs Underfitting (interactive)</h3>
+      <div class="controls"><button class="btn" id="fitReset">Animate curves</button></div>
+      <canvas id="fitChart" class="chart" aria-label="Underfit/Good/Overfit curves"></canvas>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section class="section" id="metrics">
+    <h2>3) Metrics & Curves</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Confusion matrix terms</h3>
+        <table class="table small">
+          <tr><th></th><th>Pred +</th><th>Pred −</th></tr>
+          <tr><th>Actual +</th><td>TP</td><td>FN</td></tr>
+          <tr><th>Actual −</th><td>FP</td><td>TN</td></tr>
+        </table>
+        <ul class="small">
+          <li><b>Accuracy</b> = (TP+TN)/(TP+FP+FN+TN)</li>
+          <li><b>Precision</b> = TP/(TP+FP) — “How clean are my positives?”</li>
+          <li><b>Recall</b> = TP/(TP+FN) — “How many positives did I catch?”</li>
+          <li><b>F1</b> = 2·(Precision·Recall)/(Precision+Recall)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Threshold lab</h3>
+        <p class="small">Slide the threshold. See precision/recall change.</p>
+        <div class="controls">
+          <label class="small">Threshold <input id="thresh" type="range" min="0" max="100" value="50"></label>
+          <label class="small">Positives % <input id="posRate" type="range" min="5" max="50" value="20"></label>
+          <button class="btn" id="regen">Regenerate scores</button>
+        </div>
+        <canvas id="thrChart" class="chart" aria-label="Scores & threshold"></canvas>
+        <div id="thrStats" class="small"></div>
+      </div>
+      <div class="card">
+        <h3>ROC curve (TPR vs FPR)</h3>
+        <canvas id="rocChart" class="chart" aria-label="ROC curve"></canvas>
+        <div class="small" id="rocStats"></div>
+      </div>
+      <div class="card">
+        <h3>PR curve (Precision vs Recall)</h3>
+        <canvas id="prChart" class="chart" aria-label="PR curve"></canvas>
+        <div class="small" id="prStats"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CROSS-VALIDATION -->
+  <section class="section" id="cv">
+    <h2>4) Cross‑Validation, simply</h2>
+    <div class="card">
+      <h3>K‑Fold visual</h3>
+      <div class="controls">
+        <label class="small">Folds (k): <input id="kfold" type="range" min="3" max="10" value="5"></label>
+        <button class="btn" id="cvDraw">Draw</button>
+      </div>
+      <canvas id="cvChart" class="chart" aria-label="KFold diagram"></canvas>
+      <p class="small">Cross‑validation rotates which fold is the validation set, giving a more reliable score than a single split.</p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>TimeSeriesSplit</h3>
+        <p class="small">Keep time order. Validate on future chunks.</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.model_selection import TimeSeriesSplit, cross_val_score
+tscv = TimeSeriesSplit(n_splits=5)
+scores = cross_val_score(model, X, y, cv=tscv, scoring="neg_mean_absolute_error")
+print("MAE per split:", -scores)</code></pre>
+      </div>
+      <div class="card">
+        <h3>Grid search with Pipeline</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import GridSearchCV
+
+num_cols = ["area","rooms"]
+cat_cols = ["city"]
+pre = ColumnTransformer([
+    ("num", StandardScaler(), num_cols),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), cat_cols)
+])
+
+pipe = Pipeline([("pre", pre), ("rf", RandomForestRegressor(random_state=42))])
+
+param_grid = {"rf__n_estimators":[100,300], "rf__max_depth":[None,10,20]}
+g = GridSearchCV(pipe, param_grid=param_grid, cv=5, scoring="neg_mean_absolute_error", n_jobs=-1)
+g.fit(X, y)
+print("Best:", g.best_params_, "MAE:", -g.best_score_)</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE ENGINEERING -->
+  <section class="section" id="features">
+    <h2>5) Feature Engineering (beginner‑friendly)</h2>
+    <div class="grid">
+      <div class="card"><h3>Encoding categories</h3><p class="small"><b>One‑hot</b> for unordered labels. Keep top categories, bucket the rest as “other”.</p></div>
+      <div class="card"><h3>Scaling numbers</h3><p class="small">Standardize (mean≈0, std≈1) for distance/margin models (kNN, SVM, Logistic). Trees don’t need scaling.</p></div>
+      <div class="card"><h3>Binning</h3><p class="small">Turn a numeric feature into bins (e.g., age groups). Helps linear models capture non‑linearity.</p></div>
+      <div class="card"><h3>Text basics</h3><p class="small"><b>CountVectorizer/TF‑IDF</b> + Logistic Regression gives a strong baseline for text classification.</p></div>
+      <div class="card"><h3>Leakage checks</h3><p class="small">Only use info available at prediction time. Compute stats (like means) on <b>training‑only</b> inside a Pipeline.</p></div>
+      <div class="card">
+        <h3>TF‑IDF + Logistic (snippet)</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+
+pipe = Pipeline([("tfidf", TfidfVectorizer(ngram_range=(1,2), min_df=3)),
+                 ("lr", LogisticRegression(max_iter=1000))])
+pipe.fit(text_train, y_train)
+print("F1:", f1_score(y_valid, pipe.predict(text_valid)))</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODEL ZOO -->
+  <section class="section" id="models">
+    <h2>6) Model Zoo (what to try first)</h2>
+    <div class="grid">
+      <div class="card"><h3>Linear / Logistic</h3><p class="small">Fast, interpretable baselines. Add regularization (L2 by default).</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.linear_model import LinearRegression, LogisticRegression
+reg = LinearRegression().fit(X_train, y_train)
+clf = LogisticRegression(max_iter=1000).fit(X_train, y_train)</code></pre></div>
+
+      <div class="card"><h3>kNN</h3><p class="small">Simple, needs scaling. Good for small datasets.</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors=5).fit(X_train, y_train)</code></pre></div>
+
+      <div class="card"><h3>Decision Trees</h3><p class="small">If‑else rules; handle non‑linearities; no scaling needed.</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.tree import DecisionTreeClassifier
+dt = DecisionTreeClassifier(max_depth=5, random_state=42).fit(X_train, y_train)</code></pre></div>
+
+      <div class="card"><h3>Random Forest</h3><p class="small">Strong on tabular data; robust; tune trees + depth.</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.ensemble import RandomForestClassifier
+rf = RandomForestClassifier(n_estimators=300, max_depth=None, random_state=42).fit(X_train, y_train)</code></pre></div>
+
+      <div class="card"><h3>Gradient Boosting</h3><p class="small">Often best on tabular; smaller learning rate → more trees.</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.ensemble import GradientBoostingRegressor
+gbr = GradientBoostingRegressor(random_state=42).fit(X_train, y_train)</code></pre></div>
+
+      <div class="card"><h3>Regularization (L1/L2)</h3><p class="small"><b>L1</b> → sparse weights; <b>L2</b> → smooth shrinkage; <b>ElasticNet</b> mixes both.</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.linear_model import Lasso, Ridge, ElasticNet
+ridge = Ridge(alpha=1.0).fit(X_train, y_train)
+lasso = Lasso(alpha=0.1).fit(X_train, y_train)
+enet  = ElasticNet(alpha=0.1, l1_ratio=0.5).fit(X_train, y_train)</code></pre></div>
+    </div>
+  </section>
+
+  <!-- HANDS-ON DEMO -->
+  <section class="section" id="demo">
+    <h2>7) Hands‑on with scikit‑learn</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Setup (Colab or local)</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>pip install -U scikit-learn pandas numpy matplotlib joblib</code></pre>
+        <details><summary>Create a notebook</summary><p class="small">Open <b>Google Colab</b> → New Notebook → insert code cells and paste the snippets below.</p></details>
+      </div>
+
+      <div class="card">
+        <h3>Regression: California Housing</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import numpy as np, pandas as pd
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+
+data = fetch_california_housing(as_frame=True)
+df = data.frame.rename(columns={"MedHouseVal":"Price"})
+X = df.drop(columns=["Price"]); y = df["Price"]
+X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
+
+pipe = Pipeline([("scaler", StandardScaler()), ("lr", LinearRegression())])
+pipe.fit(X_tr, y_tr)
+pred = pipe.predict(X_te)
+
+mae = mean_absolute_error(y_te, pred)
+rmse = mean_squared_error(y_te, pred, squared=False)
+print(f"MAE={mae:.3f}  RMSE={rmse:.3f}  R^2={pipe.score(X_te, y_te):.3f}")</code></pre>
+      </div>
+
+      <div class="card">
+        <h3>Classification: Iris (simple)</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.linear_model import LogisticRegression
+
+X, y = load_iris(return_X_y=True)
+X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+clf = LogisticRegression(max_iter=1000).fit(X_tr, y_tr)
+print(classification_report(y_te, clf.predict(X_te)))</code></pre>
+      </div>
+
+      <div class="card">
+        <h3>GridSearchCV + Pipeline</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import GridSearchCV
+
+pipe = Pipeline([("scaler", StandardScaler()), ("rf", RandomForestRegressor(random_state=42))])
+grid = {"rf__n_estimators":[200,400], "rf__max_depth":[None,12]}
+gcv = GridSearchCV(pipe, grid, cv=5, scoring="neg_mean_absolute_error", n_jobs=-1)
+gcv.fit(X_tr, y_tr)
+print("Best:", gcv.best_params_, "MAE:", -gcv.best_score_)</code></pre>
+      </div>
+
+      <div class="card">
+        <h3>Time Series note</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.model_selection import TimeSeriesSplit
+tscv = TimeSeriesSplit(n_splits=4)
+for i, (tr, val) in enumerate(tscv.split(X)):
+    print("Fold", i, "train:", tr[:3], "...", "valid:", val[:3], "...")</code></pre>
+      </div>
+
+      <div class="card">
+        <h3>Save & load your model</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import joblib
+joblib.dump(pipe, "model.joblib")
+model = joblib.load("model.joblib")
+print(model)</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIPS & RESOURCES -->
+  <section class="section" id="tips">
+    <h2>8) Practical tips & free resources</h2>
+    <div class="grid">
+      <div class="card"><h3>Tools</h3>
+        <ul class="small">
+          <li><b>scikit‑learn</b>, <b>Pandas</b>, <b>NumPy</b>, <b>Matplotlib</b></li>
+          <li><b>Colab</b>: free browser notebooks</li>
+          <li><b>Kaggle</b>: datasets, notebooks, beginner paths</li>
+        </ul></div>
+      <div class="card"><h3>Learning path</h3>
+        <ol class="small">
+          <li>Pick a tiny project that excites you.</li>
+          <li>Split early → baseline → improve with CV.</li>
+          <li>Track metrics + parameters. Save your pipeline.</li>
+          <li>Read the errors; fix data issues first.</li>
+        </ol></div>
+      <div class="card"><h3>Free resources</h3>
+        <ul class="small">
+          <li><a href="https://scikit-learn.org/stable/" target="_blank" rel="noopener">scikit‑learn User Guide</a></li>
+          <li><a href="https://www.kaggle.com/learn" target="_blank" rel="noopener">Kaggle Learn (free micro‑courses)</a></li>
+          <li><a href="https://developers.google.com/machine-learning/crash-course" target="_blank" rel="noopener">Google ML Crash Course</a></li>
+          <li><a href="https://www.fast.ai/" target="_blank" rel="noopener">fast.ai Practical DL</a></li>
+          <li><a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Andrew Ng’s ML</a></li>
+        </ul></div>
+      <div class="card"><h3>Gotchas</h3>
+        <ul class="small">
+          <li>Beware <b>leakage</b> (future/test info in training).</li>
+          <li>Imbalance? prefer PR‑AUC, F1, per‑class recall.</li>
+          <li>Time series? keep order; use TimeSeriesSplit.</li>
+          <li>Document data assumptions and schema.</li>
+        </ul></div>
+    </div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <section class="section" id="glossary">
+    <h2>9) Mini glossary</h2>
+    <div class="grid">
+      <div class="card"><h3>Feature</h3><p class="small">A measurable property used for prediction (e.g., house size).</p></div>
+      <div class="card"><h3>Label</h3><p class="small">The value you want to predict (e.g., price, class).</p></div>
+      <div class="card"><h3>Hyperparameter</h3><p class="small">A setting you choose (e.g., number of trees).</p></div>
+      <div class="card"><h3>Regularization</h3><p class="small">Penalty that discourages overly complex models.</p></div>
+      <div class="card"><h3>Pipeline</h3><p class="small">A chain of steps (preprocessing + model) that runs the same way every time.</p></div>
+      <div class="card"><h3>Cross‑validation</h3><p class="small">Repeat train/validation splits for a steadier estimate.</p></div>
+    </div>
+  </section>
+
+  <footer>Print to PDF • Use <span class="kbd">Ctrl</span>/<span class="kbd">⌘</span>+<span class="kbd">F</span> to search • Happy learning!</footer>
+
+</main>
+
+<script>
+// THEME SWITCHER
+document.querySelectorAll('.theme button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.theme button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const theme = btn.dataset.theme;
+    if (theme==='default') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('ml_theme_v2', theme);
+  });
+});
+const savedTheme = localStorage.getItem('ml_theme_v2');
+if (savedTheme && savedTheme!=='default') {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const b = document.querySelector('.theme button[data-theme="'+savedTheme+'"]');
+  if (b){ document.querySelectorAll('.theme button').forEach(x=>x.classList.remove('active')); b.classList.add('active'); }
+}
+
+// COPY BUTTON
+function copyCode(btn){
+  const pre = btn.closest('pre.code'); if(!pre) return;
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.classList.add('copied'); btn.textContent='Copied';
+    setTimeout(()=>{ btn.classList.remove('copied'); btn.textContent='Copy'; }, 1200);
+  });
+}
+window.copyCode = copyCode;
+
+// SMOOTH SCROLL
+document.querySelectorAll('.nav a[href^="#"], .toc a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const id = a.getAttribute('href').slice(1), el = document.getElementById(id);
+    if(el){ e.preventDefault(); const y = el.getBoundingClientRect().top + window.scrollY - 70; window.scrollTo({top:y, behavior:'smooth'}); }
+  });
+});
+
+// Canvas helpers
+function setupCanvas(c){ c.width = c.clientWidth*2; c.height = c.clientHeight*2; return c.getContext('2d'); }
+function axes(ctx, {xMax=100, yMin=0, yMax=1, yTicks=5, xLabel='x', yLabel='y'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.strokeStyle='#cbd5e1'; ctx.fillStyle='#64748b'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(50,10); ctx.lineTo(50,h-40); ctx.lineTo(w-20,h-40); ctx.stroke();
+  ctx.font='20px system-ui'; ctx.fillText(xLabel, w-50, h-12); ctx.fillText(yLabel, 8, 24);
+  for(let i=0;i<=yTicks;i++){
+    const y = (h-40) - i*(h-50)/yTicks;
+    const val = (yMin + (i*(yMax-yMin)/yTicks)).toFixed(2);
+    ctx.fillText(val, 8, y+4);
+    ctx.beginPath(); ctx.moveTo(46,y); ctx.lineTo(50,y); ctx.stroke();
+  }
+}
+function line(ctx, pts, {xMax=100, yMin=0, yMax=1, color='#0ea5e9'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.strokeStyle = color; ctx.lineWidth=3; ctx.beginPath();
+  pts.forEach((p,i)=>{
+    const x = 50 + (p.x/xMax)*(w-70);
+    const y = (h-40) - ((p.y - yMin)/(yMax - yMin))*(h-50);
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+}
+function dots(ctx, pts, {xMax=1, yMin=0, yMax=1, r=4, color='#1f2937'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.fillStyle = color;
+  for(const p of pts){
+    const x = 50 + (p.x/xMax)*(w-70);
+    const y = (h-40) - ((p.y - yMin)/(yMax - yMin))*(h-50);
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  }
+}
+
+// Over/Under/Good fit
+const fitCanvas = document.getElementById('fitChart'); const fitctx = setupCanvas(fitCanvas);
+function drawFit(){
+  axes(fitctx,{xLabel:'model complexity',yLabel:'error',yMin:0,yMax:1});
+  const xs = [...Array(101).keys()];
+  const under = xs.map(x=>({x, y: Math.max(0.1, 0.9 - x*0.005)}));
+  const good  = xs.map(x=>({x, y: 0.2 + 0.3*Math.exp(-Math.pow((x-50)/20,2))}));
+  const over  = xs.map(x=>({x, y: Math.max(0.1, 0.25 + (x/100)**2)}));
+  line(fitctx, under, {xMax:100,yMin:0,yMax:1,color:'#ef4444'});
+  line(fitctx, good,  {xMax:100,yMin:0,yMax:1,color:'#0ea5e9'});
+  line(fitctx, over,  {xMax:100,yMin:0,yMax:1,color:'#f59e0b'});
+}
+drawFit();
+document.getElementById('fitReset').onclick = drawFit;
+
+// Threshold lab data
+const thrCanvas = document.getElementById('thrChart'); const thrctx = setupCanvas(thrCanvas);
+let thrScores=[], thrLabels=[];
+function genScores(n=400, posRate=0.2){
+  thrScores=[]; thrLabels=[];
+  for(let i=0;i<n;i++){
+    const y = Math.random() < posRate ? 1 : 0;
+    const s = y ? Math.min(1, 0.6 + Math.random()*0.4) : Math.max(0, Math.random()*0.6);
+    thrLabels.push(y); thrScores.push(s);
+  }
+}
+function thrMetrics(th){
+  let TP=0,FP=0,FN=0,TN=0;
+  for(let i=0;i<thrScores.length;i++){
+    const pred = thrScores[i] >= th ? 1 : 0;
+    const y = thrLabels[i];
+    if(pred===1 && y===1) TP++; else if(pred===1 && y===0) FP++;
+    else if(pred===0 && y===1) FN++; else TN++;
+  }
+  const precision = TP/(TP+FP||1), recall = TP/(TP+FN||1);
+  const f1 = 2*precision*recall/(precision+recall||1);
+  return {TP,FP,FN,TN,precision,recall,f1};
+}
+function drawThr(th){
+  axes(thrctx,{xLabel:'sample index',yLabel:'score',yMin:0,yMax:1});
+  const pts = thrScores.map((s,i)=>({x:i, y:s}));
+  dots(thrctx, pts, {xMax:thrScores.length, yMin:0, yMax:1, r:2, color:'#1f2937'});
+  line(thrctx, [{x:0,y:th},{x:thrScores.length,y:th}], {xMax:thrScores.length,yMin:0,yMax:1,color:'#10b981'});
+}
+function recomputeThr(){
+  const th = Number(document.getElementById('thresh').value)/100;
+  const posRate = Number(document.getElementById('posRate').value)/100;
+  genScores(400, posRate);
+  drawThr(th);
+  const m = thrMetrics(th);
+  document.getElementById('thrStats').textContent =
+    `TP=${m.TP} FP=${m.FP} FN=${m.FN} TN=${m.TN} | Precision=${m.precision.toFixed(2)} Recall=${m.recall.toFixed(2)} F1=${m.f1.toFixed(2)}`;
+}
+document.getElementById('thresh').addEventListener('input', recomputeThr);
+document.getElementById('posRate').addEventListener('input', recomputeThr);
+document.getElementById('regen').addEventListener('click', recomputeThr);
+recomputeThr();
+
+// ROC & PR
+const rocCanvas = document.getElementById('rocChart'); const rocctx = setupCanvas(rocCanvas);
+const prCanvas  = document.getElementById('prChart');  const prctx  = setupCanvas(prCanvas);
+function curveFromScores(){
+  const pairs = thrScores.map((s,i)=>({s,y:thrLabels[i]})).sort((a,b)=>b.s-a.s);
+  let P = thrLabels.filter(x=>x===1).length, N = thrLabels.length - P;
+  let TP=0, FP=0, prevS=Infinity;
+  const roc=[], pr=[];
+  for(const p of pairs){
+    if(p.s!==prevS){ // compute point
+      const TPR = TP/(P||1), FPR = FP/(N||1);
+      const precision = TP/(TP+FP||1), recall = TPR;
+      roc.push({x:FPR,y:TPR}); pr.push({x:recall,y:precision});
+      prevS = p.s;
+    }
+    if(p.y===1) TP++; else FP++;
+  }
+  roc.push({x:0,y:0}); roc.push({x:1,y:1});
+  // AUC (ROC)
+  const rocSorted = roc.sort((a,b)=>a.x-b.x);
+  let auc=0; for(let i=1;i<rocSorted.length;i++){ const dx=rocSorted[i].x-rocSorted[i-1].x; const y=(rocSorted[i].y+rocSorted[i-1].y)/2; auc+=dx*y; }
+  // AP (approx area under PR via trapezoid)
+  const prSorted = pr.sort((a,b)=>a.x-b.x);
+  let ap=0; for(let i=1;i<prSorted.length;i++){ const dx=prSorted[i].x-prSorted[i-1].x; const y=(prSorted[i].y+prSorted[i-1].y)/2; ap+=dx*y; }
+  return {roc:rocSorted, pr:prSorted, auc, ap};
+}
+function drawCurve(ctx, pts){
+  axes(ctx,{xLabel:'x',yLabel:'y',yMin:0,yMax:1});
+  line(ctx, pts.map((p,i)=>({x:p.x*100,y:p.y})), {xMax:100,yMin:0,yMax:1,color:'#0ea5e9'});
+}
+function redrawCurves(){
+  const {roc, pr, auc, ap} = curveFromScores();
+  drawCurve(rocctx, roc); drawCurve(prctx, pr);
+  document.getElementById('rocStats').textContent = `ROC‑AUC ≈ ${auc.toFixed(3)} (higher is better)`;
+  document.getElementById('prStats').textContent  = `PR‑AUC ≈ ${ap.toFixed(3)} (more informative on imbalance)`;
+}
+redrawCurves();
+document.getElementById('regen').addEventListener('click', ()=>{ recomputeThr(); redrawCurves(); });
+
+// K-Fold diagram
+const cvCanvas = document.getElementById('cvChart'); const cvctx = setupCanvas(cvCanvas);
+function drawCV(k=5, rows=5){
+  const w=cvctx.canvas.width, h=cvctx.canvas.height;
+  cvctx.clearRect(0,0,w,h);
+  const pad=20, rowH=(h-pad*2)/rows, foldW=(w-pad*2)/k;
+  for(let r=0;r<rows;r++){
+    const y=pad + r*rowH;
+    for(let i=0;i<k;i++){
+      cvctx.strokeStyle='#cbd5e1'; cvctx.strokeRect(pad + i*foldW, y, foldW-6, rowH-6);
+      if(i===r){ cvctx.fillStyle='#fde68a'; } else { cvctx.fillStyle='#bfdbfe'; }
+      cvctx.fillRect(pad + i*foldW+1, y+1, foldW-8, rowH-8);
+    }
+    cvctx.fillStyle='#334155'; cvctx.fillText('Fold '+(r+1), 8, y+rowH/2);
+  }
+}
+document.getElementById('cvDraw').addEventListener('click', ()=>{
+  const k = Number(document.getElementById('kfold').value); drawCV(k, Math.min(k,6));
+});
+drawCV(5,5);
+</script>
+</body>
+</html>

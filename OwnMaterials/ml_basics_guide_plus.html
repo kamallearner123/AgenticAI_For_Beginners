@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ML Basics — Deep, Practical & Interactive</title>
+<meta name="description" content="A comprehensive, project-style HTML page covering ML basics with deep dives: data prep, metrics, model zoo, tuning, imbalanced data, time series, NLP, CV, interpretability, deployment, MLOps, ethics, and more.">
+<style>
+:root{ --bg:#ffffff; --fg:#0f172a; --muted:#475569; --primary:#1e40af; --accent:#10b981; --card:#f8fafc; --border:#e5e7eb; --shadow:0 14px 36px rgba(2,8,23,.12); }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,'Helvetica Neue',Arial}
+a{color:var(--primary);text-decoration:none} a:hover{text-decoration:underline}
+.header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#fff,rgba(255,255,255,.93));backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1200px;margin:auto;display:flex;gap:16px;align-items:center;padding:12px 16px}
+.logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#60a5fa,#a7f3d0);display:grid;place-items:center;color:#0b1020;font-weight:800;box-shadow:var(--shadow)}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+.nav a{padding:8px 10px;border-radius:8px} .nav a:hover{background:#eef2ff}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:28px 0}
+.hero .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 8px 0;font-size:2rem} .hero p{margin:0;color:var(--muted)}
+.hero-graphic{aspect-ratio:16/10;border:1px dashed var(--border);border-radius:16px;display:grid;place-items:center;background:#fff}
+.badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe}
+.section{padding:24px 0} .section h2{margin:0 0 10px} .section p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:16px 0}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 6px}
+.small{color:var(--muted);font-size:14px}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--border);border-bottom-width:2px;background:#fff;border-radius:6px;padding:1px 6px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.tab{padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer}
+.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.tabpanel{display:none} .tabpanel.active{display:block;animation:fade .2s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+details{border:1px solid var(--border);border-radius:12px;padding:10px;background:#fff}
+details+details{margin-top:8px} summary{cursor:pointer;font-weight:700}
+pre, code{font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.code{background:#0b1020;color:#e5e7eb;border-radius:12px;padding:12px;border:1px solid #0b1020;overflow:auto;position:relative}
+button.copy{position:absolute;right:8px;top:8px;padding:6px 8px;border-radius:8px;border:1px solid #334155;background:#111827;color:#e5e7eb;cursor:pointer;font-size:12px}
+button.copy.copied{background:#064e3b;border-color:#065f46}
+blockquote{margin:0;padding:12px;border-left:4px solid var(--primary);background:#f1f5f9;border-radius:8px}
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.toc a{display:block;border:1px solid var(--border);border-radius:10px;padding:8px;background:#fff}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.btn{display:inline-block;padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer}
+.btn.primary{border-color:var(--primary);background:var(--primary);color:#fff}
+footer{padding:18px 0;color:var(--muted);text-align:center}
+@media (max-width:900px){ .hero{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">ML</div>
+    <div>
+      <div style="font-weight:800">ML Basics — Deep, Practical & Interactive</div>
+      <div class="small">White background • rich CSS • many topics & examples</div>
+    </div>
+    <nav class="nav">
+      <a href="#toc">TOC</a>
+      <a href="#types">Types</a>
+      <a href="#process">Process</a>
+      <a href="#dataprep">Data Prep</a>
+      <a href="#metrics">Metrics</a>
+      <a href="#models">Models</a>
+      <a href="#tuning">Tuning</a>
+      <a href="#imbalance">Imbalance</a>
+      <a href="#timeseries">Time Series</a>
+      <a href="#nlp">NLP</a>
+      <a href="#cv">Vision</a>
+      <a href="#interpret">Interpret</a>
+      <a href="#deploy">Deploy</a>
+      <a href="#mlops">MLOps</a>
+      <a href="#ethics">Ethics</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero section">
+    <div class="panel">
+      <h1>From first idea to reliable ML in production</h1>
+      <p>Use this page as a mini‑course: skim the overview, then dive into each topic with worked examples and code you can copy.</p>
+      <div class="badges"><span class="badge">Hands‑on</span><span class="badge">Explanations</span><span class="badge">Copy‑paste code</span><span class="badge">Project‑style</span></div>
+      <div class="controls">
+        <a class="btn primary" href="#toc">Jump to TOC</a>
+        <button class="btn" id="expandAll">Expand all</button>
+        <button class="btn" id="collapseAll">Collapse all</button>
+      </div>
+    </div>
+    <div class="hero-graphic">
+      <svg width="92%" viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Data → Model → Prediction → Feedback">
+        <defs><linearGradient id="g1" x1="0" x2="1"><stop stop-color="#60a5fa"/><stop offset="1" stop-color="#a7f3d0"/></linearGradient></defs>
+        <rect x="20" y="30" width="150" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="95" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Data</text>
+        <circle cx="60" cy="95" r="8" fill="#93c5fd"/><circle cx="95" cy="110" r="8" fill="#6ee7b7"/><circle cx="120" cy="85" r="8" fill="#60a5fa"/>
+        <path d="M170 85 L215 85" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="215" y="30" width="150" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="290" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Model</text>
+        <rect x="250" y="78" width="85" height="35" rx="8" fill="url(#g1)"/>
+        <path d="M365 85 L410 85" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="410" y="30" width="150" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="485" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Prediction</text>
+        <rect x="450" y="82" width="80" height="30" rx="8" fill="#10b981"/>
+        <path d="M485 140 C 500 200, 200 200, 170 110" stroke="#94a3b8" stroke-dasharray="6 6" fill="none" marker-end="url(#arrow)"/>
+        <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L6,3 z" fill="#0ea5e9"/></marker></defs>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Table of Contents -->
+  <section class="section" id="toc">
+    <h2>Table of contents</h2>
+    <div class="toc">
+      <a href="#types">1. Types of ML</a>
+      <a href="#process">2. End‑to‑end Process</a>
+      <a href="#dataprep">3. Data Preparation</a>
+      <a href="#metrics">4. Metrics Deep‑dive</a>
+      <a href="#models">5. Model Zoo</a>
+      <a href="#tuning">6. Hyperparameter Tuning</a>
+      <a href="#imbalance">7. Imbalanced Data</a>
+      <a href="#timeseries">8. Time Series</a>
+      <a href="#nlp">9. NLP Starter</a>
+      <a href="#cv">10. Computer Vision Starter</a>
+      <a href="#interpret">11. Interpretability</a>
+      <a href="#deploy">12. Deployment</a>
+      <a href="#mlops">13. MLOps & Monitoring</a>
+      <a href="#ethics">14. Ethics, Fairness & Privacy</a>
+      <a href="#cheats">15. Cheat‑sheets</a>
+    </div>
+  </section>
+
+  <!-- Types -->
+  <section class="section" id="types">
+    <h2>1) Types of ML</h2>
+    <div class="tabs">
+      <button class="tab active" data-tab="sup">Supervised</button>
+      <button class="tab" data-tab="unsup">Unsupervised</button>
+      <button class="tab" data-tab="rl">Reinforcement</button>
+    </div>
+    <div class="tabpanel active" id="sup">
+      <div class="grid">
+        <div class="card"><h3>Regression</h3><p class="small">Predict numbers (e.g., price).</p></div>
+        <div class="card"><h3>Classification</h3><p class="small">Predict categories (e.g., spam/ham).</p></div>
+        <div class="card"><h3>Sequence</h3><p class="small">Predict next values/labels over time or tokens.</p></div>
+      </div>
+    </div>
+    <div class="tabpanel" id="unsup">
+      <div class="grid">
+        <div class="card"><h3>Clustering</h3><p class="small">K‑Means, DBSCAN, GMM.</p></div>
+        <div class="card"><h3>Dimensionality reduction</h3><p class="small">PCA, t‑SNE, UMAP.</p></div>
+        <div class="card"><h3>Anomaly detection</h3><p class="small">Isolation Forest, One‑Class SVM.</p></div>
+      </div>
+    </div>
+    <div class="tabpanel" id="rl">
+      <div class="grid">
+        <div class="card"><h3>Agent & Environment</h3><p class="small">States, actions, rewards.</p></div>
+        <div class="card"><h3>Value vs Policy</h3><p class="small">Q‑learning, PPO, etc.</p></div>
+        <div class="card"><h3>Examples</h3><p class="small">Robotics, games, recommendations exploration.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="section" id="process">
+    <h2>2) End‑to‑end ML process</h2>
+    <details open><summary>Overview</summary>
+      <div class="grid">
+        <div class="card"><h3>Define</h3><p class="small">Objective + success metric + constraints.</p></div>
+        <div class="card"><h3>Explore</h3><p class="small">EDA, data quality, leakage risks.</p></div>
+        <div class="card"><h3>Split</h3><p class="small">Train/validation/test or TimeSeriesSplit.</p></div>
+        <div class="card"><h3>Preprocess</h3><p class="small">Encode/scale. Build reproducible pipelines.</p></div>
+        <div class="card"><h3>Model</h3><p class="small">Start simple baselines; iterate.</p></div>
+        <div class="card"><h3>Evaluate</h3><p class="small">Use task‑appropriate metrics.</p></div>
+        <div class="card"><h3>Deploy</h3><p class="small">Package pipeline; version artifacts.</p></div>
+        <div class="card"><h3>Monitor</h3><p class="small">Track drift, latency, cost, fairness.</p></div>
+      </div>
+    </details>
+  </section>
+
+  <!-- Data Prep -->
+  <section class="section" id="dataprep">
+    <h2>3) Data preparation</h2>
+    <details open><summary>Missing values</summary>
+      <div class="grid">
+        <div class="card"><h3>Strategies</h3><ul class="small">
+          <li>Numerical: mean/median or model‑based imputation.</li>
+          <li>Categorical: new category like “Unknown”.</li>
+          <li>Don’t leak: fit imputer on train only.</li>
+        </ul></div>
+        <div class="card"><h3>Code</h3>
+          <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.impute import SimpleImputer
+imp_num = SimpleImputer(strategy="median")  # fit on X_train
+imp_cat = SimpleImputer(strategy="most_frequent")</code></pre>
+        </div>
+      </div>
+    </details>
+    <details><summary>Encoding & scaling</summary>
+      <div class="grid">
+        <div class="card"><h3>Choose wisely</h3><ul class="small">
+          <li>One‑hot for nominal categories.</li>
+          <li>Ordinal for ordered labels.</li>
+          <li>Standardize features for SVM/KNN/logistic.</li>
+        </ul></div>
+        <div class="card"><h3>Pipeline</h3>
+          <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+pre = ColumnTransformer([("num", StandardScaler(), num_cols),
+                         ("cat", OneHotEncoder(handle_unknown="ignore"), cat_cols)])</code></pre>
+        </div>
+      </div>
+    </details>
+    <details><summary>Feature engineering & selection</summary>
+      <div class="grid">
+        <div class="card"><h3>Ideas</h3><ul class="small">
+          <li>Log transforms for skew.</li><li>Binning (quantiles).</li>
+          <li>Ratios, interactions.</li><li>Target‑aware selection via CV.</li>
+        </ul></div>
+        <div class="card"><h3>Permutation importance</h3>
+          <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.inspection import permutation_importance
+r = permutation_importance(model, X_val, y_val, n_repeats=10, random_state=0)
+print(r.importances_mean)</code></pre>
+        </div>
+      </div>
+    </details>
+    <details><summary>Data leakage traps</summary>
+      <ul class="small"><li>Imputing/scaling on full dataset.</li><li>Using future info in time series.</li><li>Label encoding with global frequencies.</li></ul>
+    </details>
+  </section>
+
+  <!-- Metrics -->
+  <section class="section" id="metrics">
+    <h2>4) Metrics deep‑dive</h2>
+    <div class="grid">
+      <div class="card"><h3>Classification</h3><ul class="small">
+        <li>Accuracy = (TP+TN)/(TP+FP+TN+FN)</li>
+        <li>Precision = TP/(TP+FP)</li>
+        <li>Recall = TP/(TP+FN)</li>
+        <li>F1 = 2·(P·R)/(P+R)</li>
+        <li>ROC‑AUC vs PR‑AUC (use PR‑AUC for imbalance)</li>
+      </ul></div>
+      <div class="card"><h3>Regression</h3><ul class="small">
+        <li>MSE / RMSE, MAE</li>
+        <li>R² (variance explained)</li>
+        <li>MAPE (scale‑free, beware zeros)</li>
+      </ul></div>
+      <div class="card"><h3>Clustering</h3><ul class="small">
+        <li>Silhouette score</li>
+        <li>Davies–Bouldin index</li>
+        <li>Stability across time splits</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- Model Zoo -->
+  <section class="section" id="models">
+    <h2>5) Model zoo (when to pick what)</h2>
+    <div class="grid">
+      <div class="card"><h3>Linear & Regularized</h3><p class="small">Fast, strong baselines. Use L1/L2 (Lasso/Ridge).</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.linear_model import Ridge
+model = Ridge(alpha=1.0).fit(Xtr, ytr)</code></pre>
+      </div>
+      <div class="card"><h3>Trees & Ensembles</h3><p class="small">Great on tabular data; capture non‑linearities.</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.ensemble import HistGradientBoostingRegressor
+model = HistGradientBoostingRegressor().fit(Xtr, ytr)</code></pre>
+      </div>
+      <div class="card"><h3>SVM / k‑NN</h3><p class="small">SVM for margins, k‑NN for lazy learning; scale features.</p></div>
+      <div class="card"><h3>Naive Bayes</h3><p class="small">Strong baseline for text (MultinomialNB).</p></div>
+      <div class="card"><h3>Neural nets</h3><p class="small">MLPs for tabular; CNNs for images; Transformers for text.</p></div>
+    </div>
+  </section>
+
+  <!-- Tuning -->
+  <section class="section" id="tuning">
+    <h2>6) Hyperparameter tuning</h2>
+    <div class="grid">
+      <div class="card"><h3>Randomized search</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.model_selection import RandomizedSearchCV
+from sklearn.ensemble import RandomForestClassifier
+param = { "n_estimators":[200,400,800], "max_depth":[None,10,20,30] }
+cv = RandomizedSearchCV(RandomForestClassifier(), param, n_iter=6, cv=5, n_jobs=-1, random_state=0)
+cv.fit(Xtr, ytr); print(cv.best_params_)</code></pre>
+      </div>
+      <div class="card"><h3>Cross‑validation choices</h3><ul class="small">
+        <li>StratifiedKFold for classification</li>
+        <li>GroupKFold for grouped leakage</li>
+        <li>TimeSeriesSplit for temporal data</li>
+      </ul></div>
+      <div class="card"><h3>Early stopping (gbdt)</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.experimental import enable_hist_gradient_boosting  # noqa
+from sklearn.ensemble import HistGradientBoostingClassifier
+clf = HistGradientBoostingClassifier(early_stopping=True, validation_fraction=0.2)</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Imbalanced -->
+  <section class="section" id="imbalance">
+    <h2>7) Imbalanced data</h2>
+    <div class="grid">
+      <div class="card"><h3>Strategies</h3><ul class="small">
+        <li>Use class_weight="balanced"</li>
+        <li>Tune decision threshold</li>
+        <li>Use PR‑AUC, F1, Recall@k</li>
+        <li>Try anomaly detection for extreme skew</li>
+      </ul></div>
+      <div class="card"><h3>Code</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.linear_model import LogisticRegression
+clf = LogisticRegression(class_weight="balanced", max_iter=300).fit(Xtr, ytr)</code></pre>
+      </div>
+      <div class="card"><h3>Threshold tuning</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import numpy as np
+proba = clf.predict_proba(Xval)[:,1]
+for t in np.linspace(0.1,0.9,9):
+    pred = (proba>=t).astype(int)
+    # compute precision/recall/F1 and pick the operating point</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Time Series -->
+  <section class="section" id="timeseries">
+    <h2>8) Time series</h2>
+    <details open><summary>Forecasting patterns</summary>
+      <ul class="small"><li>Trend, seasonality, holidays</li><li>Stationarity & differencing</li><li>Rolling validation windows</li></ul>
+    </details>
+    <div class="grid">
+      <div class="card"><h3>TimeSeriesSplit</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.model_selection import TimeSeriesSplit
+tscv = TimeSeriesSplit(n_splits=5)
+for tr, te in tscv.split(X):
+    # fit on X[tr], evaluate on X[te]</code></pre>
+      </div>
+      <div class="card"><h3>SARIMAX (statsmodels)</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import statsmodels.api as sm
+model = sm.tsa.statespace.SARIMAX(y, order=(1,1,1), seasonal_order=(1,1,1,12)).fit()
+print(model.summary())</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- NLP -->
+  <section class="section" id="nlp">
+    <h2>9) NLP starter</h2>
+    <div class="grid">
+      <div class="card"><h3>Text pipeline</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.pipeline import Pipeline
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+nlp_pipe = Pipeline([("tfidf", TfidfVectorizer(ngram_range=(1,2))),
+                     ("clf", LogisticRegression(max_iter=300))])</code></pre>
+      </div>
+      <div class="card"><h3>Tips</h3><ul class="small"><li>Lowercase, strip punctuation</li><li>Try character n‑grams for noisy text</li><li>Use class weights for imbalance</li></ul></div>
+    </div>
+  </section>
+
+  <!-- Computer Vision -->
+  <section class="section" id="cv">
+    <h2>10) Computer vision starter</h2>
+    <div class="grid">
+      <div class="card"><h3>Keras CNN (minimal)</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import tensorflow as tf
+m = tf.keras.Sequential([
+  tf.keras.layers.Conv2D(32,3,activation='relu',input_shape=(28,28,1)),
+  tf.keras.layers.MaxPooling2D(),
+  tf.keras.layers.Flatten(),
+  tf.keras.layers.Dense(64,activation='relu'),
+  tf.keras.layers.Dense(10,activation='softmax')
+])
+m.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])</code></pre>
+      </div>
+      <div class="card"><h3>Data notes</h3><ul class="small"><li>Normalize pixels</li><li>Augment: flips, crops</li><li>Watch overfitting (dropout, regularization)</li></ul></div>
+    </div>
+  </section>
+
+  <!-- Interpretability -->
+  <section class="section" id="interpret">
+    <h2>11) Interpretability</h2>
+    <div class="grid">
+      <div class="card"><h3>Global vs local</h3><p class="small">Feature importances vs per‑prediction explanations.</p></div>
+      <div class="card"><h3>Permutation importance</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.inspection import permutation_importance
+r = permutation_importance(model, X_val, y_val, n_repeats=10, random_state=0)</code></pre>
+      </div>
+      <div class="card"><h3>Partial dependence</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.inspection import PartialDependenceDisplay
+PartialDependenceDisplay.from_estimator(model, X, features=[0])</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deployment -->
+  <section class="section" id="deploy">
+    <h2>12) Deployment</h2>
+    <div class="grid">
+      <div class="card"><h3>Save pipeline</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import joblib
+joblib.dump(pipe, "model.joblib")
+pipe = joblib.load("model.joblib")</code></pre>
+      </div>
+      <div class="card"><h3>REST API (Flask)</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from flask import Flask, request, jsonify
+import joblib
+app = Flask(__name__); pipe = joblib.load("model.joblib")
+@app.post("/predict")
+def predict():
+    X = request.get_json()
+    return jsonify(pred=pipe.predict(X).tolist())</code></pre>
+      </div>
+      <div class="card"><h3>Checks</h3><ul class="small"><li>Schema & type checks</li><li>Latency & cost budgets</li><li>Shadow deploy before switching</li></ul></div>
+    </div>
+  </section>
+
+  <!-- MLOps -->
+  <section class="section" id="mlops">
+    <h2>13) MLOps & monitoring</h2>
+    <div class="grid">
+      <div class="card"><h3>What to track</h3><ul class="small"><li>Input drift (PSI, KL)</li><li>Output drift & calibration</li><li>Performance on labeled slices</li></ul></div>
+      <div class="card"><h3>Logging hooks</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code># Pseudocode
+log({ "ts": now(), "version": model_version, "input_stats": stats(X), "pred_stats": stats(pred) })</code></pre>
+      </div>
+      <div class="card"><h3>Re‑training policy</h3><p class="small">Thresholds → alert → review → retrain → A/B test → promote.</p></div>
+    </div>
+  </section>
+
+  <!-- Ethics -->
+  <section class="section" id="ethics">
+    <h2>14) Ethics, fairness & privacy</h2>
+    <div class="grid">
+      <div class="card"><h3>Checklist</h3><ul class="small">
+        <li>Data provenance documented</li><li>User consent & purpose limitation</li>
+        <li>Fairness: parity of error rates across sensitive slices</li><li>Privacy: PII handling, aggregation, anonymization</li>
+      </ul></div>
+      <div class="card"><h3>Audits</h3><p class="small">Run bias & robustness tests pre‑launch; document caveats.</p></div>
+      <div class="card"><h3>Governance</h3><p class="small">Versioned artifacts, approvals, escalation paths.</p></div>
+    </div>
+  </section>
+
+  <!-- Cheat-sheets -->
+  <section class="section" id="cheats">
+    <h2>15) Cheat‑sheets</h2>
+    <div class="grid">
+      <div class="card"><h3>Model selection</h3><ul class="small">
+        <li>Small tabular → trees/ensembles</li><li>High‑dim sparse text → linear/SVM</li><li>Images → CNN</li><li>Sequences → RNN/Transformer</li>
+      </ul></div>
+      <div class="card"><h3>Common pitfalls</h3><ul class="small">
+        <li>Leakage between train/test</li><li>Wrong CV for time series</li><li>Chasing leaderboard overfitting</li>
+      </ul></div>
+      <div class="card"><h3>Quick glossary</h3><ul class="small">
+        <li><b>Regularization</b>: penalties that reduce overfitting</li>
+        <li><b>Calibration</b>: matching predicted probabilities to reality</li>
+        <li><b>AUC</b>: probability a random positive ranks above a negative</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <footer>Use <span class="kbd">Ctrl</span>/<span class="kbd">⌘</span>+<span class="kbd">F</span> to find on page • Print for a handy handout</footer>
+</main>
+
+<script>
+// Tabs
+document.querySelectorAll('.tab').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tabpanel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// Expand/Collapse all <details>
+document.getElementById('expandAll').addEventListener('click', ()=> document.querySelectorAll('details').forEach(d=>d.open=true));
+document.getElementById('collapseAll').addEventListener('click', ()=> document.querySelectorAll('details').forEach(d=>d.open=false));
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', (e)=>{
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if(el){
+      e.preventDefault();
+      const y = el.getBoundingClientRect().top + window.scrollY - 70;
+      window.scrollTo({top:y, behavior:'smooth'});
+      history.replaceState(null, '', '#'+id);
+    }
+  });
+});
+
+// Copy button helper
+function copyCode(btn){
+  const pre = btn.closest('pre.code');
+  if(!pre) return;
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.classList.add('copied'); btn.textContent='Copied';
+    setTimeout(()=>{ btn.classList.remove('copied'); btn.textContent='Copy'; }, 1200);
+  });
+}
+window.copyCode = copyCode;
+</script>
+</body>
+</html>

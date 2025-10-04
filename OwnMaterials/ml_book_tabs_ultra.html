@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ML Beginner Book — Tabs Ultra</title>
+<meta name="description" content="Tabbed HTML book for ML beginners with pictures, interactive labs, and scikit-learn code.">
+<style>
+:root{
+  --bg:#ffffff; --fg:#0f172a; --muted:#475569; --border:#e5e7eb; --card:#f8fafc;
+  --primary:#1e40af; --accent:#10b981; --chip:#eef2ff; --shadow:0 12px 30px rgba(2,8,23,.12);
+}
+:root[data-theme="emerald"]{ --primary:#065f46; --accent:#34d399; --chip:#d1fae5 }
+:root[data-theme="purple"]{ --primary:#6d28d9; --accent:#22d3ee; --chip:#ede9fe }
+:root[data-theme="orange"]{ --primary:#c2410c; --accent:#f59e0b; --chip:#ffedd5 }
+:root[data-theme="rose"]{ --primary:#be123c; --accent:#fb7185; --chip:#ffe4e6 }
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,'Helvetica Neue',Arial}
+a{color:var(--primary);text-decoration:none} a:hover{text-decoration:underline}
+.header{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,#fff,rgba(255,255,255,.94));backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1200px;margin:auto;display:flex;gap:16px;align-items:center;padding:12px 16px}
+.logo{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:var(--shadow)}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:28px 0}
+.hero .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 8px 0;font-size:2rem} .hero p{margin:0;color:var(--muted)}
+.hero-graphic{aspect-ratio:16/10;border:1px dashed var(--border);border-radius:16px;display:grid;place-items:center;background:#fff}
+.badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:var(--chip);color:#111827;border:1px solid var(--border)}
+.small{color:var(--muted);font-size:14px}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:16px 0}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border:1px solid var(--border);padding:8px;text-align:left}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--border);border-bottom-width:2px;background:#fff;border-radius:6px;padding:1px 6px}
+pre.code{background:#0b1020;color:#e5e7eb;border-radius:12px;padding:12px;border:1px solid #0b1020;overflow:auto;position:relative}
+button.copy{position:absolute;right:8px;top:8px;padding:6px 8px;border-radius:8px;border:1px solid #334155;background:#111827;color:#e5e7eb;cursor:pointer;font-size:12px}
+button.copy.copied{background:#064e3b;border-color:#065f46}
+canvas.chart{width:100%;height:260px;display:block;border:1px solid var(--border);border-radius:12px;background:#fff}
+.btn{display:inline-block;padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer}
+.btn.primary{border-color:var(--primary);background:var(--primary);color:#fff}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+/* Tabs */
+.tabs{margin:8px 0 26px 0;border-bottom:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap}
+.tab{appearance:none;border:none;background:#fff;border:1px solid var(--border);border-bottom:none;border-radius:12px 12px 0 0;padding:10px 12px;cursor:pointer}
+.tab[aria-selected="true"]{background:linear-gradient(180deg,#fff,#f8fafc);border-color:var(--primary);color:var(--primary);box-shadow:0 -2px 0 var(--primary) inset}
+.tab:hover{background:#f8fafc}
+.tabpanel{display:none}
+.tabpanel.active{display:block}
+.footer{padding:18px 0;color:var(--muted);text-align:center}
+.theme{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.theme button{padding:6px 10px;border-radius:999px;border:1px solid var(--border);cursor:pointer;background:#fff}
+.theme .active{background:var(--primary);color:#fff;border-color:var(--primary)}
+@media (max-width:900px){ .hero{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">ML</div>
+    <div>
+      <div style="font-weight:800">ML Beginner Book — Tabs Ultra</div>
+      <div class="small">White background • Book-like tabs • Pictures • Graphs • Code</div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <!-- HERO / WELCOME TAB -->
+  <section class="hero">
+    <div class="panel">
+      <h1>Learn ML like a book — with tabs</h1>
+      <p>Each topic lives on its own tab. Use mouse or keyboard (<span class="kbd">Ctrl</span>/<span class="kbd">⌘</span> + <span class="kbd">1…12</span>) to jump. Your place is saved in the URL. Pick a color theme (background stays white):</p>
+      <div class="theme">
+        <button class="active" data-theme="default">Default</button>
+        <button data-theme="emerald">Emerald</button>
+        <button data-theme="purple">Purple</button>
+        <button data-theme="orange">Orange</button>
+        <button data-theme="rose">Rose</button>
+      </div>
+      <div class="badges"><span class="badge">Beginner friendly</span><span class="badge">Interactive mini-labs</span><span class="badge">Copy-ready code</span></div>
+      <div class="controls"><a class="btn primary" href="#tab=types">Start reading</a></div>
+    </div>
+    <div class="hero-graphic">
+      <svg width="92%" viewBox="0 0 700 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Data → Model → Prediction → Feedback">
+        <defs><linearGradient id="g1" x1="0" x2="1"><stop stop-color="#60a5fa"/><stop offset="1" stop-color="#a7f3d0"/></linearGradient></defs>
+        <rect x="20" y="30" width="180" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="110" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Data</text>
+        <circle cx="70" cy="95" r="8" fill="#93c5fd"/><circle cx="110" cy="110" r="8" fill="#6ee7b7"/><circle cx="150" cy="85" r="8" fill="#60a5fa"/>
+        <path d="M200 85 L270 85" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="270" y="30" width="180" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="360" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Model</text>
+        <rect x="310" y="78" width="100" height="35" rx="8" fill="url(#g1)"/>
+        <path d="M450 85 L520 85" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="520" y="30" width="160" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="600" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Prediction</text>
+        <rect x="560" y="82" width="80" height="30" rx="8" fill="#10b981"/>
+        <path d="M600 140 C 620 200, 260 200, 210 110" stroke="#94a3b8" stroke-dasharray="6 6" fill="none" marker-end="url(#arrow)"/>
+        <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L6,3 z" fill="#0ea5e9"/></marker></defs>
+      </svg>
+    </div>
+  </section>
+
+  <!-- TABBAR -->
+  <div class="tabs" id="tabbar" role="tablist" aria-label="Book sections">
+    <button id="tab-types" class="tab" role="tab" aria-selected="true"  aria-controls="panel-types"       data-tab="types">1) Types</button>
+    <button id="tab-concepts" class="tab" role="tab" aria-selected="false" aria-controls="panel-concepts" data-tab="concepts">2) Concepts</button>
+    <button id="tab-workflow" class="tab" role="tab" aria-selected="false" aria-controls="panel-workflow" data-tab="workflow">3) Workflow</button>
+    <button id="tab-opt" class="tab" role="tab" aria-selected="false" aria-controls="panel-opt"           data-tab="opt">4) Optimization</button>
+    <button id="tab-metrics" class="tab" role="tab" aria-selected="false" aria-controls="panel-metrics"   data-tab="metrics">5) Metrics</button>
+    <button id="tab-cv" class="tab" role="tab" aria-selected="false" aria-controls="panel-cv"             data-tab="cv">6) Cross‑Val</button>
+    <button id="tab-features" class="tab" role="tab" aria-selected="false" aria-controls="panel-features" data-tab="features">7) Features</button>
+    <button id="tab-models" class="tab" role="tab" aria-selected="false" aria-controls="panel-models"     data-tab="models">8) Model Zoo</button>
+    <button id="tab-demo" class="tab" role="tab" aria-selected="false" aria-controls="panel-demo"         data-tab="demo">9) Hands‑on</button>
+    <button id="tab-pca" class="tab" role="tab" aria-selected="false" aria-controls="panel-pca"           data-tab="pca">10) PCA</button>
+    <button id="tab-learn" class="tab" role="tab" aria-selected="false" aria-controls="panel-learn"       data-tab="learn">11) Learning Curves</button>
+    <button id="tab-glossary" class="tab" role="tab" aria-selected="false" aria-controls="panel-glossary" data-tab="glossary">12) Glossary & Resources</button>
+  </div>
+
+  <!-- PANELS -->
+  <section class="tabpanel active" id="panel-types" role="tabpanel" aria-labelledby="tab-types">
+    <div class="grid">
+      <div class="card">
+        <h3>Supervised Learning</h3>
+        <p class="small">Inputs <em>X</em> with labels <em>y</em>. Learn a mapping X → y.</p>
+        <ul class="small"><li><b>Regression</b>: predict numbers (house price).</li><li><b>Classification</b>: predict categories (spam / not spam).</li></ul>
+        <p class="small"><b>Everyday:</b> estimate delivery time from route and traffic.</p>
+      </div>
+      <div class="card">
+        <h3>Unsupervised Learning</h3>
+        <p class="small">No labels. Find structure.</p>
+        <ul class="small"><li><b>Clustering</b> (k‑Means): group customers.</li><li><b>Dimensionality reduction</b> (PCA): simplify features.</li></ul>
+      </div>
+      <div class="card">
+        <h3>Reinforcement Learning</h3>
+        <p class="small">Agent takes actions and gets rewards, learning a policy.</p>
+        <ul class="small"><li>Games, robotics, recommendations.</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="tabpanel" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="grid">
+      <div class="card">
+        <h3>Data, Features, Labels</h3>
+        <p class="small">Rows are examples, columns are features, and the label is what you want to predict.</p>
+        <blockquote class="small"><b>Analogy:</b> detective work — clues (features) → culprit (label).</blockquote>
+      </div>
+      <div class="card">
+        <h3>Train / Validation / Test</h3>
+        <p class="small">Practice → mock exam → final exam. Keep the test set for the very end.</p>
+      </div>
+      <div class="card">
+        <h3>Overfitting vs Underfitting</h3>
+        <p class="small">Overfit: great on train, poor on test. Underfit: poor on both.</p>
+        <div class="controls"><button class="btn" id="fitReset">Animate curves</button></div>
+        <canvas id="fitChart" class="chart" aria-label="Underfit/Good/Overfit curves"></canvas>
+      </div>
+      <div class="card">
+        <h3>Learning Curves (interactive)</h3>
+        <p class="small">As training data grows, validation error tends to fall. Use this to decide whether to collect more data or try a different model.</p>
+        <div class="controls">
+          <label class="small">Noise <input id="lcNoise" type="range" min="0" max="100" value="20"></label>
+          <button class="btn" id="lcRedraw">Redraw</button>
+        </div>
+        <canvas id="lcChart" class="chart" aria-label="Learning curve"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section class="tabpanel" id="panel-workflow" role="tabpanel" aria-labelledby="tab-workflow">
+    <div class="grid">
+      <div class="card"><h3>Step 1 — Define</h3><p class="small">What do you want to predict? Which metric matters (MAE, F1)? Who uses it?</p></div>
+      <div class="card"><h3>Step 2 — Prepare</h3><p class="small">Clean data, split early, encode categories, scale numbers where needed.</p></div>
+      <div class="card"><h3>Step 3 — Baseline</h3><p class="small">Start with simple models: Linear/Logistic, small trees.</p></div>
+      <div class="card"><h3>Step 4 — Improve</h3><p class="small">Use cross‑validation and hyperparameter search.</p></div>
+      <div class="card"><h3>Step 5 — Evaluate</h3><p class="small">Use test once; check fairness and slices.</p></div>
+      <div class="card"><h3>Step 6 — Save & serve</h3><p class="small">Wrap preprocessing + model in a Pipeline; save with joblib.</p></div>
+    </div>
+  </section>
+
+  <section class="tabpanel" id="panel-opt" role="tabpanel" aria-labelledby="tab-opt">
+    <div class="card">
+      <h3>Optimization — Gradient Descent (interactive)</h3>
+      <p class="small">We minimize a toy cost: J(w) = (w − 3)² + 2. Use the slider to change learning rate and see how the optimizer moves.</p>
+      <div class="controls">
+        <label class="small">Learning rate α <input id="gdAlpha" type="range" min="1" max="300" value="60"></label>
+        <button class="btn" id="gdStep">Step</button>
+        <button class="btn" id="gdAuto">Auto‑run</button>
+        <button class="btn" id="gdReset">Reset</button>
+      </div>
+      <canvas id="gdChart" class="chart" aria-label="Gradient descent on a quadratic"></canvas>
+      <div id="gdStats" class="small"></div>
+    </div>
+  </section>
+
+  <section class="tabpanel" id="panel-metrics" role="tabpanel" aria-labelledby="tab-metrics">
+    <div class="grid">
+      <div class="card">
+        <h3>Confusion matrix</h3>
+        <table class="table small">
+          <tr><th></th><th>Pred +</th><th>Pred −</th></tr>
+          <tr><th>Actual +</th><td>TP</td><td>FN</td></tr>
+          <tr><th>Actual −</th><td>FP</td><td>TN</td></tr>
+        </table>
+        <ul class="small">
+          <li><b>Precision</b> = TP/(TP+FP)</li>
+          <li><b>Recall</b> = TP/(TP+FN)</li>
+          <li><b>F1</b> = harmonic mean of precision & recall</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Threshold lab</h3>
+        <div class="controls">
+          <label class="small">Threshold <input id="thresh" type="range" min="0" max="100" value="50"></label>
+          <label class="small">Positives % <input id="posRate" type="range" min="5" max="50" value="20"></label>
+          <button class="btn" id="regen">Regenerate</button>
+        </div>
+        <canvas id="thrChart" class="chart" aria-label="Scores & threshold"></canvas>
+        <div id="thrStats" class="small"></div>
+      </div>
+      <div class="card">
+        <h3>ROC & PR curves</h3>
+        <canvas id="rocChart" class="chart" aria-label="ROC curve"></canvas>
+        <div class="small" id="rocStats"></div>
+        <canvas id="prChart" class="chart" aria-label="PR curve"></canvas>
+        <div class="small" id="prStats"></div>
+      </div>
+      <div class="card">
+        <h3>Calibration — Reliability diagram (interactive)</h3>
+        <p class="small">Well‑calibrated models say “70%” and are right ~70% of the time. Adjust the temperature to simulate miscalibration.</p>
+        <div class="controls">
+          <label class="small">Temperature <input id="temp" type="range" min="50" max="200" value="100"></label>
+          <button class="btn" id="calRegen">Regenerate</button>
+        </div>
+        <canvas id="calChart" class="chart" aria-label="Reliability diagram"></canvas>
+        <div id="calStats" class="small"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tabpanel" id="panel-cv" role="tabpanel" aria-labelledby="tab-cv">
+    <div class="card">
+      <h3>K‑Fold cross‑validation (visual)</h3>
+      <div class="controls">
+        <label class="small">Folds (k): <input id="kfold" type="range" min="3" max="10" value="5"></label>
+        <button class="btn" id="cvDraw">Draw</button>
+      </div>
+      <canvas id="cvChart" class="chart" aria-label="KFold diagram"></canvas>
+      <p class="small">Use <b>StratifiedKFold</b> for classification; <b>TimeSeriesSplit</b> for time‑ordered data.</p>
+    </div>
+  </section>
+
+  <section class="tabpanel" id="panel-features" role="tabpanel" aria-labelledby="tab-features">
+    <div class="grid">
+      <div class="card"><h3>Encoding</h3><p class="small"><b>One‑hot</b> for unordered categories. Keep top N, bucket the rest as “other”.</p></div>
+      <div class="card"><h3>Scaling</h3><p class="small">Standardize for kNN/SVM/Logistic. Trees don’t need scaling.</p></div>
+      <div class="card"><h3>Text baseline</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+pipe = Pipeline([("tfidf", TfidfVectorizer(ngram_range=(1,2), min_df=3)),
+                 ("lr", LogisticRegression(max_iter=1000))])
+pipe.fit(text_train, y_train)</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tabpanel" id="panel-models" role="tabpanel" aria-labelledby="tab-models">
+    <div class="grid">
+      <div class="card"><h3>Linear / Logistic</h3><p class="small">Fast and interpretable baselines. Add L2 (Ridge) or L1 (Lasso).</p></div>
+      <div class="card"><h3>Tree ensembles</h3><p class="small">RandomForest & GradientBoosting are strong on tabular data.</p></div>
+      <div class="card"><h3>kNN & SVM</h3><p class="small">Needs scaling; RBF kernel captures non‑linear boundaries.</p></div>
+      <div class="card"><h3>Hyperparameter Search</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
+params = {"n_estimators":[200,400], "max_depth":[None,10,20]}
+gs = GridSearchCV(RandomForestClassifier(random_state=42),
+                  param_grid=params, cv=5, scoring="f1_macro", n_jobs=-1)
+gs.fit(X_train, y_train)
+print(gs.best_params_, gs.best_score_)</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tabpanel" id="panel-demo" role="tabpanel" aria-labelledby="tab-demo">
+    <div class="grid">
+      <div class="card">
+        <h3>Setup</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>pip install -U scikit-learn pandas numpy matplotlib joblib</code></pre>
+      </div>
+      <div class="card">
+        <h3>Regression: California Housing</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import numpy as np, pandas as pd
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import Ridge
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+
+data = fetch_california_housing(as_frame=True)
+df = data.frame.rename(columns={"MedHouseVal":"Price"})
+X = df.drop(columns=["Price"]); y = df["Price"]
+X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
+pipe = Pipeline([("scaler", StandardScaler()), ("ridge", Ridge(alpha=1.0))]).fit(X_tr, y_tr)
+pred = pipe.predict(X_te)
+print("MAE", mean_absolute_error(y_te, pred), "RMSE", mean_squared_error(y_te, pred, squared=False))</code></pre>
+      </div>
+      <div class="card">
+        <h3>Classification: Iris</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+from sklearn.linear_model import LogisticRegression
+X, y = load_iris(return_X_y=True)
+X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+clf = LogisticRegression(max_iter=1000).fit(X_tr, y_tr)
+print(classification_report(y_te, clf.predict(X_te)))</code></pre>
+      </div>
+      <div class="card">
+        <h3>Save & load</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import joblib
+joblib.dump(pipe, "model.joblib")
+model = joblib.load("model.joblib")</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tabpanel" id="panel-pca" role="tabpanel" aria-labelledby="tab-pca">
+    <div class="card">
+      <h3>PCA — Dimensionality reduction (interactive)</h3>
+      <p class="small">Generate 2D points with a chosen correlation. PCA finds the directions of maximum variance.</p>
+      <div class="controls">
+        <label class="small">Correlation <input id="pcaCorr" type="range" min="-90" max="90" value="70"></label>
+        <label class="small">Points <input id="pcaN" type="range" min="50" max="800" value="250"></label>
+        <button class="btn" id="pcaRegen">Regenerate</button>
+      </div>
+      <canvas id="pcaChart" class="chart" aria-label="PCA with eigenvectors"></canvas>
+      <div id="pcaStats" class="small"></div>
+    </div>
+  </section>
+
+  <section class="tabpanel" id="panel-learn" role="tabpanel" aria-labelledby="tab-learn">
+    <div class="card">
+      <h3>Learning curves (interactive)</h3>
+      <p class="small">As training data grows, training error rises a little while validation error falls; they meet if the model has enough capacity.</p>
+      <div class="controls">
+        <label class="small">Noise <input id="lcNoise2" type="range" min="0" max="100" value="20"></label>
+        <button class="btn" id="lcRedraw2">Redraw</button>
+      </div>
+      <canvas id="lcChart2" class="chart" aria-label="Learning curve 2"></canvas>
+    </div>
+  </section>
+
+  <section class="tabpanel" id="panel-glossary" role="tabpanel" aria-labelledby="tab-glossary">
+    <div class="grid">
+      <div class="card"><h3>Feature</h3><p class="small">A measurable property used to predict the label.</p></div>
+      <div class="card"><h3>Label/Target</h3><p class="small">The value we want to predict.</p></div>
+      <div class="card"><h3>Hyperparameter</h3><p class="small">A setting you choose (e.g., depth, learning rate).</p></div>
+      <div class="card"><h3>Pipeline</h3><p class="small">A chain of steps (preprocessing + model) for consistent training & serving.</p></div>
+      <div class="card"><h3>Resources</h3>
+        <ul class="small">
+          <li>scikit‑learn User Guide</li>
+          <li>Kaggle Learn</li>
+          <li>Google ML Crash Course</li>
+          <li>fast.ai</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <p class="small" style="margin-top:20px">Tip: Print to PDF if you want a booklet. Use <span class="kbd">Ctrl</span>/<span class="kbd">⌘</span> + <span class="kbd">1…12</span> to jump tabs.</p>
+
+  <footer class="footer">Made for beginners • White background • Interactive • Copy‑ready code</footer>
+</main>
+
+<script>
+// THEME SWITCHER
+document.querySelectorAll('.theme button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.theme button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const theme = btn.dataset.theme;
+    if (theme==='default') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('ml_theme_tabs_ultra', theme);
+  });
+});
+const savedTheme = localStorage.getItem('ml_theme_tabs_ultra');
+if (savedTheme && savedTheme!=='default') {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const b = document.querySelector('.theme button[data-theme="'+savedTheme+'"]');
+  if (b){ document.querySelectorAll('.theme button').forEach(x=>x.classList.remove('active')); b.classList.add('active'); }
+}
+
+// COPY BUTTON
+function copyCode(btn){
+  const pre = btn.closest('pre.code'); if(!pre) return;
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.classList.add('copied'); btn.textContent='Copied';
+    setTimeout(()=>{ btn.classList.remove('copied'); btn.textContent='Copy'; }, 1200);
+  });
+}
+window.copyCode = copyCode;
+
+// TABS (ARIA + hash routing)
+const tabs = Array.from(document.querySelectorAll('.tab'));
+const panels = Array.from(document.querySelectorAll('.tabpanel'));
+function activateTab(name, push=true){
+  tabs.forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===name ? 'true':'false'));
+  panels.forEach(p=>p.classList.toggle('active', p.id === 'panel-'+name));
+  if(push){ history.replaceState(null, '', '#tab='+name); }
+  const current = tabs.find(t=>t.dataset.tab===name); if(current) current.focus();
+}
+tabs.forEach(t=>{
+  t.addEventListener('click', ()=> activateTab(t.dataset.tab));
+  t.addEventListener('keydown', (e)=>{
+    const i = tabs.indexOf(t);
+    if(e.key === 'ArrowRight'){ tabs[(i+1)%tabs.length].click(); }
+    if(e.key === 'ArrowLeft'){ tabs[(i-1+tabs.length)%tabs.length].click(); }
+  });
+});
+document.addEventListener('keydown', (e)=>{
+  const isMac = navigator.platform.toUpperCase().indexOf('MAC')>=0;
+  if((isMac && e.metaKey) || (!isMac && e.ctrlKey)){
+    const n = parseInt(e.key, 10);
+    if(n>=1 && n<=tabs.length){ e.preventDefault(); tabs[n-1].click(); }
+  }
+});
+(function initFromHash(){
+  const m = /#tab=([a-z0-9\-]+)/i.exec(location.hash);
+  activateTab(m ? m[1] : 'types', false);
+})();
+
+// Canvas helpers
+function setupCanvas(c){ c.width = c.clientWidth*2; c.height = c.clientHeight*2; return c.getContext('2d'); }
+function axes(ctx, {xMax=100, yMin=0, yMax=1, yTicks=5, xLabel='x', yLabel='y'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.strokeStyle='#cbd5e1'; ctx.fillStyle='#64748b'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(50,10); ctx.lineTo(50,h-40); ctx.lineTo(w-20,h-40); ctx.stroke();
+  ctx.font='20px system-ui'; ctx.fillText(xLabel, w-50, h-12); ctx.fillText(yLabel, 8, 24);
+  for(let i=0;i<=yTicks;i++){
+    const y = (h-40) - i*(h-50)/yTicks;
+    const val = (yMin + (i*(yMax-yMin)/yTicks)).toFixed(2);
+    ctx.fillText(val, 8, y+4);
+    ctx.beginPath(); ctx.moveTo(46,y); ctx.lineTo(50,y); ctx.stroke();
+  }
+}
+function line(ctx, pts, {xMax=100, yMin=0, yMax=1, color='#0ea5e9'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.strokeStyle = color; ctx.lineWidth=3; ctx.beginPath();
+  pts.forEach((p,i)=>{
+    const x = 50 + (p.x/xMax)*(w-70);
+    const y = (h-40) - ((p.y - yMin)/(yMax - yMin))*(h-50);
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+}
+function dots(ctx, pts, {xMax=1, yMin=0, yMax=1, r=4, color='#1f2937'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.fillStyle = color;
+  for(const p of pts){
+    const x = 50 + (p.x/xMax)*(w-70);
+    const y = (h-40) - ((p.y - yMin)/(yMax - yMin))*(h-50);
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  }
+}
+
+// Over/Under/Good fit curves
+(function(){
+  const c = document.getElementById('fitChart'); if(!c) return;
+  const ctx = setupCanvas(c);
+  function draw(){
+    axes(ctx,{xLabel:'model complexity',yLabel:'error',yMin:0,yMax:1});
+    const xs = [...Array(101).keys()];
+    const under = xs.map(x=>({x, y: Math.max(0.1, 0.9 - x*0.005)}));
+    const good  = xs.map(x=>({x, y: 0.2 + 0.3*Math.exp(-Math.pow((x-50)/20,2))}));
+    const over  = xs.map(x=>({x, y: Math.max(0.1, 0.25 + (x/100)**2)}));
+    line(ctx, under, {xMax:100,yMin:0,yMax:1,color:'#ef4444'});
+    line(ctx, good,  {xMax:100,yMin:0,yMax:1,color:'#0ea5e9'});
+    line(ctx, over,  {xMax:100,yMin:0,yMax:1,color:'#f59e0b'});
+  }
+  draw();
+  const btn = document.getElementById('fitReset'); if(btn){ btn.addEventListener('click', draw); }
+})();
+
+// Learning Curves (in Concepts tab)
+const lcCanvas = document.getElementById('lcChart'); const lcctx = lcCanvas?setupCanvas(lcCanvas):null;
+function drawLC(){
+  if(!lcctx) return;
+  axes(lcctx,{xLabel:'training size', yLabel:'error', yMin:0, yMax:1});
+  const noise = Number(document.getElementById('lcNoise').value)/100;
+  const xs=[...Array(40).keys()].map(i=>i+1);
+  const train = xs.map(x=>({x, y: Math.max(0.05, 0.18 + 0.15*Math.exp(-x/10) + noise*0.05*Math.random())}));
+  const valid = xs.map(x=>({x, y: Math.max(0.07, 0.6*Math.exp(-x/10) + 0.15 + noise*0.05*Math.random())}));
+  line(lcctx, train.map(p=>({x:p.x*2.5, y:p.y})), {xMax:100, yMin:0, yMax:1, color:'#10b981'});
+  line(lcctx, valid.map(p=>({x:p.x*2.5, y:p.y})), {xMax:100, yMin:0, yMax:1, color:'#ef4444'});
+}
+const lcBtn = document.getElementById('lcRedraw'), lcNoise = document.getElementById('lcNoise');
+if(lcBtn){ lcBtn.addEventListener('click', drawLC); }
+if(lcNoise){ lcNoise.addEventListener('input', drawLC); }
+if(lcCanvas){ drawLC(); }
+
+// Learning Curves (extra tab)
+const lcCanvas2 = document.getElementById('lcChart2'); const lcctx2 = lcCanvas2?setupCanvas(lcCanvas2):null;
+function drawLC2(){
+  if(!lcctx2) return;
+  axes(lcctx2,{xLabel:'training size', yLabel:'error', yMin:0, yMax:1});
+  const noise = Number(document.getElementById('lcNoise2').value)/100;
+  const xs=[...Array(40).keys()].map(i=>i+1);
+  const train = xs.map(x=>({x, y: Math.max(0.05, 0.18 + 0.15*Math.exp(-x/10) + noise*0.05*Math.random())}));
+  const valid = xs.map(x=>({x, y: Math.max(0.07, 0.6*Math.exp(-x/10) + 0.15 + noise*0.05*Math.random())}));
+  line(lcctx2, train.map(p=>({x:p.x*2.5, y:p.y})), {xMax:100, yMin:0, yMax:1, color:'#10b981'});
+  line(lcctx2, valid.map(p=>({x:p.x*2.5, y:p.y})), {xMax:100, yMin:0, yMax:1, color:'#ef4444'});
+}
+const lcBtn2 = document.getElementById('lcRedraw2'), lcNoise2 = document.getElementById('lcNoise2');
+if(lcBtn2){ lcBtn2.addEventListener('click', drawLC2); }
+if(lcNoise2){ lcNoise2.addEventListener('input', drawLC2); }
+if(lcCanvas2){ drawLC2(); }
+
+// Threshold lab + ROC/PR
+const thrCanvas = document.getElementById('thrChart'); const thrctx = thrCanvas?setupCanvas(thrCanvas):null;
+let thrScores=[], thrLabels=[];
+function genScores(n=400, posRate=0.2){
+  thrScores=[]; thrLabels=[];
+  for(let i=0;i<n;i++){
+    const y = Math.random() < posRate ? 1 : 0;
+    const s = y ? Math.min(1, 0.6 + Math.random()*0.4) : Math.max(0, Math.random()*0.6);
+    thrLabels.push(y); thrScores.push(s);
+  }
+}
+function thrMetrics(th){
+  let TP=0,FP=0,FN=0,TN=0;
+  for(let i=0;i<thrScores.length;i++){
+    const pred = thrScores[i] >= th ? 1 : 0;
+    const y = thrLabels[i];
+    if(pred===1 && y===1) TP++; else if(pred===1 && y===0) FP++;
+    else if(pred===0 && y===1) FN++; else TN++;
+  }
+  const precision = TP/(TP+FP||1), recall = TP/(TP+FN||1);
+  const f1 = 2*precision*recall/(precision+recall||1);
+  return {TP,FP,FN,TN,precision,recall,f1};
+}
+function drawThr(th){
+  axes(thrctx,{xLabel:'sample',yLabel:'score',yMin:0,yMax:1});
+  const pts = thrScores.map((s,i)=>({x:i, y:s}));
+  dots(thrctx, pts, {xMax:thrScores.length, yMin:0, yMax:1, r:2, color:'#1f2937'});
+  line(thrctx, [{x:0,y:th},{x:thrScores.length,y:th}], {xMax:thrScores.length,yMin:0,yMax:1,color:'#10b981'});
+}
+function curveFromScores(){
+  const pairs = thrScores.map((s,i)=>({s,y:thrLabels[i]})).sort((a,b)=>b.s-a.s);
+  let P = thrLabels.filter(x=>x===1).length, N = thrLabels.length - P;
+  let TP=0, FP=0, prevS=Infinity;
+  const roc=[], pr=[];
+  for(const p of pairs){
+    if(p.s!==prevS){
+      const TPR = TP/(P||1), FPR = FP/(N||1);
+      const precision = TP/(TP+FP||1), recall = TPR;
+      roc.push({x:FPR,y:TPR}); pr.push({x:recall,y:precision});
+      prevS = p.s;
+    }
+    if(p.y===1) TP++; else FP++;
+  }
+  roc.push({x:0,y:0}); roc.push({x:1,y:1});
+  const rocSorted = roc.sort((a,b)=>a.x-b.x);
+  const prSorted = pr.sort((a,b)=>a.x-b.x);
+  return {roc:rocSorted, pr:prSorted};
+}
+function drawCurve(ctx, pts, labelx, labely){
+  axes(ctx,{xLabel:labelx,yLabel:labely,yMin:0,yMax:1});
+  line(ctx, pts.map((p,i)=>({x:p.x*100,y:p.y})), {xMax:100,yMin:0,yMax:1,color:'#0ea5e9'});
+}
+const rocCanvas = document.getElementById('rocChart'); const rocctx = rocCanvas?setupCanvas(rocCanvas):null;
+const prCanvas  = document.getElementById('prChart');  const prctx  = prCanvas?setupCanvas(prCanvas):null;
+function recomputeThr(){
+  if(!thrctx) return;
+  const th = Number(document.getElementById('thresh').value)/100;
+  const posRate = Number(document.getElementById('posRate').value)/100;
+  genScores(400, posRate);
+  drawThr(th);
+  const m = thrMetrics(th);
+  document.getElementById('thrStats').textContent =
+    `TP=${m.TP} FP=${m.FP} FN=${m.FN} TN=${m.TN} | Precision=${m.precision.toFixed(2)} Recall=${m.recall.toFixed(2)} F1=${m.f1.toFixed(2)}`;
+  const {roc, pr} = curveFromScores();
+  if(rocctx) drawCurve(rocctx, roc, 'FPR', 'TPR');
+  if(prctx)  drawCurve(prctx,  pr,  'Recall', 'Precision');
+}
+const thrEl = document.getElementById('thresh'), prEl = document.getElementById('posRate'), rgBtn = document.getElementById('regen');
+if(thrEl){ thrEl.addEventListener('input', recomputeThr); }
+if(prEl){ prEl.addEventListener('input', recomputeThr); }
+if(rgBtn){ rgBtn.addEventListener('click', recomputeThr); }
+if(thrEl && prEl){ recomputeThr(); }
+
+// KFold visual
+const cvCanvas = document.getElementById('cvChart'); const cvctx = cvCanvas?setupCanvas(cvCanvas):null;
+function drawCV(k=5, rows=5){
+  if(!cvctx) return;
+  const w=cvctx.canvas.width, h=cvctx.canvas.height;
+  cvctx.clearRect(0,0,w,h);
+  const pad=20, rowH=(h-pad*2)/rows, foldW=(w-pad*2)/k;
+  for(let r=0;r<rows;r++){
+    const y=pad + r*rowH;
+    for(let i=0;i<k;i++){
+      cvctx.strokeStyle='#cbd5e1'; cvctx.strokeRect(pad + i*foldW, y, foldW-6, rowH-6);
+      if(i===r){ cvctx.fillStyle='#fde68a'; } else { cvctx.fillStyle='#bfdbfe'; }
+      cvctx.fillRect(pad + i*foldW+1, y+1, foldW-8, rowH-8);
+    }
+    cvctx.fillStyle='#334155'; cvctx.fillText('Fold '+(r+1), 8, y+rowH/2);
+  }
+}
+const kfoldEl = document.getElementById('kfold'), cvBtn = document.getElementById('cvDraw');
+if(cvBtn){ cvBtn.addEventListener('click', ()=> drawCV(Number(kfoldEl.value), Math.min(Number(kfoldEl.value),6))); drawCV(5,5); }
+
+// PCA
+const pcaCanvas = document.getElementById('pcaChart'); const pcactx = pcaCanvas?setupCanvas(pcaCanvas):null;
+let pcaPts=[];
+function regenPCA(){
+  if(!pcactx) return;
+  const rho = Number(document.getElementById('pcaCorr').value)/100; // -0.9..0.9
+  const N = Number(document.getElementById('pcaN').value);
+  pcaPts=[];
+  for(let i=0;i<N;i++){
+    const u = Math.random()*2-1, v = Math.random()*2-1;
+    const x = u;
+    const y = rho*u + Math.sqrt(1-rho*rho)*v;
+    pcaPts.push({x,y});
+  }
+}
+function eig2x2(a,b,c,d){
+  const tr = a+d, det = a*d - b*c;
+  const disc = Math.sqrt(Math.max(0, tr*tr/4 - det));
+  const l1 = tr/2 + disc, l2 = tr/2 - disc;
+  function eigenvec(l){ let x = -b, y = a - l; const n = Math.hypot(x,y) || 1; return [x/n, y/n]; }
+  return {l1,l2, v1:eigenvec(l1), v2:eigenvec(l2)};
+}
+function drawPCA(){
+  if(!pcactx) return;
+  axes(pcactx,{xLabel:'x1',yLabel:'x2',yMin:-3,yMax:3,yTicks:6});
+  const w = pcactx.canvas.width, h = pcactx.canvas.height;
+  dots(pcactx, pcaPts.map(p=>({x:(p.x+3)/6, y:(p.y+3)/6})), {xMax:1,yMin:0,yMax:1,r:2,color:'#1f2937'});
+  let sx=0, sy=0; for(const p of pcaPts){ sx+=p.x; sy+=p.y; } sx/=pcaPts.length; sy/=pcaPts.length;
+  let sxx=0, sxy=0, syy=0; for(const p of pcaPts){ const dx=p.x-sx, dy=p.y-sy; sxx+=dx*dx; sxy+=dx*dy; syy+=dy*dy; }
+  sxx/=pcaPts.length; sxy/=pcaPts.length; syy/=pcaPts.length;
+  const {l1,l2,v1,v2} = eig2x2(sxx,sxy,sxy,syy);
+  function drawVec(v, color){
+    pcactx.strokeStyle = color; pcactx.lineWidth=3; pcactx.beginPath();
+    const cx = 50 + (0.5)*(w-70), cy = (h-40) - (0.5)*(h-50);
+    const scale = 120;
+    pcactx.moveTo(cx - v[0]*scale, cy + v[1]*scale);
+    pcactx.lineTo(cx + v[0]*scale, cy - v[1]*scale);
+    pcactx.stroke();
+  }
+  drawVec(v1,'#0ea5e9'); drawVec(v2,'#f59e0b');
+  document.getElementById('pcaStats').textContent = `Explained variance (approx): PC1 ${(l1/(l1+l2)).toFixed(2)} • PC2 ${(l2/(l1+l2)).toFixed(2)}`;
+}
+const pcaBtn = document.getElementById('pcaRegen'), pcaCorr = document.getElementById('pcaCorr'), pcaN = document.getElementById('pcaN');
+if(pcaBtn){ pcaBtn.addEventListener('click', ()=>{ regenPCA(); drawPCA(); }); }
+if(pcaCorr){ pcaCorr.addEventListener('input', ()=>{ regenPCA(); drawPCA(); }); }
+if(pcaN){ pcaN.addEventListener('input', ()=>{ regenPCA(); drawPCA(); }); }
+if(pcaCanvas){ regenPCA(); drawPCA(); }
+
+// Calibration
+const calCanvas = document.getElementById('calChart'); const calctx = calCanvas?setupCanvas(calCanvas):null;
+let calP=[], calY=[];
+function genCal(){
+  if(!calctx) return;
+  const temp = Number(document.getElementById('temp').value)/100; // 0.5..2.0
+  const n = 800; calP=[]; calY=[];
+  for(let i=0;i<n;i++){
+    const base = Math.random()*0.9 + 0.05; // 0.05..0.95
+    const p = Math.pow(base, 1/temp);
+    calP.push(p);
+    calY.push(Math.random() < base ? 1 : 0);
+  }
+}
+function drawReliability(){
+  if(!calctx) return;
+  axes(calctx,{xLabel:'Predicted prob', yLabel:'Observed freq', yMin:0, yMax:1});
+  const bins = 10; const counts=Array(bins).fill(0), sumP=Array(bins).fill(0), sumY=Array(bins).fill(0);
+  for(let i=0;i<calP.length;i++){
+    let b = Math.min(bins-1, Math.floor(calP[i]*bins));
+    counts[b]++; sumP[b]+=calP[i]; sumY[b]+=calY[i];
+  }
+  const pts=[]; let ece=0, total=0;
+  for(let b=0;b<bins;b++){
+    if(counts[b]===0) continue;
+    const conf = sumP[b]/counts[b];
+    const acc  = sumY[b]/counts[b];
+    pts.push({x: (b+0.5)/bins, y: acc});
+    ece += (counts[b]) * Math.abs(acc - conf); total += counts[b];
+  }
+  ece /= (total||1);
+  line(calctx, [{x:0,y:0},{x:100,y:1}], {xMax:100,yMin:0,yMax:1,color:'#94a3b8'});
+  dots(calctx, pts.map(p=>({x:p.x*100,y:p.y})), {xMax:100,yMin:0,yMax:1,r:4,color:'#0ea5e9'});
+  document.getElementById('calStats').textContent = `Expected Calibration Error (ECE) ≈ ${ece.toFixed(3)} (lower is better)`;
+}
+function redrawCal(){ genCal(); drawReliability(); }
+const calBtn = document.getElementById('calRegen'), tempEl = document.getElementById('temp');
+if(calBtn){ calBtn.addEventListener('click', redrawCal); }
+if(tempEl){ tempEl.addEventListener('input', redrawCal); }
+if(calCanvas){ redrawCal(); }
+
+// Gradient Descent (Optimization tab)
+const gdCanvas = document.getElementById('gdChart'); const gdctx = gdCanvas?setupCanvas(gdCanvas):null;
+let w= -4; let stepI=0; let running=false; let raf;
+function J(w){ return (w-3)*(w-3) + 2; }
+function dJ(w){ return 2*(w-3); }
+function drawGD(){
+  if(!gdctx) return;
+  const wMin=-8, wMax=10;
+  axes(gdctx,{xLabel:'w',yLabel:'J(w)',yMin:0,yMax:50,yTicks:5});
+  const pts=[]; for(let x=wMin; x<=wMax; x+=0.1){ pts.push({x, y:J(x)}); }
+  line(gdctx, pts.map(p=>({x: (p.x-wMin)/(wMax-wMin)*100, y: (p.y/50)})), {xMax:100,yMin:0,yMax:1,color:'#60a5fa'});
+  const x = (w - wMin)/(wMax - wMin)*100, y = J(w)/50;
+  dots(gdctx, [{x, y}], {xMax:100,yMin:0,yMax:1,r:5,color:'#10b981'});
+  document.getElementById('gdStats').textContent = `Step ${stepI} — w ≈ ${w.toFixed(3)} | J(w) ≈ ${J(w).toFixed(3)}`;
+}
+function gdStep(){
+  const alpha = Number(document.getElementById('gdAlpha').value)/1000; // 0.001..0.3
+  w = w - alpha * dJ(w); stepI++; drawGD();
+}
+function gdReset(){ w = -4; stepI=0; drawGD(); }
+function gdAuto(){
+  running = !running;
+  if(running){
+    document.getElementById('gdAuto').textContent='Stop';
+    const loop=()=>{
+      if(!running) return;
+      gdStep(); if(stepI<500 && J(w)>2.0001){ raf=requestAnimationFrame(loop); } else { running=false; document.getElementById('gdAuto').textContent='Auto‑run'; }
+    };
+    loop();
+  } else {
+    document.getElementById('gdAuto').textContent='Auto‑run';
+    cancelAnimationFrame(raf);
+  }
+}
+const gdStepBtn=document.getElementById('gdStep'), gdResetBtn=document.getElementById('gdReset'), gdAutoBtn=document.getElementById('gdAuto');
+if(gdStepBtn){ gdStepBtn.addEventListener('click', gdStep); }
+if(gdResetBtn){ gdResetBtn.addEventListener('click', gdReset); }
+if(gdAutoBtn){ gdAutoBtn.addEventListener('click', gdAuto); }
+if(gdCanvas){ drawGD(); }
+</script>
+</body>
+</html>

@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ML Concepts Quiz — Beginner Edition</title>
+<meta name="description" content="A gentle, beginner‑friendly Machine Learning quiz with hints, instant feedback, progress bar, and printable answer key.">
+<style>
+:root{ --bg:#ffffff; --fg:#0f172a; --muted:#475569; --primary:#1e40af; --accent:#10b981; --border:#e5e7eb; --card:#f8fafc; --shadow:0 14px 36px rgba(2,8,23,.12); }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,'Helvetica Neue',Arial}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#fff,rgba(255,255,255,.93));backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1000px;margin:auto;display:flex;gap:16px;align-items:center;padding:12px 16px}
+.logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#60a5fa,#a7f3d0);display:grid;place-items:center;color:#0b1020;font-weight:800;box-shadow:var(--shadow)}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+.nav a{padding:8px 10px;border-radius:8px} .nav a:hover{background:#eef2ff}
+.container{max-width:1000px;margin:0 auto;padding:0 16px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:26px 0}
+.hero .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 8px 0;font-size:1.9rem} .hero p{margin:0;color:var(--muted)}
+.hero-graphic{aspect-ratio:16/10;border:1px dashed var(--border);border-radius:16px;display:grid;place-items:center;background:#fff}
+.badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#111827;border:1px solid var(--border)}
+.section{padding:22px 0}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.progress{height:10px;background:#f1f5f9;border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+.progress>div{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.btn{display:inline-block;padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer}
+.btn.primary{border-color:var(--primary);background:var(--primary);color:#fff}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.small{color:var(--muted);font-size:14px}
+.options{display:grid;gap:8px;margin:12px 0}
+.option{border:1px solid var(--border);padding:10px;border-radius:10px;cursor:pointer;background:#fff}
+.option.correct{border-color:#10b981;background:#ecfdf5}
+.option.incorrect{border-color:#ef4444;background:#fef2f2}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--border);border-bottom-width:2px;background:#fff;border-radius:6px;padding:1px 6px}
+pre{background:#0b1020;color:#e5e7eb;border-radius:12px;padding:12px;overflow:auto;border:1px solid #0b1020}
+.result{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.result .stat{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}
+.badge.topic{background:#e2e8f0;color:#0f172a;border:1px solid #cbd5e1}
+.hint{display:none;margin:10px 0;padding:10px;border:1px dashed #93c5fd;background:#eff6ff;color:#1e3a8a;border-radius:10px}
+footer{padding:18px 0;color:var(--muted);text-align:center}
+@media (max-width:900px){ .hero{grid-template-columns:1fr} .result{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">ML</div>
+    <div>
+      <div style="font-weight:800">ML Concepts Quiz — Beginner Edition</div>
+      <div class="small">White background • simple language • hints & explanations</div>
+    </div>
+    <nav class="nav">
+      <a href="#quiz">Quiz</a>
+      <a href="#results">Results</a>
+      <a href="#key">Answer key</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero section">
+    <div class="panel">
+      <h1>Learn & check your basics</h1>
+      <p>One question at a time. Use hints if you’re stuck. You get instant feedback and a friendly explanation after each question. Keyboard: <span class="kbd">←</span>/<span class="kbd">→</span> to move, <span class="kbd">R</span> to retake.</p>
+      <div class="badges"><span class="badge">Supervised</span><span class="badge">Unsupervised</span><span class="badge">Data</span><span class="badge">Metrics</span><span class="badge">Over/Underfitting</span><span class="badge">Practical</span></div>
+      <div class="controls">
+        <button class="btn primary" id="startBtn">Start quiz</button>
+        <button class="btn" id="shuffleBtn">Shuffle questions</button>
+        <label class="small"><input type="checkbox" id="hideExplain"> Hide explanations until the end</label>
+      </div>
+    </div>
+    <div class="hero-graphic">
+      <svg width="92%" viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Beginner quiz illustration">
+        <rect x="30" y="40" width="540" height="210" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="300" y="80" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#334155">Beginner ML Quiz</text>
+        <rect x="70" y="120" width="460" height="18" rx="9" fill="#e2e8f0"/>
+        <rect x="70" y="120" width="120" height="18" rx="9" fill="#60a5fa"/>
+        <circle cx="200" cy="129" r="10" fill="#10b981"/>
+        <text x="300" y="190" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#64748b">Short, clear questions • Helpful hints</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="section" id="quiz">
+    <div class="card">
+      <div class="progress" aria-label="progress"><div id="bar"></div></div>
+      <div class="small" style="margin-top:6px">Question <span id="qIdx">0</span>/<span id="qTotal">0</span> — <span class="badge topic" id="topic"></span></div>
+      <h2 id="qText" style="margin:10px 0 6px"></h2>
+      <div id="qExtra" class="small"></div>
+      <div id="hint" class="hint"></div>
+      <div id="options" class="options"></div>
+      <div id="answerInput" style="display:none;margin:12px 0"></div>
+      <div id="feedback" class="small"></div>
+      <div class="controls">
+        <button class="btn" id="hintBtn">Show hint</button>
+        <button class="btn" id="prevBtn" disabled>Prev</button>
+        <button class="btn primary" id="submitBtn" disabled>Submit</button>
+        <button class="btn" id="nextBtn" disabled>Next</button>
+        <button class="btn" id="skipBtn">Skip</button>
+        <button class="btn" id="retakeBtn" style="margin-left:auto">Retake</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="section" id="results">
+    <div class="card">
+      <h2>Results</h2>
+      <div class="result">
+        <div class="stat">
+          <h3>Score</h3>
+          <div class="small">Correct: <span id="rCorrect">0</span> / <span id="rTotal">0</span></div>
+          <div class="small">Percent: <span id="rPct">0%</span></div>
+          <div class="controls"><button class="btn" id="downloadBtn">Download results (JSON)</button></div>
+        </div>
+        <div class="stat">
+          <h3>By topic</h3>
+          <div id="byTopic" class="small"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KEY -->
+  <section class="section" id="key">
+    <div class="card">
+      <h2>Printable answer key</h2>
+      <ol id="keyList" class="small"></ol>
+    </div>
+  </section>
+
+  <footer>Have fun learning! • Press <span class="kbd">R</span> to retake • Built for beginners</footer>
+</main>
+
+<script>
+// Types: 'single', 'multi', 'tf', 'numeric'
+const QUESTIONS = [
+  {id:1, topic:'Basics', type:'single', points:1,
+   q:'What is Machine Learning (ML)?',
+   options:['Writing fixed rules by hand','A system that learns patterns from data to make predictions','A database for storing files','Only deep neural networks'],
+   answer:[1], hint:'Think: data in, predictions out — without coding every rule.',
+   explain:'ML learns from examples instead of hard‑coding all rules.'},
+
+  {id:2, topic:'Basics', type:'single', points:1,
+   q:'Which is a supervised learning task?',
+   options:['Grouping customers by similarity','Predicting tomorrow’s temperature','Finding unusual transactions without labels','Visualizing data in 2D'],
+   answer:[1], hint:'Supervised = you have input X and target y.',
+   explain:'Predicting a number with known past targets is supervised (regression).'},
+
+  {id:3, topic:'Basics', type:'single', points:1,
+   q:'Which is an unsupervised learning task?',
+   options:['Classifying emails as spam or not','Predicting house price from area','Clustering news articles by topic','Forecasting next month’s sales'],
+   answer:[2], hint:'No labels (y) are provided.',
+   explain:'Clustering groups data without labels — classic unsupervised.'},
+
+  {id:4, topic:'Data', type:'single', points:1,
+   q:'In a spam filter, what is the label (target)?',
+   options:['The email text','Number of words','Spam or not spam','Sender address'],
+   answer:[2], hint:'It’s what you want the model to predict.',
+   explain:'Label is the thing we predict: spam vs not spam.'},
+
+  {id:5, topic:'Data', type:'single', points:1,
+   q:'Why split data into train and test sets?',
+   options:['To make the file smaller','To evaluate how the model generalizes to new data','To remove missing values','To speed up training only'],
+   answer:[1], hint:'Think: honest check on unseen data.',
+   explain:'The test set simulates future, unseen data for an unbiased check.'},
+
+  {id:6, topic:'Overfitting', type:'single', points:1,
+   q:'Which looks like overfitting?',
+   options:['High training accuracy, much lower test accuracy','Both train and test accuracy are low','Both train and test accuracy are high','Model predicts only the majority class'],
+   answer:[0], hint:'Memorizes training data but fails on new data.',
+   explain:'Overfitting = great on train, poor on test.'},
+
+  {id:7, topic:'Underfitting', type:'single', points:1,
+   q:'Which looks like underfitting?',
+   options:['High train, low test accuracy','Low train and low test accuracy','High train and high test accuracy','Improving with more data'],
+   answer:[1], hint:'Model too simple to learn the pattern.',
+   explain:'Underfit = performs poorly even on training data.'},
+
+  {id:8, topic:'Types', type:'single', points:1,
+   q:'Regression vs Classification: which statement is true?',
+   options:['Regression predicts categories; classification predicts numbers','Both predict numbers','Regression predicts numbers; classification predicts categories','Neither deals with prediction'],
+   answer:[2], hint:'House price vs spam detection.',
+   explain:'Regression → numbers; Classification → categories.'},
+
+  {id:9, topic:'Metrics', type:'single', points:1,
+   q:'Accuracy is:',
+   options:['(TP + TN) / all samples','TP / (TP + FP)','TP / (TP + FN)','(FP + FN) / all samples'],
+   answer:[0], hint:'Correct predictions over total.',
+   explain:'Accuracy counts all correct predictions (positives and negatives).'},
+
+  {id:10, topic:'Metrics', type:'single', points:1,
+   q:'Why is accuracy sometimes misleading?',
+   options:['It ignores time of day','It can look high when classes are very imbalanced','It needs probability outputs','It can be above 100%'],
+   answer:[1], hint:'Think: 99% “not fraud” → predict all “not fraud”',
+   explain:'With heavy imbalance, a dumb majority guess can score high accuracy.'},
+
+  {id:11, topic:'Metrics', type:'multi', points:2,
+   q:'Choose ALL correct statements.',
+   options:['Precision: of the predicted positives, how many are truly positive','Recall: of the actual positives, how many we found','Precision + Recall must equal 1','F1 balances precision and recall'],
+   answer:[0,1,3], hint:'Precision = quality of positives; Recall = coverage of positives.',
+   explain:'Precision ≠ 1 − Recall. F1 is the harmonic mean of precision and recall.'},
+
+  {id:12, topic:'Confusion', type:'single', points:1,
+   q:'A “false positive” means:',
+   options:['Predicted negative but actually positive','Predicted positive but actually negative','Both prediction and truth are positive','Both prediction and truth are negative'],
+   answer:[1], hint:'“Positive” prediction was false.',
+   explain:'FP = model said positive; truth was negative.'},
+
+  {id:13, topic:'Baseline', type:'single', points:1,
+   q:'A good baseline for classification is:',
+   options:['Guess randomly','Always predict the majority class','Use a very deep network first','Skip evaluation'],
+   answer:[1], hint:'Start simple, then improve.',
+   explain:'Majority class or simple rules set a baseline to beat.'},
+
+  {id:14, topic:'Encoding', type:'single', points:1,
+   q:'One‑hot encoding is used for:',
+   options:['Numeric features like age','Dates only','Categorical text like city names','Target labels only'],
+   answer:[2], hint:'Turn categories into 0/1 columns.',
+   explain:'One‑hot converts categories to binary indicator columns.'},
+
+  {id:15, topic:'Scaling', type:'single', points:1,
+   q:'Feature scaling is MOST important for:',
+   options:['k‑Nearest Neighbors (kNN)','Decision Trees','Random Forests','Rules‑based systems'],
+   answer:[0], hint:'Distance‑based methods care about units.',
+   explain:'kNN uses distances; unscaled features can dominate.'},
+
+  {id:16, topic:'Algorithms', type:'single', points:1,
+   q:'k‑Nearest Neighbors (kNN) classifies by:',
+   options:['Averaging tree leaves','Majority vote of the closest k points','Random chance','Counting words only'],
+   answer:[1], hint:'Neighbors vote!',
+   explain:'kNN looks at nearby labeled points to decide.'},
+
+  {id:17, topic:'Algorithms', type:'single', points:1,
+   q:'A decision tree:',
+   options:['Builds if‑else rules by splitting features','Always predicts a number','Needs scaled features to work','Cannot handle categories'],
+   answer:[0], hint:'Think flowchart.',
+   explain:'Trees split features to form a flowchart of decisions.'},
+
+  {id:18, topic:'Algorithms', type:'single', points:1,
+   q:'Logistic Regression is typically used for:',
+   options:['Binary classification with probabilities','Image generation','Clustering without labels','Sorting files'],
+   answer:[0], hint:'Outputs probability between 0 and 1.',
+   explain:'It models the log‑odds for binary classification.'},
+
+  {id:19, topic:'Splits', type:'multi', points:2,
+   q:'Match each split to its role (choose ALL correct).',
+   options:['Train: used to fit the model','Validation: used to tune choices like k or max_depth','Test: final unbiased estimate on unseen data','Test: used again and again to pick hyperparameters'],
+   answer:[0,1,2], hint:'Keep the test set as the final exam.',
+   explain:'Never tune on the test; use it once at the end.'},
+
+  {id:20, topic:'CV', type:'single', points:1,
+   q:'Cross‑validation helps by:',
+   options:['Using multiple train/test splits to get a more reliable estimate','Making the file size smaller','Speeding up neural networks only','Eliminating the need for a test set always'],
+   answer:[0], hint:'Rotate the validation set.',
+   explain:'CV averages results over splits, reducing variance of estimates.'},
+
+  {id:21, topic:'Practical', type:'single', points:1,
+   q:'Setting a random seed (random_state) is useful because:',
+   options:['It makes results reproducible','It always improves accuracy','It reduces memory use','It removes missing values'],
+   answer:[0], hint:'Same seed → same split.',
+   explain:'Reproducibility helps debugging and comparisons.'},
+
+  {id:22, topic:'Leakage', type:'multi', points:2,
+   q:'Which are examples of data leakage? (choose ALL)',
+   options:['Scaling features using only the training split','Creating features using future information not available at prediction time','Computing target statistics using the whole dataset before splitting','One‑hot encoding on training data only'],
+   answer:[1,2], hint:'Future info or peeking at test labels is leakage.',
+   explain:'Any use of test or future info during training leaks information.'},
+
+  {id:23, topic:'Scaling', type:'single', points:1,
+   q:'Standardization vs Normalization:',
+   options:['Standardization makes mean≈0, std≈1; Normalization rescales to a range (like 0–1)','They are the same','Both only for text','Neither helps any model'],
+   answer:[0], hint:'Z‑score vs min‑max.',
+   explain:'Standardize → z‑scores; Normalize → min‑max range.'},
+
+  {id:24, topic:'Training', type:'single', points:1,
+   q:'An “epoch” is:',
+   options:['One full pass over the training data','One gradient step only','The size of a mini‑batch','Another name for accuracy'],
+   answer:[0], hint:'Loop over the whole dataset once.',
+   explain:'Each epoch processes all training samples once.'},
+
+  {id:25, topic:'Training', type:'single', points:1,
+   q:'Batch size means:',
+   options:['Number of samples used per gradient update','Number of epochs','Number of features','Number of classes'],
+   answer:[0], hint:'Mini‑batches feed the optimizer.',
+   explain:'Common sizes: 16, 32, 64…'},
+
+  {id:26, topic:'Generalization', type:'single', points:1,
+   q:'Early stopping helps by:',
+   options:['Stopping training when validation score stops improving','Always making training faster','Increasing model size','Removing the need for a test set'],
+   answer:[0], hint:'Watch validation performance.',
+   explain:'It reduces overfitting and can save time.'},
+
+  {id:27, topic:'Params', type:'single', points:1,
+   q:'Parameters vs Hyperparameters:',
+   options:['Parameters are learned from data (e.g., weights); Hyperparameters are set by you (e.g., k in kNN)','Both are learned automatically','Both are set by you','Neither affects the model'],
+   answer:[0], hint:'Weights vs dials.',
+   explain:'Parameters come from training; hyperparameters control training.'},
+
+  {id:28, topic:'Time Series', type:'single', points:1,
+   q:'For time‑series validation you should:',
+   options:['Shuffle randomly like usual','Keep time order and validate on future chunks','Use labels from the future to fill gaps','Split by alphabet of IDs'],
+   answer:[1], hint:'Past → future. Keep order.',
+   explain:'Use a rolling/forward split to avoid future leakage.'},
+
+  {id:29, topic:'Pipelines', type:'single', points:1,
+   q:'Why use a pipeline (e.g., preprocessing + model)?',
+   options:['To ensure the same steps are applied during training and in production','To make plots','To speed up Wi‑Fi','To avoid using a test set'],
+   answer:[0], hint:'One object = consistent steps.',
+   explain:'Pipelines reduce mistakes and make deployment easier.'},
+
+  {id:30, topic:'Metrics', type:'numeric', points:2,
+   q:'If TP=40, TN=50, FP=10, FN=0, what is Accuracy? (0..1)',
+   extras:'Round to 2 decimals.', correct: (40+50)/(40+50+10+0), tol: 0.02,
+   hint:'Accuracy = (TP + TN) / (TP + TN + FP + FN)',
+   explain:'(40 + 50) / 100 = 0.90.'}
+];
+
+// ---------- State ----------
+let order = [...Array(QUESTIONS.length).keys()];
+let idx = 0;
+let answered = {};
+let byTopic = {};
+
+// ---------- Helpers ----------
+function $(sel, root=document){ return root.querySelector(sel); }
+function $all(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+
+function renderKey(){
+  const ol = $("#keyList"); ol.innerHTML='';
+  order.forEach((qi)=>{
+    const q = QUESTIONS[qi];
+    const ansText = (q.type==='numeric')
+      ? (q.correct.toFixed(2) + ` ± ${q.tol}`)
+      : (q.type==='tf' ? (q.answer[0]?'True':'False') : q.answer.map(a=>q.options[a]).join('; '));
+    const li = document.createElement('li');
+    li.innerHTML = `<div><b>${q.q}</b> <span class="badge topic">${q.topic}</span></div>
+                    <div class="small">Answer: <b>${ansText}</b></div>
+                    <div class="small">Explanation: ${q.explain}</div>`;
+    ol.appendChild(li);
+  });
+}
+
+function updateProgress(){
+  $("#qIdx").textContent = idx+1;
+  $("#qTotal").textContent = order.length;
+  $("#bar").style.width = ((idx)/order.length*100) + '%';
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[order[idx]];
+  $("#topic").textContent = q.topic;
+  $("#qText").textContent = q.q;
+  $("#qExtra").textContent = q.extras || '';
+  $("#feedback").textContent = '';
+  $("#submitBtn").disabled = true;
+  $("#nextBtn").disabled = true;
+  $("#prevBtn").disabled = (idx===0);
+  $("#hint").style.display = 'none'; $("#hint").textContent = q.hint || '';
+
+  $("#options").innerHTML = '';
+  const inputWrap = $("#answerInput");
+  inputWrap.style.display='none'; inputWrap.innerHTML='';
+
+  if(q.type==='single' || q.type==='multi' || q.type==='tf'){
+    let opts = q.options || (q.type==='tf' ? ['True','False'] : []);
+    if(q.type==='tf'){ q.answerText = q.answer[0] ? 'True':'False'; }
+    opts.forEach((opt, i)=>{
+      const div = document.createElement('label');
+      div.className='option';
+      const input = document.createElement('input');
+      input.type = (q.type==='multi') ? 'checkbox' : 'radio';
+      input.name = 'opt';
+      input.value = i;
+      input.addEventListener('change', ()=>{ $("#submitBtn").disabled = false; });
+      div.appendChild(input);
+      const span = document.createElement('span'); span.style.marginLeft='8px'; span.textContent = opt;
+      div.appendChild(span); $("#options").appendChild(div);
+    });
+  } else if(q.type==='numeric'){
+    inputWrap.style.display='block';
+    inputWrap.innerHTML = `<input id="numAns" type="number" step="0.01" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:10px" placeholder="Enter a number">`;
+    $("#numAns").addEventListener('input', ()=>{ $("#submitBtn").disabled = ($("#numAns").value===''); });
+  }
+  updateProgress();
+
+  const prev = answered[q.id];
+  if(prev){ applyAnswerUI(q, prev); $("#nextBtn").disabled = (idx >= order.length-1); }
+}
+
+function arraysEqual(a,b){ return a.length===b.length && a.every((x,i)=>x===b[i]); }
+
+function gradeCurrent(){
+  const q = QUESTIONS[order[idx]];
+  let correct=false, chosen=null, value=null;
+
+  if(q.type==='single' || q.type==='tf'){
+    const sel = $("#options input:checked"); if(!sel) return {correct:false};
+    chosen = [Number(sel.value)];
+    correct = arraysEqual(chosen, q.answer);
+  } else if(q.type==='multi'){
+    const checks = $all("#options input:checked").map(x=>Number(x.value)).sort((a,b)=>a-b);
+    chosen = checks;
+    correct = arraysEqual(checks, q.answer.slice().sort((a,b)=>a-b));
+  } else if(q.type==='numeric'){
+    const v = Number($("#numAns").value);
+    value = v;
+    correct = Math.abs(v - q.correct) <= (q.tol ?? 0.01);
+  }
+
+  if(!(q.id in answered)){
+    byTopic[q.topic] = byTopic[q.topic] || {correct:0,total:0};
+    byTopic[q.topic].total += 1;
+    if(correct) byTopic[q.topic].correct += 1;
+  } else {
+    // don't double-count
+  }
+
+  const record = {correct, chosen, value, time:Date.now()};
+  answered[q.id] = record;
+  applyAnswerUI(q, record);
+  updateResultsPanel();
+}
+
+function applyAnswerUI(q, record){
+  const hideExplain = $("#hideExplain").checked;
+  $("#submitBtn").disabled = true;
+  $("#nextBtn").disabled = (idx >= order.length-1);
+
+  if(q.type==='single' || q.type==='multi' || q.type==='tf'){
+    $all("#options .option").forEach((el,i)=>{
+      const input = el.querySelector('input');
+      const selected = record.chosen && record.chosen.includes(i);
+      input.checked = selected;
+      el.classList.remove('correct','incorrect');
+      if(selected && record.correct){ el.classList.add('correct'); }
+      if(selected && !record.correct){ el.classList.add('incorrect'); }
+      if(q.answer.includes(i)){ el.style.outline='2px dashed #10b98166'; }
+    });
+  }
+
+  const fb = $("#feedback");
+  fb.innerHTML = record.correct ?
+    `<span style="color:#065f46;font-weight:700">Correct!</span>` :
+    `<span style="color:#b91c1c;font-weight:700">Not quite.</span>`;
+  if(!hideExplain) fb.innerHTML += ` <span class="small">— ${q.explain}</span>`;
+}
+
+function updateResultsPanel(){
+  const totalAnswered = Object.keys(answered).length;
+  const correctCount   = Object.values(answered).filter(a=>a.correct).length;
+  $("#rCorrect").textContent = correctCount;
+  $("#rTotal").textContent   = order.length;
+  $("#rPct").textContent     = Math.round(100*correctCount/order.length) + '%';
+  const bt = $("#byTopic"); bt.innerHTML='';
+  Object.entries(byTopic).forEach(([k,v])=>{
+    const div = document.createElement('div');
+    const pct = Math.round(100*(v.correct/(v.total||1)));
+    div.textContent = `${k}: ${v.correct}/${v.total} (${pct}%)`;
+    bt.appendChild(div);
+  });
+}
+
+function nextQ(){ if(idx < order.length-1){ idx++; renderQuestion(); } }
+function prevQ(){ if(idx > 0){ idx--; renderQuestion(); } }
+function skipQ(){ if(idx < order.length-1){ idx++; renderQuestion(); } }
+function toggleHint(){
+  const el = $("#hint");
+  el.style.display = (el.style.display==='none' || el.style.display==='') ? 'block' : 'none';
+}
+
+function startQuiz(){
+  idx=0; answered={}; byTopic={};
+  renderKey();
+  renderQuestion();
+  updateResultsPanel();
+}
+
+function shuffleQuestions(){
+  order = shuffle(order);
+  startQuiz();
+}
+
+// Events
+$("#startBtn").addEventListener('click', startQuiz);
+$("#shuffleBtn").addEventListener('click', shuffleQuestions);
+$("#submitBtn").addEventListener('click', gradeCurrent);
+$("#nextBtn").addEventListener('click', nextQ);
+$("#prevBtn").addEventListener('click', prevQ);
+$("#skipBtn").addEventListener('click', skipQ);
+$("#retakeBtn").addEventListener('click', ()=>{ order=[...Array(QUESTIONS.length).keys()]; startQuiz(); });
+$("#hintBtn").addEventListener('click', toggleHint);
+
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='ArrowRight') nextQ();
+  if(e.key==='ArrowLeft') prevQ();
+  if(e.key.toLowerCase()==='r'){ order=[...Array(QUESTIONS.length).keys()]; startQuiz(); }
+});
+
+// Init
+$("#qTotal").textContent = QUESTIONS.length;
+renderKey(); updateResultsPanel();
+
+// Results download
+$("#downloadBtn").addEventListener('click', ()=>{
+  const payload = {
+    correct: Object.values(answered).filter(a=>a.correct).length,
+    total: order.length,
+    byTopic,
+    answered
+  };
+  const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'ml_quiz_beginner_results.json'; a.click();
+  URL.revokeObjectURL(url);
+});
+</script>
+</body>
+</html>

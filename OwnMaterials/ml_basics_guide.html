@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Machine Learning Basics — A Friendly, Step‑by‑Step Guide</title>
+<meta name="description" content="Learn Machine Learning basics with clear steps and practical examples: regression for house prices, classification for spam detection, and clustering for customer segments.">
+<style>
+:root{
+  --bg:#ffffff; --fg:#0f172a; --muted:#475569; --primary:#1e40af; --accent:#10b981;
+  --card:#f8fafc; --chip:#e2e8f0; --border:#e5e7eb; --shadow:0 12px 32px rgba(2,8,23,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,'Helvetica Neue',Arial}
+a{color:var(--primary);text-decoration:none} a:hover{text-decoration:underline}
+.header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#fff,rgba(255,255,255,.92));backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1200px;margin:auto;display:flex;gap:16px;align-items:center;padding:12px 16px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#60a5fa,#a7f3d0);display:grid;place-items:center;color:#0b1020;font-weight:800;box-shadow:var(--shadow)}
+.nav{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
+.nav a{padding:8px 10px;border-radius:8px} .nav a:hover{background:var(--card)}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:28px 0}
+.hero .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 8px 0;font-size:2rem} .hero p{margin:0;color:var(--muted)}
+.hero-graphic{aspect-ratio:16/10;border:1px dashed var(--border);border-radius:16px;display:grid;place-items:center;background:#fff}
+.badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:16px 0}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 6px} .small{color:var(--muted);font-size:14px}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--border);border-bottom-width:2px;background:#fff;border-radius:6px;padding:1px 6px}
+.section{padding:24px 0} .section h2{margin:0 0 10px} .section p{color:var(--muted)} .hl{color:var(--primary);font-weight:700}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.tab{padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer}
+.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.tabpanel{display:none} .tabpanel.active{display:block;animation:fade .2s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.timeline{position:relative;padding-left:20px;margin:10px 0}
+.timeline::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:2px;background:#cbd5e1}
+.step{position:relative;margin:12px 0;padding-left:10px}
+.step::before{content:"";position:absolute;left:-2px;top:6px;width:10px;height:10px;border-radius:999px;background:var(--primary)}
+details{border:1px solid var(--border);border-radius:12px;padding:10px;background:#fff} details+details{margin-top:8px} summary{cursor:pointer;font-weight:600}
+pre, code{font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.code{background:#0b1020;color:#e5e7eb;border-radius:12px;padding:12px;border:1px solid #0b1020;overflow:auto;position:relative}
+button.copy{position:absolute;right:8px;top:8px;padding:6px 8px;border-radius:8px;border:1px solid #334155;background:#111827;color:#e5e7eb;cursor:pointer;font-size:12px}
+button.copy.copied{background:#064e3b;border-color:#065f46}
+.callout{background:#ecfeff;border:1px solid #a5f3fc;border-radius:12px;padding:10px}
+.list{line-height:1.55}
+footer{padding:18px 0;color:var(--muted);text-align:center}
+.btn{display:inline-block;padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#fff}
+.btn.primary{border-color:var(--primary);color:#fff;background:var(--primary)}
+blockquote{margin:0;padding:12px;border-left:4px solid var(--primary);background:#f1f5f9;border-radius:8px}
+@media (max-width:900px){ .hero{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="logo">ML</div>
+      <div>
+        <div style="font-weight:800">ML Basics — Step‑by‑Step</div>
+        <div class="small">White background · clean CSS · practical examples</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#overview">Overview</a>
+      <a href="#types">Types</a>
+      <a href="#process">Process</a>
+      <a href="#examples">Examples</a>
+      <a href="#checklist">Checklist</a>
+      <a href="#resources">Resources</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero section" id="overview">
+    <div>
+      <div class="panel">
+        <h1>Machine Learning <span class="hl">basics</span>, explained simply</h1>
+        <p>ML lets computers learn patterns from data to make predictions and decisions. Below, you’ll learn the core ideas and walk through <strong>step‑by‑step solutions</strong> to real‑world problems.</p>
+        <div class="badges">
+          <span class="badge">Regression</span><span class="badge">Classification</span><span class="badge">Clustering</span><span class="badge">Evaluation</span>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <a class="btn primary" href="#examples">Jump to Examples</a>
+          <a class="btn" href="#process">See the ML Process</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-graphic">
+      <svg width="92%" viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: data to model to prediction">
+        <defs><linearGradient id="g1" x1="0" x2="1"><stop stop-color="#60a5fa"/><stop offset="1" stop-color="#a7f3d0"/></linearGradient></defs>
+        <rect x="15" y="30" width="160" height="120" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="95" y="60" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Data</text>
+        <circle cx="65" cy="95" r="8" fill="#93c5fd"/><circle cx="105" cy="110" r="8" fill="#6ee7b7"/><circle cx="125" cy="85" r="8" fill="#60a5fa"/>
+        <rect x="220" y="30" width="160" height="120" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="300" y="60" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Model</text>
+        <rect x="260" y="80" width="100" height="40" rx="8" fill="url(#g1)"/>
+        <rect x="425" y="30" width="160" height="120" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="505" y="60" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Prediction</text>
+        <rect x="465" y="85" width="80" height="30" rx="8" fill="#22c55e"/>
+        <path d="M175 90 L220 90" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <path d="M380 90 L425 90" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L6,3 z" fill="#0ea5e9"/></marker></defs>
+      </svg>
+    </div>
+  </section>
+
+  <section class="section" id="types">
+    <h2>Types of ML</h2>
+    <p>Most ML problems fall into one of three families.</p>
+    <div class="tabs" role="tablist" aria-label="ML Types">
+      <button class="tab active" data-tab="sup" role="tab" aria-selected="true">Supervised</button>
+      <button class="tab" data-tab="unsup" role="tab" aria-selected="false">Unsupervised</button>
+      <button class="tab" data-tab="rl" role="tab" aria-selected="false">Reinforcement</button>
+    </div>
+    <div class="tabpanel active" id="sup" role="tabpanel">
+      <div class="grid">
+        <div class="card"><h3>Regression</h3><p class="small">Predict a <strong>number</strong> (price, time, quantity).</p></div>
+        <div class="card"><h3>Classification</h3><p class="small">Predict a <strong>category</strong> (spam/ham, disease yes/no).</p></div>
+        <div class="card"><h3>Examples</h3><ul class="small list"><li>House price prediction</li><li>Spam detection</li><li>Handwritten digit recognition</li></ul></div>
+      </div>
+    </div>
+    <div class="tabpanel" id="unsup" role="tabpanel">
+      <div class="grid">
+        <div class="card"><h3>Clustering</h3><p class="small">Group similar items without labels (K‑Means).</p></div>
+        <div class="card"><h3>Dimensionality Reduction</h3><p class="small">Compress data (PCA/UMAP) for visualization or speed.</p></div>
+        <div class="card"><h3>Examples</h3><ul class="small list"><li>Customer segmentation</li><li>Topic grouping</li><li>Anomaly detection</li></ul></div>
+      </div>
+    </div>
+    <div class="tabpanel" id="rl" role="tabpanel">
+      <div class="grid">
+        <div class="card"><h3>Agent + Reward</h3><p class="small">Learn by trial &amp; error to maximize reward.</p></div>
+        <div class="card"><h3>Policies</h3><p class="small">A policy maps states → actions.</p></div>
+        <div class="card"><h3>Examples</h3><ul class="small list"><li>Game playing</li><li>Robotics</li><li>Recommendation exploration</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="process">
+    <h2>The ML process (end‑to‑end)</h2>
+    <div class="timeline">
+      <div class="step"><strong>1. Define the problem</strong> — what do we predict/decide and why?</div>
+      <div class="step"><strong>2. Collect &amp; explore data</strong> — understand quality, distributions, and signals.</div>
+      <div class="step"><strong>3. Split data</strong> — train/validation/test to estimate generalization.</div>
+      <div class="step"><strong>4. Preprocess</strong> — clean, encode categories, scale numeric features.</div>
+      <div class="step"><strong>5. Choose a baseline model</strong> — start simple, measure properly.</div>
+      <div class="step"><strong>6. Train &amp; tune</strong> — cross‑validate, adjust hyperparameters.</div>
+      <div class="step"><strong>7. Evaluate</strong> — pick the right metric(s) for the business goal.</div>
+      <div class="step"><strong>8. Deploy &amp; monitor</strong> — watch for drift, retrain as needed.</div>
+    </div>
+
+    <details>
+      <summary>See practical tips for each step</summary>
+      <div class="grid" style="margin-top:8px">
+        <div class="card"><h3>Data quality</h3><p class="small">Handle missing values, duplicates, and outliers. Document assumptions.</p></div>
+        <div class="card"><h3>Validation</h3><p class="small">Use k‑fold CV for small datasets; time‑series split for temporal data.</p></div>
+        <div class="card"><h3>Feature engineering</h3><p class="small">Create informative features (ratios, counts, domain rules).</p></div>
+        <div class="card"><h3>Regularization</h3><p class="small">Prefer simpler models unless complexity clearly wins and is stable.</p></div>
+      </div>
+    </details>
+  </section>
+
+  <section class="section" id="examples">
+    <h2>Worked Examples — step by step</h2>
+
+    <div class="card">
+      <h3>Example 1 — House Price Prediction (Regression)</h3>
+      <p class="small">Goal: predict house price from features like area, rooms, and location.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Steps</h3>
+          <ol class="small list">
+            <li><strong>Frame:</strong> Numeric prediction → use regression.</li>
+            <li><strong>Data:</strong> Collect past sales; remove extreme outliers.</li>
+            <li><strong>Prep:</strong> One‑hot encode location; scale numeric features.</li>
+            <li><strong>Model:</strong> Start with Linear Regression → compare with Random Forest.</li>
+            <li><strong>Validate:</strong> k‑fold CV; metrics: RMSE/MAE, R².</li>
+            <li><strong>Improve:</strong> Add interactions (area×rooms); tune model depth.</li>
+            <li><strong>Deploy:</strong> Save pipeline; monitor error vs time/season.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>scikit‑learn code</h3>
+          <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code class="language-python">from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.linear_model import LinearRegression
+import numpy as np, pandas as pd
+
+# df: pandas DataFrame with columns: area, rooms, city, price
+num = ["area","rooms"]; cat = ["city"]
+X = df[num+cat]; y = df["price"]
+
+pre = ColumnTransformer([
+    ("num", StandardScaler(), num),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), cat)
+])
+pipe = Pipeline([("pre", pre), ("model", LinearRegression())])
+
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, random_state=42)
+pipe.fit(Xtr, ytr)
+pred = pipe.predict(Xte)
+rmse = mean_squared_error(yte, pred, squared=False)
+print("RMSE:", rmse, "R²:", r2_score(yte, pred))</code></pre>
+          <div class="callout small">Tip: If linear model underfits, try <strong>Gradient Boosting</strong> or <strong>Random Forest</strong> with tuned depth and learning rate.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Example 2 — Spam Detection (Classification)</h3>
+      <p class="small">Goal: classify emails as <em>spam</em> or <em>ham</em>. Evals must handle class imbalance.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Steps</h3>
+          <ol class="small list">
+            <li><strong>Frame:</strong> Binary classification → logistic regression / SVM / tree‑based.</li>
+            <li><strong>Data:</strong> Labeled emails; balance classes via weighting.</li>
+            <li><strong>Prep:</strong> Use <span class="hl">TF‑IDF</span> on message text; remove stopwords.</li>
+            <li><strong>Model:</strong> Start with Logistic Regression; compare with Linear SVM.</li>
+            <li><strong>Validate:</strong> Stratified k‑fold; monitor <strong>precision/recall</strong>, <strong>F1</strong>, PR‑AUC.</li>
+            <li><strong>Improve:</strong> N‑grams, character features; calibrate probabilities.</li>
+            <li><strong>Deploy:</strong> Threshold tuned for business risk (false positives hurt users).</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>scikit‑learn code</h3>
+          <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code class="language-python">from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+from sklearn.pipeline import Pipeline
+
+# texts: list[str], labels: list[int]
+pipe = Pipeline([
+    ("tfidf", TfidfVectorizer(ngram_range=(1,2), min_df=2)),
+    ("clf", LogisticRegression(max_iter=300, class_weight="balanced"))
+])
+Xtr, Xte, ytr, yte = train_test_split(texts, labels, test_size=0.2, stratify=labels, random_state=7)
+pipe.fit(Xtr, ytr)
+print(classification_report(yte, pipe.predict(Xte)))</code></pre>
+          <div class="callout small">Use <strong>PR‑AUC</strong> (precision‑recall area) when classes are imbalanced; accuracy can be misleading.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Example 3 — Customer Segmentation (Clustering)</h3>
+      <p class="small">Goal: group customers by behavior (spend, frequency, categories) to personalize campaigns.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Steps</h3>
+          <ol class="small list">
+            <li><strong>Frame:</strong> No labels available → clustering.</li>
+            <li><strong>Data:</strong> Aggregate transactions into RFM (Recency, Frequency, Monetary).</li>
+            <li><strong>Prep:</strong> Scale features; remove outliers; consider log transform for skew.</li>
+            <li><strong>Model:</strong> Run K‑Means across k=2..8; pick k via silhouette score.</li>
+            <li><strong>Validate:</strong> Profiles make business sense? Stable across time splits?</li>
+            <li><strong>Act:</strong> Design campaigns per segment; measure uplift via A/B tests.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>scikit‑learn code</h3>
+          <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code class="language-python">from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import silhouette_score
+import numpy as np
+
+# X: array-like with RFM features per customer
+X = StandardScaler().fit_transform(X)
+best_k, best_score = None, -1
+for k in range(2,9):
+    km = KMeans(n_clusters=k, n_init='auto', random_state=42).fit(X)
+    score = silhouette_score(X, km.labels_)
+    if score > best_score: best_k, best_score = k, score
+print("Best k:", best_k, "score:", best_score)</code></pre>
+          <div class="callout small">Inspect per‑cluster means and sample customers. Names like “VIP”, “Loyal”, “At‑risk” help stakeholders reason about actions.</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="section" id="checklist">
+    <h2>Quick checklist</h2>
+    <div class="grid">
+      <div class="card"><h3>Before training</h3><ul class="small list"><li>Clear objective + success metric</li><li>Data splits decided (no leakage)</li><li>Baseline established</li></ul></div>
+      <div class="card"><h3>During training</h3><ul class="small list"><li>Cross‑validation used</li><li>Hyperparameters tracked</li><li>Overfitting monitored</li></ul></div>
+      <div class="card"><h3>After training</h3><ul class="small list"><li>Model saved as a pipeline</li><li>Monitoring plan in place</li><li>Ethical &amp; privacy checks</li></ul></div>
+    </div>
+    <blockquote><strong>Rule of thumb:</strong> prefer simple, explainable solutions unless a more complex model clearly adds value and remains stable.</blockquote>
+  </section>
+
+  <section class="section" id="resources">
+    <h2>Resources</h2>
+    <div class="grid">
+      <div class="card"><h3>Code templates</h3><p class="small">Pipelines with preprocessing (<span class="hl">ColumnTransformer</span>), CV, metrics.</p></div>
+      <div class="card"><h3>Datasets</h3><p class="small">Kaggle (tabular), UCI ML (benchmarking), scikit‑learn toy datasets.</p></div>
+      <div class="card"><h3>Next steps</h3><p class="small">Learn feature engineering, tree‑based models, and model monitoring.</p></div>
+    </div>
+  </section>
+
+  <footer>Built for learning • Print this page for a handy reference</footer>
+</main>
+
+<script>
+document.querySelectorAll('.tab').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tabpanel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected', b===btn ? 'true':'false'));
+  });
+});
+function copyCode(btn){
+  const pre = btn.closest('pre.code'); if(!pre) return;
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.classList.add('copied'); btn.textContent='Copied';
+    setTimeout(()=>{ btn.classList.remove('copied'); btn.textContent='Copy'; }, 1200);
+  });
+}
+window.copyCode = copyCode;
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', (e)=>{
+    const id = a.getAttribute('href').slice(1); const el = document.getElementById(id);
+    if(el){ e.preventDefault(); window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 70, behavior:'smooth'}); history.replaceState(null, '', '#'+id); }
+  });
+});
+</script>
+</body>
+</html>

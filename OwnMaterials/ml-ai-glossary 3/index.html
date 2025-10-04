@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ML/AI Glossary — Interactive 100+ Terms</title>
+  <meta name="description" content="An interactive glossary of 100+ ML/AI terms with examples, search, filters, bookmarks, and a built-in quiz.">
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <img class="logo" src="assets/logo.png" alt="Logo" />
+      <div>
+        <div class="title">ML/AI Interactive Glossary</div>
+        <div class="tagline">White background • 100+ terms • Search • Filters • Bookmarks • Quiz</div>
+      </div>
+      <div style="margin-left:auto" class="counter">
+        <span class="kbd">⌘/Ctrl</span> + <span class="kbd">F</span> to find • <strong id="count">…</strong> terms
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <aside class="sidebar">
+      <h3>Search</h3>
+      <div class="search">
+        <input id="search" type="search" placeholder="Type a term… e.g. Transformer">
+        <button id="clear" title="Clear">✕</button>
+      </div>
+      <div class="toolbar">
+        <button id="showBookmarks" title="Show bookmarks">★ Bookmarks (<span id="bmCount">0</span>)</button>
+        <button id="quiz" title="Quick quiz">❓ Quick Quiz</button>
+      </div>
+      <hr class="sep">
+      <h3>Filter by Category</h3>
+      <div id="chips" class="chips" aria-label="Category filters"></div>
+      <hr class="sep">
+      <div class="note">
+        Tip: Click ☆ on any card to bookmark. Your bookmarks are saved in this browser (localStorage).
+      </div>
+    </aside>
+
+    <section class="content">
+      <section class="hero">
+        <img alt="ML/AI abstract" src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1600&auto=format&fit=crop">
+        <div class="content">
+          <h1>Master the Language of Machine Learning & AI</h1>
+          <p>
+            This interactive glossary explains essential concepts with concise definitions and practical examples.
+            Use the search bar, category chips, and bookmarks to study efficiently. Try the built‑in quiz to test yourself!
+          </p>
+        </div>
+      </section>
+
+      <div id="grid" class="grid" aria-live="polite"></div>
+
+      <footer>
+        Built on 2025-09-06 • Created for learning and quick reference.
+      </footer>
+    </section>
+  </main>
+
+  <!-- Quiz Modal -->
+  <div id="quizModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+    <div id="quizPanel" class="panel">
+      <h3 id="quizTitle">Quick Quiz</h3>
+      <div id="quizChoices" class="choices"></div>
+      <div style="text-align:right;margin-top:8px">
+        <button id="closeQuiz">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

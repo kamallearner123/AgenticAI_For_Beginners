@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ML Concepts Quiz — Interactive • Step-by-Step</title>
+<meta name="description" content="An interactive machine learning concepts quiz with explanations, progress, and per-topic breakdown.">
+<style>
+:root{ --bg:#ffffff; --fg:#0f172a; --muted:#475569; --primary:#1e40af; --accent:#10b981; --border:#e5e7eb; --card:#f8fafc; --shadow:0 14px 36px rgba(2,8,23,.12); }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,'Helvetica Neue',Arial}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#fff,rgba(255,255,255,.93));backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1100px;margin:auto;display:flex;gap:16px;align-items:center;padding:12px 16px}
+.logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#60a5fa,#a7f3d0);display:grid;place-items:center;color:#0b1020;font-weight:800;box-shadow:var(--shadow)}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+.nav a{padding:8px 10px;border-radius:8px} .nav a:hover{background:#eef2ff}
+.container{max-width:1100px;margin:0 auto;padding:0 16px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:28px 0}
+.hero .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 8px 0;font-size:2rem} .hero p{margin:0;color:var(--muted)}
+.hero-graphic{aspect-ratio:16/10;border:1px dashed var(--border);border-radius:16px;display:grid;place-items:center;background:#fff}
+.badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#111827;border:1px solid var(--border)}
+.section{padding:22px 0}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.progress{height:10px;background:#f1f5f9;border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+.progress>div{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.btn{display:inline-block;padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer}
+.btn.primary{border-color:var(--primary);background:var(--primary);color:#fff}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.small{color:var(--muted);font-size:14px}
+.options{display:grid;gap:8px;margin:12px 0}
+.option{border:1px solid var(--border);padding:10px;border-radius:10px;cursor:pointer;background:#fff}
+.option.correct{border-color:#10b981;background:#ecfdf5}
+.option.incorrect{border-color:#ef4444;background:#fef2f2}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--border);border-bottom-width:2px;background:#fff;border-radius:6px;padding:1px 6px}
+pre{background:#0b1020;color:#e5e7eb;border-radius:12px;padding:12px;overflow:auto;border:1px solid #0b1020}
+.result{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.result .stat{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}
+.badge.topic{background:#e2e8f0;color:#0f172a;border:1px solid #cbd5e1}
+footer{padding:18px 0;color:var(--muted);text-align:center}
+@media (max-width:900px){ .hero{grid-template-columns:1fr} .result{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">ML</div>
+    <div>
+      <div style="font-weight:800">ML Concepts Quiz — Interactive</div>
+      <div class="small">White background • clean CSS • explanations included</div>
+    </div>
+    <nav class="nav">
+      <a href="#quiz">Quiz</a>
+      <a href="#results">Results</a>
+      <a href="#key">Answer key</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero section">
+    <div class="panel">
+      <h1>Test your Machine Learning fundamentals</h1>
+      <p>Go one question at a time. You’ll get instant feedback and a final breakdown by topic. Use <span class="kbd">←</span>/<span class="kbd">→</span> to navigate, and <span class="kbd">R</span> to retake.</p>
+      <div class="badges"><span class="badge">Supervised</span><span class="badge">Metrics</span><span class="badge">CV</span><span class="badge">Imbalance</span><span class="badge">Time Series</span><span class="badge">NLP</span><span class="badge">Vision</span><span class="badge">MLOps</span></div>
+      <div class="controls">
+        <button class="btn primary" id="startBtn">Start quiz</button>
+        <button class="btn" id="shuffleBtn">Shuffle questions</button>
+        <label class="small"><input type="checkbox" id="hideExplain"> Hide explanations until the end</label>
+      </div>
+    </div>
+    <div class="hero-graphic">
+      <svg width="92%" viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quiz illustration">
+        <rect x="30" y="40" width="540" height="200" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="300" y="80" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#334155">ML Concepts Quiz</text>
+        <rect x="70" y="110" width="460" height="18" rx="9" fill="#e2e8f0"/>
+        <rect x="70" y="110" width="180" height="18" rx="9" fill="#60a5fa"/>
+        <circle cx="260" cy="119" r="10" fill="#10b981"/>
+        <text x="300" y="180" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#64748b">Answer, get feedback, see your score</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="section" id="quiz">
+    <div class="card">
+      <div class="progress" aria-label="progress"><div id="bar"></div></div>
+      <div class="small" style="margin-top:6px">Question <span id="qIdx">0</span>/<span id="qTotal">0</span> — <span class="badge topic" id="topic"></span></div>
+      <h2 id="qText" style="margin:10px 0 6px"></h2>
+      <div id="qExtra" class="small"></div>
+      <div id="options" class="options"></div>
+      <div id="answerInput" style="display:none;margin:12px 0"></div>
+      <div id="feedback" class="small"></div>
+      <div class="controls">
+        <button class="btn" id="prevBtn" disabled>Prev</button>
+        <button class="btn primary" id="submitBtn" disabled>Submit</button>
+        <button class="btn" id="nextBtn" disabled>Next</button>
+        <button class="btn" id="skipBtn">Skip</button>
+        <button class="btn" id="retakeBtn" style="margin-left:auto">Retake</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="section" id="results">
+    <div class="card">
+      <h2>Results</h2>
+      <div class="result">
+        <div class="stat">
+          <h3>Score</h3>
+          <div class="small">Correct: <span id="rCorrect">0</span> / <span id="rTotal">0</span></div>
+          <div class="small">Percent: <span id="rPct">0%</span></div>
+          <div class="controls"><button class="btn" id="downloadBtn">Download results (JSON)</button></div>
+        </div>
+        <div class="stat">
+          <h3>By topic</h3>
+          <div id="byTopic" class="small"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KEY -->
+  <section class="section" id="key">
+    <div class="card">
+      <h2>Printable answer key</h2>
+      <ol id="keyList" class="small"></ol>
+    </div>
+  </section>
+
+  <footer>Good luck! • Press <span class="kbd">R</span> to retake • Built for learning</footer>
+</main>
+
+<script>
+// ---------- Question bank ----------
+// Types: 'single' (single choice), 'multi' (multi-select), 'tf' (true/false), 'short' (free text), 'numeric' (number with tolerance)
+const QUESTIONS = [
+  {id:1, topic:'Basics', type:'single', points:1,
+   q:'Which task is a classic regression problem?',
+   options:['Detecting spam vs ham','Predicting house price','Grouping customers','Classifying images as cat vs dog'],
+   answer:[1],
+   explain:'Regression predicts a numeric quantity; house price is numeric.'},
+
+  {id:2, topic:'Basics', type:'single', points:1,
+   q:'Which learning type requires labeled targets (y)?',
+   options:['Unsupervised learning','Self-supervised learning','Supervised learning','Reinforcement learning'],
+   answer:[2],
+   explain:'Supervised learning uses (X, y) pairs. Unsupervised has no y; RL uses rewards from interaction.'},
+
+  {id:3, topic:'Data Prep', type:'multi', points:2,
+   q:'Pick ALL transformations that typically require feature scaling to work well.',
+   options:['k-Nearest Neighbors','Decision Trees','SVM (RBF kernel)','Logistic Regression','Random Forests'],
+   answer:[0,2,3],
+   explain:'Distance- and margin-based models (kNN, SVM, Logistic) benefit from scaling. Trees/forests are scale-invariant.'},
+
+  {id:4, topic:'Data Prep', type:'single', points:1,
+   q:'Best encoding for a nominal (unordered) categorical feature?',
+   options:['Ordinal encoding with 1..K order','One-hot encoding','Standardization','Hashing numeric values'],
+   answer:[1],
+   explain:'One-hot encoding avoids introducing a fake order.'},
+
+  {id:5, topic:'Metrics', type:'single', points:1,
+   q:'You have heavy class imbalance (1% positives). Which metric is MOST informative?',
+   options:['Accuracy','ROC-AUC','PR-AUC (Precision-Recall)','MSE'],
+   answer:[2],
+   explain:'PR-AUC focuses on performance over positives and is robust to imbalance.'},
+
+  {id:6, topic:'Metrics', type:'numeric', points:2,
+   q:'Given TP=30, FP=10, FN=20, TN=40. What is Precision? (0..1)',
+   extras:'Round to 2 decimals.',
+   correct: 30/(30+10), tol: 0.02,
+   explain:'Precision = TP/(TP+FP) = 30/40 = 0.75.'},
+
+  {id:7, topic:'Validation', type:'single', points:1,
+   q:'Which CV split is appropriate for time-series forecasting?',
+   options:['KFold (random shuffle)','TimeSeriesSplit (rolling forward)','Leave-One-Out','GroupKFold with random groups'],
+   answer:[1],
+   explain:'TimeSeriesSplit preserves temporal order and avoids leakage from the future.'},
+
+  {id:8, topic:'Validation', type:'multi', points:2,
+   q:'Select ALL examples of data leakage.',
+   options:['Scaling using only training data','Using future transactions when training a churn model','Target encoding computed on full dataset','Stratified splitting by label'],
+   answer:[1,2],
+   explain:'Future info and computing target-aware stats on the full dataset leak label info into training.'},
+
+  {id:9, topic:'Models', type:'single', points:1,
+   q:'Which model is usually strongest on small/medium tabular data with nonlinearity and interactions?',
+   options:['Linear Regression','Random Forest / Gradient Boosted Trees','kNN','Naive Bayes'],
+   answer:[1],
+   explain:'Tree ensembles excel on tabular data with heterogeneous signals.'},
+
+  {id:10, topic:'Regularization', type:'multi', points:2,
+   q:'Match effects of L1 vs L2 (choose ALL correct).',
+   options:['L1 tends to produce sparse weights','L2 helps shrink weights smoothly','L1 = Ridge, L2 = Lasso','Elastic Net combines L1 and L2'],
+   answer:[0,1,3],
+   explain:'L1→sparsity; L2→shrinkage; Ridge=L2, Lasso=L1. Elastic Net mixes both.'},
+
+  {id:11, topic:'Optimization', type:'tf', points:1,
+   q:'Too large a learning rate can cause divergence during gradient descent.',
+   answer:[true],
+   explain:'Yes. Steps overshoot the optimum and the loss can explode.'},
+
+  {id:12, topic:'Bias-Variance', type:'single', points:1,
+   q:'A very complex model on a small dataset is likely to:',
+   options:['Underfit','Overfit','Be perfectly calibrated','Have zero variance'],
+   answer:[1],
+   explain:'High-capacity models can memorize small datasets → overfitting.'},
+
+  {id:13, topic:'Splits', type:'multi', points:2,
+   q:'Typical roles of data splits (choose ALL correct):',
+   options:['Train: fit model parameters','Validation: choose hyperparameters','Test: final unbiased estimate','Test: used to tune model repeatedly'],
+   answer:[0,1,2],
+   explain:'Do not tune on the test set; keep it for a final unbiased check.'},
+
+  {id:14, topic:'Robustness', type:'single', points:1,
+   q:'Severe outliers in y can most strongly distort which loss?',
+   options:['MAE (L1)','Huber','MSE (L2)','Quantile loss'],
+   answer:[2],
+   explain:'Squared error amplifies large residuals; MSE is sensitive to outliers.'},
+
+  {id:15, topic:'Collinearity', type:'tf', points:1,
+   q:'High multicollinearity can make linear model coefficients unstable.',
+   answer:[true],
+   explain:'Correlated features inflate variance of coefficient estimates.'},
+
+  {id:16, topic:'Clustering', type:'single', points:1,
+   q:'A common heuristic to choose k for K-Means is:',
+   options:['AIC','Elbow or Silhouette analysis','ROC curve','Cross-entropy'],
+   answer:[1],
+   explain:'Elbow plots or silhouette scores help pick a reasonable k.'},
+
+  {id:17, topic:'PCA', type:'multi', points:2,
+   q:'PCA properties (choose ALL correct):',
+   options:['Components are orthogonal','Maximizes variance captured','Uses label information','Can be used for visualization'],
+   answer:[0,1,3],
+   explain:'PCA is unsupervised, orthogonal components, preserves max variance along axes.'},
+
+  {id:18, topic:'Time Series', type:'single', points:1,
+   q:'Which is a leakage risk in time-series modeling?',
+   options:['Lagged features','Using future values to impute missing training values','Calendar features (dow, month)','Rolling mean over past 7 days'],
+   answer:[1],
+   explain:'Imputing with future values leaks information across time.'},
+
+  {id:19, topic:'NLP', type:'single', points:1,
+   q:'For classic bag-of-words classification, a strong baseline is:',
+   options:['K-Means','Multinomial Naive Bayes','DBSCAN','KNN with Euclidean distance'],
+   answer:[1],
+   explain:'Multinomial NB is a strong text baseline.'},
+
+  {id:20, topic:'NLP', type:'multi', points:2,
+   q:'TF-IDF tricks (choose ALL correct):',
+   options:['Use character n-grams for noisy text','Use n-grams (1,2) to capture short phrases','Scale features for linear/SVM models','Always stem words to perform well'],
+   answer:[0,1,2],
+   explain:'Char n-grams help with misspellings; bigrams add signal; scaling helps linear margins. Stemming is optional/trade-off.'},
+
+  {id:21, topic:'Calibration', type:'single', points:1,
+   q:'Which method can improve probability calibration?',
+   options:['Platt scaling / isotonic regression','L2 regularization only','More trees only','Dropout only'],
+   answer:[0],
+   explain:'Post-hoc calibration methods align predicted probabilities to observed frequencies.'},
+
+  {id:22, topic:'Confusion Matrix', type:'numeric', points:2,
+   q:'If TP=50, FP=25, FN=50, TN=75, what is Recall? (0..1)',
+   extras:'Round to 2 decimals.',
+   correct: 50/(50+50), tol: 0.02,
+   explain:'Recall = TP/(TP+FN) = 50/100 = 0.50.'},
+
+  {id:23, topic:'AUC', type:'tf', points:1,
+   q:'ROC-AUC is the probability that a random positive ranks above a random negative.',
+   answer:[true],
+   explain:'That is a common interpretation of ROC-AUC.'},
+
+  {id:24, topic:'Tuning', type:'multi', points:2,
+   q:'Good practices for hyperparameter tuning (choose ALL correct):',
+   options:['Use the test set for quick iteration','Use cross-validation on training data','Log hyperparameters and metrics','Try random search or Bayesian search'],
+   answer:[1,2,3],
+   explain:'Never iterate on the test set; use CV and track experiments.'},
+
+  {id:25, topic:'Early Stopping', type:'single', points:1,
+   q:'Early stopping aims to:',
+   options:['Reduce training time only','Prevent overfitting by monitoring validation loss','Increase model capacity','Guarantee global optimum'],
+   answer:[1],
+   explain:'Stop when val loss stops improving; helps generalization.'},
+
+  {id:26, topic:'Feature Importance', type:'multi', points:2,
+   q:'Permutation importance (choose ALL correct):',
+   options:['Requires retraining the model from scratch','Measures drop in score when a feature is shuffled','Works with any model (model-agnostic)','Unaffected by correlated features'],
+   answer:[1,2],
+   explain:'Permutation tests importance by shuffling; it is model-agnostic but correlation can mask true importance.'},
+
+  {id:27, topic:'Interpretability', type:'single', points:1,
+   q:'Partial Dependence Plots (PDP) show:',
+   options:['Effect of a feature on predictions, averaging over others','True causal effect','Model training loss over epochs','Feature correlation matrix'],
+   answer:[0],
+   explain:'PDP estimates marginal effect of a feature on predictions.'},
+
+  {id:28, topic:'Imbalance', type:'multi', points:2,
+   q:'Strategies for imbalanced classification (choose ALL correct):',
+   options:['Class weights','Change decision threshold','Use PR-AUC for model selection','Downsample/oversample (with care)'],
+   answer:[0,1,2,3],
+   explain:'All listed are appropriate tactics.'},
+
+  {id:29, topic:'Deployment', type:'single', points:1,
+   q:'Before switching traffic to a new model, a safe step is:',
+   options:['Delete the old model','Shadow deploy the new model','Skip monitoring','Ignore schema checks'],
+   answer:[1],
+   explain:'Shadow (or canary) deploy to compare safely.'},
+
+  {id:30, topic:'Monitoring', type:'multi', points:2,
+   q:'What should be monitored in production? (choose ALL correct)',
+   options:['Input data drift','Output distribution & calibration','Slice metrics (fairness/segments)','Latency & error rates'],
+   answer:[0,1,2,3],
+   explain:'All of the above are important for healthy ML systems.'},
+
+  {id:31, topic:'Ethics', type:'single', points:1,
+   q:'A fairness check might compare:',
+   options:['AUC across model seeds only','Error rates across sensitive groups','GPU temperature','Training time'],
+   answer:[1],
+   explain:'Parities in errors (e.g., false negative rate) across groups are common fairness checks.'},
+
+  {id:32, topic:'Privacy', type:'tf', points:1,
+   q:'Minimizing collection of personally identifiable information (PII) is a good privacy practice.',
+   answer:[true],
+   explain:'Collect the minimum necessary; protect and retain appropriately.'},
+
+  {id:33, topic:'Ensembles', type:'single', points:1,
+   q:'Increasing n_estimators in a random forest mainly:',
+   options:['Increases training variance drastically','Improves stability and reduces variance (to a point)','Always causes overfitting','Eliminates need for max_depth'],
+   answer:[1],
+   explain:'More trees average variance; depth still matters.'},
+
+  {id:34, topic:'Boosting', type:'single', points:1,
+   q:'In gradient boosting, lowering the learning rate typically requires:',
+   options:['Fewer trees','More trees','No change','Switching to SVM'],
+   answer:[1],
+   explain:'Lower learning rate → need more boosting iterations to fit.'}
+];
+
+// ---------- State ----------
+let order = [...Array(QUESTIONS.length).keys()]; // indices
+let idx = 0;
+let answered = {};   // id -> {correct, chosen, value, time}
+let score = 0;
+let byTopic = {};    // topic -> {correct,total}
+
+// ---------- Helpers ----------
+function $(sel, root=document){ return root.querySelector(sel); }
+function $all(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+
+function renderKey(){
+  const ol = $("#keyList"); ol.innerHTML='';
+  order.forEach((qi, i)=>{
+    const q = QUESTIONS[qi];
+    const ansText = (q.type==='short'||q.type==='numeric')
+      ? (q.type==='numeric' ? (q.correct.toFixed(2) + ` ± ${q.tol}`) : (q.answerText||'(pattern)'))
+      : q.answer.map(a=>q.options[a]).join('; ');
+    const li = document.createElement('li');
+    li.innerHTML = `<div><b>${q.q}</b> <span class="badge topic">${q.topic}</span></div>
+                    <div class="small">Answer: <b>${ansText}</b></div>
+                    <div class="small">Explanation: ${q.explain}</div>`;
+    ol.appendChild(li);
+  });
+}
+
+function updateProgress(){
+  $("#qIdx").textContent = idx+1;
+  $("#qTotal").textContent = order.length;
+  $("#bar").style.width = ((idx)/order.length*100) + '%';
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[order[idx]];
+  $("#topic").textContent = q.topic;
+  $("#qText").textContent = q.q;
+  $("#qExtra").textContent = q.extras || '';
+  $("#feedback").textContent = '';
+  $("#submitBtn").disabled = true;
+  $("#nextBtn").disabled = true;
+  $("#prevBtn").disabled = (idx===0);
+
+  // clear containers
+  $("#options").innerHTML = '';
+  const inputWrap = $("#answerInput");
+  inputWrap.style.display='none'; inputWrap.innerHTML='';
+
+  if(q.type==='single' || q.type==='multi' || q.type==='tf'){
+    let opts = q.options || (q.type==='tf' ? ['True','False'] : []);
+    if(q.type==='tf'){ q.answerText = q.answer[0] ? 'True':'False'; }
+    opts.forEach((opt, i)=>{
+      const div = document.createElement('label');
+      div.className='option';
+      const input = document.createElement('input');
+      input.type = (q.type==='multi') ? 'checkbox' : 'radio';
+      input.name = 'opt';
+      input.value = i;
+      input.addEventListener('change', ()=>{
+        $("#submitBtn").disabled = false;
+      });
+      div.appendChild(input);
+      const span = document.createElement('span');
+      span.style.marginLeft='8px'; span.textContent = opt;
+      div.appendChild(span);
+      $("#options").appendChild(div);
+    });
+  } else if(q.type==='short'){
+    inputWrap.style.display='block';
+    inputWrap.innerHTML = `<input id="shortAns" type="text" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:10px" placeholder="Type your answer here">`;
+    $("#shortAns").addEventListener('input', ()=>{ $("#submitBtn").disabled = ($("#shortAns").value.trim().length===0); });
+  } else if(q.type==='numeric'){
+    inputWrap.style.display='block';
+    inputWrap.innerHTML = `<input id="numAns" type="number" step="0.01" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:10px" placeholder="Enter a number">`;
+    $("#numAns").addEventListener('input', ()=>{ $("#submitBtn").disabled = ($("#numAns").value===''); });
+  }
+  updateProgress();
+
+  // If already answered, show selection and feedback
+  const prev = answered[q.id];
+  if(prev){
+    applyAnswerUI(q, prev);
+    $("#nextBtn").disabled = (idx >= order.length-1);
+  }
+}
+
+function arraysEqual(a,b){ return a.length===b.length && a.every((x,i)=>x===b[i]); }
+
+function gradeCurrent(){
+  const q = QUESTIONS[order[idx]];
+  let correct=false, chosen=null, value=null;
+
+  if(q.type==='single' || q.type==='tf'){
+    const sel = $("#options input:checked"); if(!sel) return {correct:false};
+    chosen = [Number(sel.value)];
+    correct = arraysEqual(chosen, q.answer);
+  } else if(q.type==='multi'){
+    const checks = $all("#options input:checked").map(x=>Number(x.value)).sort((a,b)=>a-b);
+    chosen = checks;
+    correct = arraysEqual(checks, q.answer.slice().sort((a,b)=>a-b));
+  } else if(q.type==='short'){
+    const v = $("#answerInput #shortAns").value.trim().toLowerCase();
+    value = v;
+    const patterns = (q.patterns || []).map(p=>new RegExp(p, 'i'));
+    correct = patterns.some(rx => rx.test(v));
+  } else if(q.type==='numeric'){
+    const v = Number($("#answerInput #numAns").value);
+    value = v;
+    correct = Math.abs(v - q.correct) <= (q.tol ?? 0.01);
+  }
+
+  if(!(q.id in answered)){
+    if(correct) score += q.points;
+    byTopic[q.topic] = byTopic[q.topic] || {correct:0,total:0};
+    byTopic[q.topic].total += 1;
+    if(correct) byTopic[q.topic].correct += 1;
+  } else {
+    // if previously answered, do not change score to avoid double counting
+  }
+
+  const record = {correct, chosen, value, time:Date.now()};
+  answered[q.id] = record;
+  applyAnswerUI(q, record);
+  updateResultsPanel();
+}
+
+function applyAnswerUI(q, record){
+  const hideExplain = $("#hideExplain").checked;
+  $("#submitBtn").disabled = true;
+  $("#nextBtn").disabled = (idx >= order.length-1) ? true : false;
+
+  if(q.type==='single' || q.type==='multi' || q.type==='tf'){
+    $all("#options .option").forEach((el,i)=>{
+      const input = el.querySelector('input');
+      const selected = record.chosen && record.chosen.includes(i);
+      input.checked = selected;
+      el.classList.remove('correct','incorrect');
+      if(selected && record.correct){ el.classList.add('correct'); }
+      if(selected && !record.correct){ el.classList.add('incorrect'); }
+      // mark correct choices subtly
+      if(record.correct){
+        if(q.answer.includes(i)){ el.style.outline='2px solid #10b98155'; }
+      } else {
+        if(q.answer.includes(i)){ el.style.outline='2px dashed #10b98166'; }
+      }
+    });
+  }
+
+  const fb = $("#feedback");
+  fb.innerHTML = record.correct ?
+    `<span style="color:#065f46;font-weight:700">Correct!</span>` :
+    `<span style="color:#b91c1c;font-weight:700">Not quite.</span>`;
+  if(!hideExplain) fb.innerHTML += ` <span class="small">— ${q.explain}</span>`;
+}
+
+function updateResultsPanel(){
+  $("#rCorrect").textContent = Object.values(answered).filter(a=>a.correct).length;
+  $("#rTotal").textContent = order.length;
+  $("#rPct").textContent = Math.round(100*Object.values(answered).filter(a=>a.correct).length/order.length) + '%';
+  const bt = $("#byTopic"); bt.innerHTML='';
+  Object.entries(byTopic).forEach(([k,v])=>{
+    const div = document.createElement('div');
+    const pct = Math.round(100*(v.correct/(v.total||1)));
+    div.textContent = `${k}: ${v.correct}/${v.total} (${pct}%)`;
+    bt.appendChild(div);
+  });
+}
+
+function nextQ(){ if(idx < order.length-1){ idx++; renderQuestion(); } }
+function prevQ(){ if(idx > 0){ idx--; renderQuestion(); } }
+function skipQ(){ if(idx < order.length-1){ idx++; renderQuestion(); } }
+
+function startQuiz(){
+  idx=0; score=0; answered={}; byTopic={};
+  renderKey();
+  renderQuestion();
+  updateResultsPanel();
+}
+
+function shuffleQuestions(){
+  order = shuffle(order);
+  startQuiz();
+}
+
+// ---------- Events ----------
+$("#startBtn").addEventListener('click', startQuiz);
+$("#shuffleBtn").addEventListener('click', shuffleQuestions);
+$("#submitBtn").addEventListener('click', gradeCurrent);
+$("#nextBtn").addEventListener('click', nextQ);
+$("#prevBtn").addEventListener('click', prevQ);
+$("#skipBtn").addEventListener('click', skipQ);
+$("#retakeBtn").addEventListener('click', ()=>{ order=[...Array(QUESTIONS.length).keys()]; startQuiz(); });
+
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='ArrowRight') nextQ();
+  if(e.key==='ArrowLeft') prevQ();
+  if(e.key.toLowerCase()==='r'){ order=[...Array(QUESTIONS.length).keys()]; startQuiz(); }
+});
+
+// Init
+$("#qTotal").textContent = QUESTIONS.length;
+renderKey(); updateResultsPanel();
+
+// Results download
+$("#downloadBtn").addEventListener('click', ()=>{
+  const payload = {
+    correct: Object.values(answered).filter(a=>a.correct).length,
+    total: order.length,
+    byTopic,
+    answered
+  };
+  const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'ml_quiz_results.json'; a.click();
+  URL.revokeObjectURL(url);
+});
+</script>
+</body>
+</html>

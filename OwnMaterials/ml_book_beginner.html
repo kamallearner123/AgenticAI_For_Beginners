@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Machine Learning — A Friendly Beginner’s Book (HTML)</title>
+<meta name="description" content="Beginner-friendly ML book: simple explanations, types of ML, core concepts, hands-on scikit-learn demo, tips & free resources. Colorful, with pictures, graphs, and code.">
+<style>
+:root{
+  --bg:#ffffff; --fg:#0f172a; --muted:#475569; --border:#e5e7eb; --card:#f8fafc;
+  --primary:#1e40af; --accent:#10b981; --chip:#eef2ff; --shadow:0 16px 40px rgba(2,8,23,.12);
+}
+/* themes */
+:root[data-theme="emerald"]{ --primary:#065f46; --accent:#10b981; --chip:#d1fae5 }
+:root[data-theme="purple"]{ --primary:#6d28d9; --accent:#22d3ee; --chip:#ede9fe }
+:root[data-theme="orange"]{ --primary:#c2410c; --accent:#f59e0b; --chip:#ffedd5 }
+:root[data-theme="rose"]{ --primary:#be123c; --accent:#fb7185; --chip:#ffe4e6 }
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,'Helvetica Neue',Arial}
+a{color:var(--primary);text-decoration:none} a:hover{text-decoration:underline}
+.header{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,#fff,rgba(255,255,255,.94));backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1200px;margin:auto;display:flex;gap:16px;align-items:center;padding:12px 16px}
+.logo{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:var(--shadow)}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+.nav a{padding:8px 10px;border-radius:8px} .nav a:hover{background:var(--chip)}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:28px 0}
+.hero .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 8px 0;font-size:2rem} .hero p{margin:0;color:var(--muted)}
+.hero-graphic{aspect-ratio:16/10;border:1px dashed var(--border);border-radius:16px;display:grid;place-items:center;background:#fff}
+.badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:var(--chip);color:#111827;border:1px solid var(--border)}
+.section{padding:28px 0} .section h2{margin:0 0 10px} .section p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:16px 0}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 8px}
+.small{color:var(--muted);font-size:14px}
+.btn{display:inline-block;padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer}
+.btn.primary{border-color:var(--primary);background:var(--primary);color:#fff}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--border);border-bottom-width:2px;background:#fff;border-radius:6px;padding:1px 6px}
+pre, code{font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.code{background:#0b1020;color:#e5e7eb;border-radius:12px;padding:12px;border:1px solid #0b1020;overflow:auto;position:relative}
+button.copy{position:absolute;right:8px;top:8px;padding:6px 8px;border-radius:8px;border:1px solid #334155;background:#111827;color:#e5e7eb;cursor:pointer;font-size:12px}
+button.copy.copied{background:#064e3b;border-color:#065f46}
+blockquote{margin:0;padding:12px;border-left:4px solid var(--primary);background:#f1f5f9;border-radius:8px}
+canvas.chart{width:100%;height:260px;display:block;border:1px solid var(--border);border-radius:12px;background:#fff}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.theme{display:flex;gap:8px;flex-wrap:wrap}
+.theme button{padding:6px 10px;border-radius:999px;border:1px solid var(--border);cursor:pointer;background:#fff}
+.theme .active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.toc{position:sticky;top:76px;align-self:start}
+.toc a{display:block;padding:6px 8px;border-radius:8px;margin:4px 0;border:1px solid var(--border);background:#fff}
+.toc a:hover{background:var(--chip)}
+.hero .panel .controls a{margin-right:6px}
+@media (max-width:900px){ .hero{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">ML</div>
+    <div>
+      <div style="font-weight:800">Machine Learning — A Friendly Beginner’s Book</div>
+      <div class="small">Clear explanations • Pictures • Graphs • Code • Resources</div>
+    </div>
+    <nav class="nav">
+      <a href="#themes">Themes</a>
+      <a href="#types">Types of ML</a>
+      <a href="#concepts">Core Concepts</a>
+      <a href="#demo">Hands‑on Demo</a>
+      <a href="#tips">Tips & Resources</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- HERO -->
+  <section class="hero section">
+    <div class="panel">
+      <h1>Learn ML the friendly way</h1>
+      <p>We’ll build intuition first, then look at code. Expect simple analogies, colorful pictures, and small interactive charts to make the ideas “click”.</p>
+      <div class="badges"><span class="badge">White background</span><span class="badge">No frameworks</span><span class="badge">Copy‑ready code</span></div>
+      <div class="controls">
+        <a class="btn primary" href="#types">Start with the types</a>
+        <a class="btn" href="#demo">Jump to the demo</a>
+      </div>
+    </div>
+    <div class="hero-graphic">
+      <svg width="92%" viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Data → Model → Prediction → Feedback">
+        <defs><linearGradient id="g1" x1="0" x2="1"><stop stop-color="#60a5fa"/><stop offset="1" stop-color="#a7f3d0"/></linearGradient></defs>
+        <rect x="20" y="30" width="150" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="95" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Data</text>
+        <circle cx="60" cy="95" r="8" fill="#93c5fd"/><circle cx="95" cy="110" r="8" fill="#6ee7b7"/><circle cx="120" cy="85" r="8" fill="#60a5fa"/>
+        <path d="M170 85 L215 85" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="215" y="30" width="150" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="290" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Model</text>
+        <rect x="250" y="78" width="85" height="35" rx="8" fill="url(#g1)"/>
+        <path d="M365 85 L410 85" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="410" y="30" width="150" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="485" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Prediction</text>
+        <rect x="450" y="82" width="80" height="30" rx="8" fill="#10b981"/>
+        <path d="M485 140 C 500 200, 200 200, 170 110" stroke="#94a3b8" stroke-dasharray="6 6" fill="none" marker-end="url(#arrow)"/>
+        <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L6,3 z" fill="#0ea5e9"/></marker></defs>
+      </svg>
+    </div>
+  </section>
+
+  <!-- THEMES -->
+  <section class="section" id="themes">
+    <h2>Pick a color theme</h2>
+    <p class="small">The page stays white; only accents change.</p>
+    <div class="theme">
+      <button class="active" data-theme="default">Default (Blue/Teal)</button>
+      <button data-theme="emerald">Emerald</button>
+      <button data-theme="purple">Purple</button>
+      <button data-theme="orange">Orange</button>
+      <button data-theme="rose">Rose</button>
+    </div>
+  </section>
+
+  <!-- TABLE OF CONTENTS -->
+  <section class="section" id="toc">
+    <div style="display:grid;grid-template-columns:260px 1fr;gap:20px">
+      <aside class="toc card">
+        <h3>Table of Contents</h3>
+        <a href="#types">1. Types of ML</a>
+        <a href="#concepts">2. Core Concepts</a>
+        <a href="#graphs">3. Pictures & Graphs</a>
+        <a href="#demo">4. Hands‑on: House Prices</a>
+        <a href="#tips">5. Tips & Free Resources</a>
+      </aside>
+      <div class="card">
+        <h3>How to use this book</h3>
+        <p class="small">Skim the pictures, then read the concept cards. When ready, copy the code and try it in <b>Google Colab</b> or locally. Come back to the graphs if a term feels fuzzy.</p>
+        <blockquote>Analogy: learning ML is like learning to cook. <b>Data</b> are ingredients, <b>features</b> are chopped slices, a <b>model</b> is the recipe, and <b>training</b> is practicing until your dish tastes right. Overfitting? That’s when you cook perfectly for one person’s taste but everyone else dislikes it.</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPES -->
+  <section class="section" id="types">
+    <h2>1) Types of Machine Learning</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Supervised Learning</h3>
+        <p class="small">You have inputs <em>X</em> and known answers <em>y</em>. The model learns to map X → y.</p>
+        <ul class="small">
+          <li><b>Regression</b>: predict a number (house price).</li>
+          <li><b>Classification</b>: pick a category (spam vs not spam).</li>
+        </ul>
+        <svg viewBox="0 0 300 110" width="100%" role="img" aria-label="Supervised example">
+          <rect x="5" y="5" width="290" height="100" rx="12" fill="#fff" stroke="#e5e7eb"/>
+          <circle cx="60" cy="60" r="18" fill="#93c5fd"/><text x="60" y="66" text-anchor="middle" font-size="10" fill="#1f2937">X</text>
+          <circle cx="130" cy="60" r="18" fill="#6ee7b7"/><text x="130" y="66" text-anchor="middle" font-size="10" fill="#1f2937">Model</text>
+          <circle cx="220" cy="60" r="18" fill="#fbbf24"/><text x="220" y="66" text-anchor="middle" font-size="10" fill="#1f2937">y</text>
+          <path d="M78 60 L112 60" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr1)"/>
+          <path d="M148 60 L202 60" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr1)"/>
+          <defs><marker id="arr1" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#0ea5e9"/></marker></defs>
+        </svg>
+        <p class="small"><b>Relatable</b>: look at past houses (size, rooms, city) and known prices to predict a new price.</p>
+      </div>
+      <div class="card">
+        <h3>Unsupervised Learning</h3>
+        <p class="small">No answers <em>y</em>. The model finds structure in <em>X</em>.</p>
+        <ul class="small">
+          <li><b>Clustering</b>: group similar customers (VIP vs casual).</li>
+          <li><b>Dimensionality reduction</b>: simplify data while keeping patterns (PCA).</li>
+        </ul>
+        <svg viewBox="0 0 300 110" width="100%" role="img" aria-label="Unsupervised example">
+          <rect x="5" y="5" width="290" height="100" rx="12" fill="#fff" stroke="#e5e7eb"/>
+          <circle cx="70" cy="60" r="6" fill="#60a5fa"/><circle cx="90" cy="52" r="6" fill="#60a5fa"/><circle cx="76" cy="78" r="6" fill="#60a5fa"/>
+          <circle cx="180" cy="38" r="6" fill="#10b981"/><circle cx="200" cy="50" r="6" fill="#10b981"/><circle cx="210" cy="72" r="6" fill="#10b981"/>
+          <text x="72" y="96" font-size="10" fill="#64748b">Cluster A</text><text x="180" y="96" font-size="10" fill="#64748b">Cluster B</text>
+        </svg>
+        <p class="small"><b>Relatable</b>: a store groups shoppers by behavior to target offers better.</p>
+      </div>
+      <div class="card">
+        <h3>Reinforcement Learning</h3>
+        <p class="small">An agent learns by doing actions and receiving <em>rewards</em>.</p>
+        <ul class="small">
+          <li>Play a game, learn to win.</li>
+          <li>Robotics or recommendation systems with feedback.</li>
+        </ul>
+        <svg viewBox="0 0 300 120" width="100%" role="img" aria-label="Reinforcement example">
+          <rect x="5" y="5" width="290" height="110" rx="12" fill="#fff" stroke="#e5e7eb"/>
+          <rect x="30" y="35" width="70" height="40" rx="8" fill="#e0f2fe" stroke="#bae6fd"/>
+          <text x="65" y="60" text-anchor="middle" font-size="12" fill="#1f2937">Agent</text>
+          <rect x="200" y="35" width="70" height="40" rx="8" fill="#fee2e2" stroke="#fecaca"/>
+          <text x="235" y="60" text-anchor="middle" font-size="12" fill="#1f2937">World</text>
+          <path d="M100 55 L200 55" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arr2)"/>
+          <text x="150" y="48" font-size="10" fill="#334155">Action</text>
+          <path d="M200 80 L100 80" stroke="#10b981" stroke-width="3" marker-end="url(#arr3)"/>
+          <text x="150" y="92" font-size="10" fill="#334155">Reward</text>
+          <defs>
+            <marker id="arr2" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#0ea5e9"/></marker>
+            <marker id="arr3" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#10b981"/></marker>
+          </defs>
+        </svg>
+        <p class="small"><b>Relatable</b>: a robot gets +1 for reaching a goal and learns a route by trial and error.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONCEPTS -->
+  <section class="section" id="concepts">
+    <h2>2) Core Concepts (with simple analogies)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Data, Features, Labels</h3>
+        <p class="small"><b>Data</b> are rows of examples. <b>Features</b> are columns you use as clues. The <b>label</b> is the thing you want to predict.</p>
+        <blockquote><b>Analogy</b>: Detective work — clues (features) → who did it (label).</blockquote>
+      </div>
+      <div class="card">
+        <h3>Train / Validation / Test</h3>
+        <p class="small">Use <b>training</b> to learn, <b>validation</b> to pick settings, and <b>test</b> once at the end to check real‑world performance.</p>
+        <blockquote><b>Analogy</b>: Practice problems → mock exam → final exam.</blockquote>
+      </div>
+      <div class="card">
+        <h3>Overfitting vs Underfitting</h3>
+        <p class="small"><b>Overfit</b>: memorizes training but fails on new data. <b>Underfit</b>: too simple to learn the pattern.</p>
+        <div class="controls"><button class="btn" id="fitReset">Animate curves</button></div>
+        <canvas id="fitChart" class="chart" aria-label="Underfit/Good/Overfit curves"></canvas>
+      </div>
+      <div class="card">
+        <h3>Features & Leakage</h3>
+        <p class="small">Use only info available at prediction time. Beware <b>leakage</b> (e.g., using future sales to predict today).</p>
+        <blockquote><b>Analogy</b>: Don’t peek at the answer key before the test.</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- PICTURES & GRAPHS -->
+  <section class="section" id="graphs">
+    <h2>3) Pictures & mini‑graphs</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Toy regression (scatter + fitted line)</h3>
+        <div class="controls">
+          <label class="small">Points <input id="rgN" type="range" min="20" max="400" value="120"></label>
+          <label class="small">Noise <input id="rgNoise" type="range" min="0" max="100" value="25"></label>
+          <button class="btn" id="rgRefill">New data</button>
+        </div>
+        <canvas id="rgChart" class="chart" aria-label="Regression scatter"></canvas>
+        <div class="small" id="rgStats"></div>
+      </div>
+      <div class="card">
+        <h3>Simple classification boundary</h3>
+        <p class="small">Toy 2‑class dots and a fake boundary to build intuition.</p>
+        <canvas id="clChart" class="chart" aria-label="Classification boundary"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- HANDS-ON DEMO -->
+  <section class="section" id="demo">
+    <h2>4) Hands‑on: Predict House Prices (Python + scikit‑learn)</h2>
+    <p class="small">Two options: real dataset (California Housing) or synthetic data (runs fully offline). Copy any block with the button.</p>
+
+    <div class="card">
+      <h3>A) Setup (Colab or local)</h3>
+      <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>pip install -U scikit-learn pandas numpy matplotlib joblib</code></pre>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>B1) Real data: California Housing</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import numpy as np, pandas as pd
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+
+# load data
+data = fetch_california_housing(as_frame=True)
+df = data.frame.rename(columns={"MedHouseVal":"Price"})
+X = df.drop(columns=["Price"])
+y = df["Price"]
+
+# train/test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# pipeline: scale numeric features + linear regression
+pipe = Pipeline([("scaler", StandardScaler()), ("lr", LinearRegression())])
+pipe.fit(X_train, y_train)
+
+pred = pipe.predict(X_test)
+mae = mean_absolute_error(y_test, pred)
+rmse = mean_squared_error(y_test, pred, squared=False)
+r2 = pipe.score(X_test, y_test)
+print(f"MAE={mae:.3f}  RMSE={rmse:.3f}  R^2={r2:.3f}")</code></pre>
+        <p class="small">Try swapping <code>LinearRegression</code> with <code>RandomForestRegressor()</code> for nonlinear patterns.</p>
+      </div>
+
+      <div class="card">
+        <h3>B2) Synthetic fallback (no downloads)</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import mean_squared_error
+
+rng = np.random.default_rng(0)
+n = 500
+area = rng.uniform(400, 3000, size=n)
+rooms = rng.integers(1, 6, size=n)
+noise = rng.normal(0, 25000, size=n)
+price = 50000 + 120*area + 15000*rooms + noise  # toy formula
+
+X = np.column_stack([area, rooms])
+y = price
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+pipe = Pipeline([("scaler", StandardScaler()), ("lr", LinearRegression())])
+pipe.fit(X_train, y_train)
+pred = pipe.predict(X_test)
+rmse = mean_squared_error(y_test, pred, squared=False)
+print("RMSE:", rmse)</code></pre>
+        <p class="small">This uses a made‑up rule so results are easy to interpret.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>C) Visualize predictions vs actual</h3>
+      <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import matplotlib.pyplot as plt
+plt.figure(figsize=(5,5))
+plt.scatter(y_test, pred, alpha=0.5)
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--')
+plt.xlabel("Actual price"); plt.ylabel("Predicted price"); plt.title("Regression fit")
+plt.show()</code></pre>
+    </div>
+
+    <div class="card">
+      <h3>D) Save and load your model</h3>
+      <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import joblib
+joblib.dump(pipe, "house_price_model.joblib")
+# later...
+model = joblib.load("house_price_model.joblib")
+print(model.predict([[1800, 3, 35.0, -120.5, 2.1, 4.5, 1.0, 300.0]]) )  # shape depends on your features</code></pre>
+      <p class="small">In a real app you’ll wrap the pipeline in a function or API and validate inputs.</p>
+    </div>
+  </section>
+
+  <!-- TIPS & RESOURCES -->
+  <section class="section" id="tips">
+    <h2>5) Practical tips for beginners</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Tools to start with</h3>
+        <ul class="small">
+          <li><b>scikit‑learn</b>: the standard ML toolkit in Python.</li>
+          <li><b>Pandas</b> for tables, <b>NumPy</b> for arrays, <b>Matplotlib</b> for plots.</li>
+          <li><b>Google Colab</b>: free GPU/CPU in the browser, zero install.</li>
+          <li><b>Kaggle</b>: datasets + free notebooks + beginner courses.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Learning path</h3>
+        <ol class="small">
+          <li>Pick a tiny problem (e.g., price prediction, spam filter).</li>
+          <li>Clean data → split → baseline → improve gradually.</li>
+          <li>Track metrics (MAE/RMSE for regression; F1/PR‑AUC for imbalance).</li>
+          <li>Keep the pipeline simple and reproducible.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Free resources</h3>
+        <ul class="small">
+          <li><a href="https://scikit-learn.org/stable/" target="_blank" rel="noopener">scikit‑learn User Guide</a></li>
+          <li><a href="https://www.kaggle.com/learn" target="_blank" rel="noopener">Kaggle Learn (free micro‑courses)</a></li>
+          <li><a href="https://www.fast.ai/" target="_blank" rel="noopener">fast.ai Practical Deep Learning</a></li>
+          <li><a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Andrew Ng’s ML (Coursera)</a></li>
+          <li><a href="https://developers.google.com/machine-learning/crash-course" target="_blank" rel="noopener">Google ML Crash Course</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Common gotchas</h3>
+        <ul class="small">
+          <li>Leakage: don’t use future or test info when training.</li>
+          <li>Imbalance: don’t trust accuracy; look at precision/recall & PR‑AUC.</li>
+          <li>Keep a <b>validation</b> split to tune settings, use the <b>test</b> only once.</li>
+          <li>Document your steps; save your model + preprocessing together.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>Print this page to save a PDF • Use <span class="kbd">Ctrl</span>/<span class="kbd">⌘</span>+<span class="kbd">F</span> to search • Happy learning!</footer>
+
+</main>
+
+<script>
+// THEME SWITCHER
+document.querySelectorAll('.theme button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.theme button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const theme = btn.dataset.theme;
+    if (theme==='default') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('ml_theme', theme);
+  });
+});
+const savedTheme = localStorage.getItem('ml_theme');
+if (savedTheme && savedTheme!=='default') {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const b = document.querySelector('.theme button[data-theme="'+savedTheme+'"]');
+  if (b){ document.querySelectorAll('.theme button').forEach(x=>x.classList.remove('active')); b.classList.add('active'); }
+}
+
+// COPY BUTTON
+function copyCode(btn){
+  const pre = btn.closest('pre.code'); if(!pre) return;
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.classList.add('copied'); btn.textContent='Copied';
+    setTimeout(()=>{ btn.classList.remove('copied'); btn.textContent='Copy'; }, 1200);
+  });
+}
+window.copyCode = copyCode;
+
+// SMOOTH SCROLL
+document.querySelectorAll('.nav a[href^="#"], .toc a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const id = a.getAttribute('href').slice(1), el = document.getElementById(id);
+    if(el){ e.preventDefault(); const y = el.getBoundingClientRect().top + window.scrollY - 70; window.scrollTo({top:y, behavior:'smooth'}); }
+  });
+});
+
+// ----- Canvas helpers (no external libraries) -----
+function setupCanvas(c){ c.width = c.clientWidth*2; c.height = c.clientHeight*2; return c.getContext('2d'); }
+function axes(ctx, {xMax=100, yMin=0, yMax=1, yTicks=5, xLabel='x', yLabel='y'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.strokeStyle='#cbd5e1'; ctx.fillStyle='#64748b'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(50,10); ctx.lineTo(50,h-40); ctx.lineTo(w-20,h-40); ctx.stroke();
+  ctx.font='20px system-ui'; ctx.fillText(xLabel, w-50, h-12); ctx.fillText(yLabel, 8, 24);
+  for(let i=0;i<=yTicks;i++){
+    const y = (h-40) - i*(h-50)/yTicks;
+    const val = (yMin + (i*(yMax-yMin)/yTicks)).toFixed(2);
+    ctx.fillText(val, 8, y+4);
+    ctx.beginPath(); ctx.moveTo(46,y); ctx.lineTo(50,y); ctx.stroke();
+  }
+}
+function line(ctx, pts, {xMax=100, yMin=0, yMax=1, color='#0ea5e9'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.strokeStyle = color; ctx.lineWidth=3; ctx.beginPath();
+  pts.forEach((p,i)=>{
+    const x = 50 + (p.x/xMax)*(w-70);
+    const y = (h-40) - ((p.y - yMin)/(yMax - yMin))*(h-50);
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+}
+function dots(ctx, pts, {xMax=1, yMin=0, yMax=1, r=4, color='#1f2937'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.fillStyle = color;
+  for(const p of pts){
+    const x = 50 + (p.x/xMax)*(w-70);
+    const y = (h-40) - ((p.y - yMin)/(yMax - yMin))*(h-50);
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  }
+}
+
+// ----- Over/Under/Good fit curves -----
+const fitCanvas = document.getElementById('fitChart'); const fitctx = setupCanvas(fitCanvas);
+function drawFit(){
+  axes(fitctx,{xLabel:'model complexity',yLabel:'error',yMin:0,yMax:1});
+  const xs = [...Array(101).keys()];
+  const under = xs.map(x=>({x, y: Math.max(0.1, 0.9 - x*0.005)}));
+  const good  = xs.map(x=>({x, y: 0.2 + 0.3*Math.exp(-Math.pow((x-50)/20,2))}));
+  const over  = xs.map(x=>({x, y: Math.max(0.1, 0.2 + (x/100)**2)}));
+  line(fitctx, under, {xMax:100,yMin:0,yMax:1,color:'#ef4444'});
+  line(fitctx, good,  {xMax:100,yMin:0,yMax:1,color:'#0ea5e9'});
+  line(fitctx, over,  {xMax:100,yMin:0,yMax:1,color:'#f59e0b'});
+}
+drawFit();
+document.getElementById('fitReset').onclick = drawFit;
+
+// ----- Regression scatter + fit line -----
+const rgCanvas = document.getElementById('rgChart'); const rgctx = setupCanvas(rgCanvas);
+let rgData=[];
+function genRegData(){
+  const N = Number(document.getElementById('rgN').value);
+  const noise = Number(document.getElementById('rgNoise').value)/100;
+  rgData=[];
+  for(let i=0;i<N;i++){
+    const x = i/(N-1); const y = 0.2 + 0.8*x + (Math.random()-0.5)*0.3*noise;
+    rgData.push({x,y});
+  }
+}
+function fitOLS(data){
+  const n=data.length; let sx=0, sy=0, sxx=0, sxy=0;
+  for(const p of data){ sx+=p.x; sy+=p.y; sxx+=p.x*p.x; sxy+=p.x*p.y; }
+  const b = (n*sxy - sx*sy) / (n*sxx - sx*sx + 1e-9);
+  const a = (sy - b*sx)/n;
+  let sse=0; for(const p of data){ const e = p.y - (a + b*p.x); sse += e*e; }
+  const rmse = Math.sqrt(sse/n);
+  return {a,b,rmse};
+}
+function drawReg(){
+  axes(rgctx,{xLabel:'x',yLabel:'y',yMin:0,yMax:1});
+  dots(rgctx, rgData, {xMax:1,yMin:0,yMax:1,r:3,color:'#1f2937'});
+  const {a,b,rmse} = fitOLS(rgData);
+  line(rgctx, [{x:0,y:a},{x:1,y:a+b}], {xMax:1,yMin:0,yMax:1,color:'#0ea5e9'});
+  document.getElementById('rgStats').textContent = `Fit: y ≈ ${a.toFixed(2)} + ${b.toFixed(2)}·x  |  RMSE ≈ ${rmse.toFixed(3)}`;
+}
+document.getElementById('rgRefill').onclick=()=>{ genRegData(); drawReg(); };
+document.getElementById('rgN').addEventListener('input', ()=>{ genRegData(); drawReg(); });
+document.getElementById('rgNoise').addEventListener('input', ()=>{ genRegData(); drawReg(); });
+genRegData(); drawReg();
+
+// ----- Classification boundary (toy) -----
+const clCanvas = document.getElementById('clChart'); const clctx = setupCanvas(clCanvas);
+function drawCl(){
+  const w = clctx.canvas.width, h = clctx.canvas.height;
+  clctx.clearRect(0,0,w,h);
+  clctx.strokeStyle='#cbd5e1'; clctx.strokeRect(40,10,w-60,h-50);
+  // boundary curve
+  clctx.strokeStyle='#0ea5e9'; clctx.lineWidth=3; clctx.beginPath();
+  for(let i=0;i<=100;i++){
+    const x = 40 + (i/100)*(w-60);
+    const y = 10 + (1 - (0.3 + 0.2*Math.sin(i/12))) * (h-50);
+    if(i===0) clctx.moveTo(x,y); else clctx.lineTo(x,y);
+  }
+  clctx.stroke();
+  // class dots
+  const dotsN=180;
+  for(let i=0;i<dotsN;i++){
+    const x = 40 + Math.random()*(w-60);
+    const fx = 10 + (1 - (0.3 + 0.2*Math.sin(( (x-40)/(w-60) )*100/12))) * (h-50);
+    const y = 10 + Math.random()*(h-50);
+    const above = y < fx;
+    clctx.fillStyle = above ? '#10b981' : '#ef4444';
+    clctx.beginPath(); clctx.arc(x,y,3,0,Math.PI*2); clctx.fill();
+  }
+}
+drawCl();
+</script>
+</body>
+</html>

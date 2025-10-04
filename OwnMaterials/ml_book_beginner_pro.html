@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Machine Learning — Beginner’s Book (Pro Edition)</title>
+<meta name="description" content="A comprehensive beginner-friendly ML book with colorful diagrams, interactive graphs, and hands-on scikit-learn code.">
+<style>
+:root{
+  --bg:#ffffff; --fg:#0f172a; --muted:#475569; --border:#e5e7eb; --card:#f8fafc;
+  --primary:#1e40af; --accent:#10b981; --chip:#eef2ff; --shadow:0 16px 40px rgba(2,8,23,.12);
+}
+:root[data-theme="emerald"]{ --primary:#065f46; --accent:#10b981; --chip:#d1fae5 }
+:root[data-theme="purple"]{ --primary:#6d28d9; --accent:#22d3ee; --chip:#ede9fe }
+:root[data-theme="orange"]{ --primary:#c2410c; --accent:#f59e0b; --chip:#ffedd5 }
+:root[data-theme="rose"]{ --primary:#be123c; --accent:#fb7185; --chip:#ffe4e6 }
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,'Helvetica Neue',Arial}
+a{color:var(--primary);text-decoration:none} a:hover{text-decoration:underline}
+.header{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,#fff,rgba(255,255,255,.94));backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1220px;margin:auto;display:flex;gap:16px;align-items:center;padding:12px 16px}
+.logo{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:var(--shadow)}
+.nav{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+.nav a{padding:8px 10px;border-radius:8px} .nav a:hover{background:var(--chip)}
+.container{max-width:1220px;margin:0 auto;padding:0 16px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:28px 0}
+.hero .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 8px 0;font-size:2rem} .hero p{margin:0;color:var(--muted)}
+.hero-graphic{aspect-ratio:16/10;border:1px dashed var(--border);border-radius:16px;display:grid;place-items:center;background:#fff}
+.badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:var(--chip);color:#111827;border:1px solid var(--border)}
+.section{padding:28px 0} .section h2{margin:0 0 10px} .section p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin:16px 0}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 8px}
+.small{color:var(--muted);font-size:14px}
+.btn{display:inline-block;padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer}
+.btn.primary{border-color:var(--primary);background:var(--primary);color:#fff}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--border);border-bottom-width:2px;background:#fff;border-radius:6px;padding:1px 6px}
+pre, code{font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.code{background:#0b1020;color:#e5e7eb;border-radius:12px;padding:12px;border:1px solid #0b1020;overflow:auto;position:relative}
+button.copy{position:absolute;right:8px;top:8px;padding:6px 8px;border-radius:8px;border:1px solid #334155;background:#111827;color:#e5e7eb;cursor:pointer;font-size:12px}
+button.copy.copied{background:#064e3b;border-color:#065f46}
+blockquote{margin:0;padding:12px;border-left:4px solid var(--primary);background:#f1f5f9;border-radius:8px}
+details{border:1px solid var(--border);border-radius:10px;padding:10px;background:#fff}
+summary{cursor:pointer;font-weight:600}
+canvas.chart{width:100%;height:280px;display:block;border:1px solid var(--border);border-radius:12px;background:#fff}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.theme{display:flex;gap:8px;flex-wrap:wrap}
+.theme button{padding:6px 10px;border-radius:999px;border:1px solid var(--border);cursor:pointer;background:#fff}
+.theme .active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.toc{position:sticky;top:76px;align-self:start}
+.toc a{display:block;padding:6px 8px;border-radius:8px;margin:4px 0;border:1px solid var(--border);background:#fff}
+.toc a:hover{background:var(--chip)}
+.hero .panel .controls a{margin-right:6px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border:1px solid var(--border);padding:8px;text-align:left}
+.note{background:#f0fdf4;border:1px solid #bbf7d0;color:#065f46;border-radius:12px;padding:10px}
+.warn{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:12px;padding:10px}
+@media (max-width:900px){ .hero{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">ML</div>
+    <div>
+      <div style="font-weight:800">Machine Learning — Beginner’s Book (Pro Edition)</div>
+      <div class="small">White background • Rich visuals • Interactive graphs • Lots of code</div>
+    </div>
+    <nav class="nav">
+      <a href="#themes">Themes</a>
+      <a href="#types">Types</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#math">Math & Loss</a>
+      <a href="#opt">Optimization</a>
+      <a href="#pca">PCA</a>
+      <a href="#metrics">Metrics</a>
+      <a href="#imbalance">Imbalance</a>
+      <a href="#cv">Cross‑Validation</a>
+      <a href="#models">Model Zoo</a>
+      <a href="#demo">Hands‑on</a>
+      <a href="#calib">Calibration</a>
+      <a href="#curves">Learning Curves</a>
+      <a href="#tips">Tips</a>
+      <a href="#glossary">Glossary</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- HERO -->
+  <section class="hero section">
+    <div class="panel">
+      <h1>From intuition → math → code → practical ML</h1>
+      <p>We start with analogies and pictures, then step into gentle math, then do hands‑on scikit‑learn. You’ll also get guidance on evaluation, imbalance, calibration, and saving/serving models.</p>
+      <div class="badges"><span class="badge">Copy‑ready code</span><span class="badge">No external JS</span><span class="badge">Sticky ToC</span></div>
+      <div class="controls">
+        <a class="btn primary" href="#types">Start with types</a>
+        <a class="btn" href="#demo">Try the code</a>
+      </div>
+    </div>
+    <div class="hero-graphic">
+      <svg width="92%" viewBox="0 0 700 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Data → Model → Prediction → Feedback">
+        <defs><linearGradient id="g1" x1="0" x2="1"><stop stop-color="#60a5fa"/><stop offset="1" stop-color="#a7f3d0"/></linearGradient></defs>
+        <rect x="20" y="30" width="180" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="110" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Data</text>
+        <circle cx="70" cy="95" r="8" fill="#93c5fd"/><circle cx="110" cy="110" r="8" fill="#6ee7b7"/><circle cx="150" cy="85" r="8" fill="#60a5fa"/>
+        <path d="M200 85 L270 85" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="270" y="30" width="180" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="360" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Model</text>
+        <rect x="310" y="78" width="100" height="35" rx="8" fill="url(#g1)"/>
+        <path d="M450 85 L520 85" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="520" y="30" width="160" height="110" rx="14" fill="#fff" stroke="#e5e7eb"/>
+        <text x="600" y="58" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#334155">Prediction</text>
+        <rect x="560" y="82" width="80" height="30" rx="8" fill="#10b981"/>
+        <path d="M600 140 C 620 200, 260 200, 210 110" stroke="#94a3b8" stroke-dasharray="6 6" fill="none" marker-end="url(#arrow)"/>
+        <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L6,3 z" fill="#0ea5e9"/></marker></defs>
+      </svg>
+    </div>
+  </section>
+
+  <!-- THEMES -->
+  <section class="section" id="themes">
+    <h2>Pick a color theme</h2>
+    <p class="small">White background always; only accent colors change.</p>
+    <div class="theme">
+      <button class="active" data-theme="default">Default (Blue/Teal)</button>
+      <button data-theme="emerald">Emerald</button>
+      <button data-theme="purple">Purple</button>
+      <button data-theme="orange">Orange</button>
+      <button data-theme="rose">Rose</button>
+    </div>
+  </section>
+
+  <!-- TOC + HOW TO -->
+  <section class="section" id="toc">
+    <div style="display:grid;grid-template-columns:280px 1fr;gap:20px">
+      <aside class="toc card">
+        <h3>Table of Contents</h3>
+        <a href="#types">1. Types of ML</a>
+        <a href="#workflow">2. Beginner Workflow</a>
+        <a href="#math">3. Gentle Math & Loss</a>
+        <a href="#opt">4. Optimization (Gradient Descent)</a>
+        <a href="#pca">5. PCA & Dimensionality Reduction</a>
+        <a href="#metrics">6. Metrics & Curves</a>
+        <a href="#imbalance">7. Imbalanced Data</a>
+        <a href="#cv">8. Cross‑Validation</a>
+        <a href="#models">9. Model Zoo</a>
+        <a href="#demo">10. Hands‑on: scikit‑learn</a>
+        <a href="#calib">11. Calibration</a>
+        <a href="#curves">12. Learning Curves</a>
+        <a href="#tips">13. Tips & Resources</a>
+        <a href="#glossary">14. Mini Glossary</a>
+      </aside>
+      <div class="card">
+        <h3>How to use this book</h3>
+        <p class="small">Skim pictures → read each card → copy code into <b>Colab</b> → tweak hyperparameters → observe metrics. Focus on data quality early; the model comes second.</p>
+        <div class="note small">Analogy: <b>Features</b> are your ingredients; the <b>model</b> is the recipe; <b>loss</b> is how “bad” the taste is; <b>optimizer</b> is how you adjust the recipe.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPES (brief, reused) -->
+  <section class="section" id="types">
+    <h2>1) Types of Machine Learning</h2>
+    <div class="grid">
+      <div class="card"><h3>Supervised</h3><p class="small">Inputs <em>X</em>, labels <em>y</em>. Tasks: regression (numbers), classification (categories).</p><p class="small"><b>Examples:</b> price prediction; disease diagnosis (positive/negative).</p></div>
+      <div class="card"><h3>Unsupervised</h3><p class="small">No labels. Find structure (clustering) or lower‑dimensional views (PCA, t‑SNE/UMAP*).</p><p class="small"><b>Examples:</b> customer segments; topic grouping.</p></div>
+      <div class="card"><h3>Reinforcement</h3><p class="small">Agent takes actions, gets rewards, learns a policy.</p><p class="small"><b>Examples:</b> games, robotics, recommendation feedback.</p></div>
+    </div>
+  </section>
+
+  <!-- WORKFLOW -->
+  <section class="section" id="workflow">
+    <h2>2) Beginner workflow</h2>
+    <div class="grid">
+      <div class="card"><h3>Define success</h3><p class="small">Who uses the model? What metric matters? Any constraints (latency, fairness)?</p></div>
+      <div class="card"><h3>Data split</h3><p class="small">Split once at the start: train/validation/test. Use stratification where relevant.</p></div>
+      <div class="card"><h3>Features</h3><p class="small">Encode categories, scale numbers (for kNN/SVM/Logistic), engineer simple ratios and counts.</p></div>
+      <div class="card"><h3>Baseline → improve</h3><p class="small">Start simple (Logistic / Linear / trees). Add cross‑validation and tuning next.</p></div>
+      <div class="card"><h3>Evaluate</h3><p class="small">Use the <b>test set once</b>. Check per‑slice metrics; beware leakage.</p></div>
+      <div class="card"><h3>Save & serve</h3><p class="small">Use <b>Pipeline</b>, dump with <code>joblib</code>, add monitoring.</p></div>
+    </div>
+  </section>
+
+  <!-- GENTLE MATH & LOSS -->
+  <section class="section" id="math">
+    <h2>3) Gentle math & loss (no fear!)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Loss functions — what are we minimizing?</h3>
+        <ul class="small">
+          <li><b>MSE (L2)</b> for regression: squaring punishes large errors.</li>
+          <li><b>MAE (L1)</b>: robust to outliers.</li>
+          <li><b>Log loss</b> for classification: penalizes confident wrong predictions.</li>
+          <li><b>Hinge loss</b> (SVM): encourages a margin around the decision boundary.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Regularization (simplify to generalize)</h3>
+        <ul class="small">
+          <li><b>L2 (Ridge)</b>: gently shrinks weights.</li>
+          <li><b>L1 (Lasso)</b>: makes some weights exactly zero → feature selection.</li>
+          <li><b>Elastic Net</b>: mix of L1 and L2.</li>
+        </ul>
+        <div class="warn small">Too little regularization → overfitting. Too much → underfitting.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPTIMIZATION -->
+  <section class="section" id="opt">
+    <h2>4) Optimization: Gradient Descent (interactive)</h2>
+    <div class="card">
+      <p class="small">We minimize a simple cost: J(w) = (w − 3)² + 2. Use the slider to change the learning rate and see how the optimizer moves.</p>
+      <div class="controls">
+        <label class="small">Learning rate α <input id="gdAlpha" type="range" min="1" max="300" value="60"></label>
+        <button class="btn" id="gdStep">Step</button>
+        <button class="btn" id="gdAuto">Auto‑run</button>
+        <button class="btn" id="gdReset">Reset</button>
+      </div>
+      <canvas id="gdChart" class="chart" aria-label="Gradient descent on a quadratic"></canvas>
+      <div id="gdStats" class="small"></div>
+    </div>
+  </section>
+
+  <!-- PCA -->
+  <section class="section" id="pca">
+    <h2>5) PCA — Dimensionality reduction (interactive)</h2>
+    <div class="card">
+      <p class="small">Generate 2D points with a chosen correlation. PCA finds the directions of maximum variance.</p>
+      <div class="controls">
+        <label class="small">Correlation <input id="pcaCorr" type="range" min="-90" max="90" value="70"></label>
+        <label class="small">Points <input id="pcaN" type="range" min="50" max="800" value="250"></label>
+        <button class="btn" id="pcaRegen">Regenerate</button>
+      </div>
+      <canvas id="pcaChart" class="chart" aria-label="PCA with eigenvectors"></canvas>
+      <div id="pcaStats" class="small"></div>
+    </div>
+  </section>
+
+  <!-- METRICS & CURVES -->
+  <section class="section" id="metrics">
+    <h2>6) Metrics & curves</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Confusion matrix & definitions</h3>
+        <table class="table small">
+          <tr><th></th><th>Pred +</th><th>Pred −</th></tr>
+          <tr><th>Actual +</th><td>TP</td><td>FN</td></tr>
+          <tr><th>Actual −</th><td>FP</td><td>TN</td></tr>
+        </table>
+        <ul class="small">
+          <li><b>Precision</b> = TP/(TP+FP)</li>
+          <li><b>Recall</b> = TP/(TP+FN)</li>
+          <li><b>F1</b> = harmonic mean of precision & recall</li>
+          <li><b>ROC‑AUC</b> vs <b>PR‑AUC</b> — PR is usually better for heavy imbalance</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Threshold lab</h3>
+        <div class="controls">
+          <label class="small">Threshold <input id="thresh" type="range" min="0" max="100" value="50"></label>
+          <label class="small">Positives % <input id="posRate" type="range" min="5" max="50" value="20"></label>
+          <button class="btn" id="regen">Regenerate scores</button>
+        </div>
+        <canvas id="thrChart" class="chart" aria-label="Scores & threshold"></canvas>
+        <div id="thrStats" class="small"></div>
+      </div>
+      <div class="card">
+        <h3>ROC & PR curves</h3>
+        <canvas id="rocChart" class="chart" aria-label="ROC curve"></canvas>
+        <div class="small" id="rocStats"></div>
+        <canvas id="prChart" class="chart" aria-label="PR curve"></canvas>
+        <div class="small" id="prStats"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMBALANCE -->
+  <section class="section" id="imbalance">
+    <h2>7) Imbalanced data (beginners’ playbook)</h2>
+    <div class="grid">
+      <div class="card"><h3>Metrics</h3><p class="small">Use PR‑AUC, F1, per‑class recall; avoid raw accuracy.</p></div>
+      <div class="card"><h3>Model/threshold</h3><p class="small">Adjust decision threshold; use class weights (e.g., <code>class_weight='balanced'</code>); calibrate probabilities.</p></div>
+      <div class="card"><h3>Data</h3><p class="small">Downsample majority / (carefully) oversample minority; create better features.</p></div>
+      <div class="card">
+        <h3>sklearn snippet</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.linear_model import LogisticRegression
+clf = LogisticRegression(class_weight='balanced', max_iter=1000)
+clf.fit(X_train, y_train)
+proba = clf.predict_proba(X_valid)[:,1]
+# choose a custom threshold (e.g., optimize F1 on validation)
+y_pred = (proba >= 0.35).astype(int)</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- CROSS-VALIDATION -->
+  <section class="section" id="cv">
+    <h2>8) Cross‑Validation, simply</h2>
+    <div class="card">
+      <h3>K‑Fold visual</h3>
+      <div class="controls">
+        <label class="small">Folds (k): <input id="kfold" type="range" min="3" max="10" value="5"></label>
+        <button class="btn" id="cvDraw">Draw</button>
+      </div>
+      <canvas id="cvChart" class="chart" aria-label="KFold diagram"></canvas>
+      <p class="small">Use <b>StratifiedKFold</b> for classification; <b>GroupKFold</b> if samples from the same group/user must stay together; <b>TimeSeriesSplit</b> for temporal order.</p>
+    </div>
+  </section>
+
+  <!-- PCA already above -->
+
+  <!-- MODEL ZOO -->
+  <section class="section" id="models">
+    <h2>9) Model zoo (what to try first)</h2>
+    <div class="grid">
+      <div class="card"><h3>Linear/Logistic</h3><p class="small">Fast, interpretable; add regularization.</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.linear_model import LinearRegression, LogisticRegression
+reg = LinearRegression().fit(X_train, y_train)
+clf = LogisticRegression(max_iter=1000).fit(X_train, y_train)</code></pre></div>
+      <div class="card"><h3>Tree ensembles</h3><p class="small">RandomForest & GradientBoosting excel on tabular data.</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.ensemble import RandomForestRegressor, GradientBoostingClassifier
+rf = RandomForestRegressor(n_estimators=400, random_state=42).fit(X_train, y_train)
+gb = GradientBoostingClassifier(random_state=42).fit(X_train, y_train)</code></pre></div>
+      <div class="card"><h3>kNN & SVM</h3><p class="small">Scale features; try RBF kernel for non‑linear boundaries.</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+knn = KNeighborsClassifier(5).fit(X_train, y_train)
+svm = SVC(kernel='rbf', probability=True).fit(X_train, y_train)</code></pre></div>
+      <div class="card"><h3>Text baseline</h3><p class="small">TF‑IDF + Logistic is a great start for text classification.</p>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+
+pipe = Pipeline([("tfidf", TfidfVectorizer(ngram_range=(1,2), min_df=3)),
+                 ("lr", LogisticRegression(max_iter=1000))])
+pipe.fit(text_train, y_train)</code></pre></div>
+    </div>
+  </section>
+
+  <!-- HANDS-ON DEMO -->
+  <section class="section" id="demo">
+    <h2>10) Hands‑on with scikit‑learn</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Setup</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>pip install -U scikit-learn pandas numpy matplotlib joblib</code></pre>
+      </div>
+      <div class="card">
+        <h3>Pipeline with ColumnTransformer</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import Ridge
+
+num_cols = ["area","rooms","age"]
+cat_cols = ["city"]
+pre = ColumnTransformer([
+    ("num", StandardScaler(), num_cols),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), cat_cols)
+])
+pipe = Pipeline([("pre", pre), ("model", Ridge(alpha=1.0))])
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+pipe.fit(X_train, y_train)
+print("R^2:", pipe.score(X_test, y_test))</code></pre>
+      </div>
+      <div class="card">
+        <h3>Stratified K‑Fold</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.model_selection import StratifiedKFold, cross_val_score
+from sklearn.linear_model import LogisticRegression
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+scores = cross_val_score(LogisticRegression(max_iter=1000), X, y, cv=skf, scoring="f1_macro")
+print("F1 per fold:", scores, "Mean:", scores.mean())</code></pre>
+      </div>
+      <div class="card">
+        <h3>Calibration (sklearn)</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code>from sklearn.calibration import CalibratedClassifierCV
+from sklearn.svm import SVC
+base = SVC(probability=True)  # or probability=False + CalibratedClassifierCV(...)
+cal = CalibratedClassifierCV(base_estimator=base, method="isotonic", cv=5)
+cal.fit(X_train, y_train)
+proba = cal.predict_proba(X_valid)[:,1]</code></pre>
+      </div>
+      <div class="card">
+        <h3>Save & tiny API (FastAPI)</h3>
+        <pre class="code"><button class="copy" onclick="copyCode(this)">Copy</button><code># Save
+import joblib
+joblib.dump(pipe, "model.joblib")
+
+# Serve (run: uvicorn app:app --reload)
+from fastapi import FastAPI
+import joblib, numpy as np
+app = FastAPI()
+model = joblib.load("model.joblib")
+
+@app.post("/predict")
+def predict(payload: dict):
+    X = np.array(payload["inputs"])  # e.g., [[area, rooms, age, ...]]
+    preds = model.predict(X).tolist()
+    return {"predictions": preds}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALIBRATION -->
+  <section class="section" id="calib">
+    <h2>11) Calibration — Are probabilities honest? (interactive)</h2>
+    <div class="card">
+      <p class="small">Well‑calibrated models say “70%” and are right ~70% of the time. Adjust the “temperature” to simulate miscalibration and see the reliability curve & ECE.</p>
+      <div class="controls">
+        <label class="small">Temperature <input id="temp" type="range" min="50" max="200" value="100"></label>
+        <button class="btn" id="calRegen">Regenerate</button>
+      </div>
+      <canvas id="calChart" class="chart" aria-label="Reliability diagram"></canvas>
+      <div id="calStats" class="small"></div>
+    </div>
+  </section>
+
+  <!-- LEARNING CURVES -->
+  <section class="section" id="curves">
+    <h2>12) Learning curves (intuition)</h2>
+    <div class="card">
+      <p class="small">As you add training data, training error rises a little while validation error falls, then they meet. Use this to decide: collect more data or try a different model?</p>
+      <div class="controls">
+        <label class="small">Noise <input id="lcNoise" type="range" min="0" max="100" value="20"></label>
+        <button class="btn" id="lcRedraw">Redraw</button>
+      </div>
+      <canvas id="lcChart" class="chart" aria-label="Learning curve"></canvas>
+    </div>
+  </section>
+
+  <!-- TIPS & GLOSSARY -->
+  <section class="section" id="tips">
+    <h2>13) Practical tips & resources</h2>
+    <div class="grid">
+      <div class="card"><h3>Tools</h3><p class="small">scikit‑learn, Pandas, NumPy, Matplotlib; Colab; Kaggle datasets & micro‑courses.</p></div>
+      <div class="card"><h3>Workflow</h3><p class="small">Split early • Baseline first • Cross‑validate • Tune • Calibrate • Save pipeline • Monitor.</p></div>
+      <div class="card"><h3>Fairness & ethics</h3><p class="small">Check per‑group metrics; document data sources; avoid sensitive features unless justified; provide recourse.</p></div>
+      <div class="card"><h3>Reading list</h3>
+        <ul class="small">
+          <li><a href="https://scikit-learn.org/stable/" target="_blank" rel="noopener">scikit‑learn User Guide</a></li>
+          <li><a href="https://www.kaggle.com/learn" target="_blank" rel="noopener">Kaggle Learn</a></li>
+          <li><a href="https://developers.google.com/machine-learning/crash-course" target="_blank" rel="noopener">Google ML Crash Course</a></li>
+          <li><a href="https://www.fast.ai/" target="_blank" rel="noopener">fast.ai</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="glossary">
+    <h2>14) Mini glossary</h2>
+    <div class="grid">
+      <div class="card"><h3>Feature</h3><p class="small">A measurable property used for prediction (e.g., house size).</p></div>
+      <div class="card"><h3>Label/Target</h3><p class="small">The value you want to predict (e.g., price).</p></div>
+      <div class="card"><h3>Parameter</h3><p class="small">A value learned from data (e.g., weight).</p></div>
+      <div class="card"><h3>Hyperparameter</h3><p class="small">A setting you choose (e.g., learning rate, depth).</p></div>
+      <div class="card"><h3>Regularization</h3><p class="small">Penalty to discourage complex models, aiding generalization.</p></div>
+      <div class="card"><h3>Calibration</h3><p class="small">How well predicted probabilities match reality.</p></div>
+    </div>
+  </section>
+
+  <footer>Print to PDF • Use <span class="kbd">Ctrl</span>/<span class="kbd">⌘</span>+<span class="kbd">F</span> to search • Happy learning!</footer>
+
+</main>
+
+<script>
+// THEME SWITCHER
+document.querySelectorAll('.theme button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.theme button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const theme = btn.dataset.theme;
+    if (theme==='default') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('ml_theme_pro', theme);
+  });
+});
+const savedTheme = localStorage.getItem('ml_theme_pro');
+if (savedTheme && savedTheme!=='default') {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const b = document.querySelector('.theme button[data-theme="'+savedTheme+'"]');
+  if (b){ document.querySelectorAll('.theme button').forEach(x=>x.classList.remove('active')); b.classList.add('active'); }
+}
+
+// COPY BUTTON
+function copyCode(btn){
+  const pre = btn.closest('pre.code'); if(!pre) return;
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.classList.add('copied'); btn.textContent='Copied';
+    setTimeout(()=>{ btn.classList.remove('copied'); btn.textContent='Copy'; }, 1200);
+  });
+}
+window.copyCode = copyCode;
+
+// SMOOTH SCROLL
+document.querySelectorAll('.nav a[href^="#"], .toc a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const id = a.getAttribute('href').slice(1), el = document.getElementById(id);
+    if(el){ e.preventDefault(); const y = el.getBoundingClientRect().top + window.scrollY - 70; window.scrollTo({top:y, behavior:'smooth'}); }
+  });
+});
+
+// Canvas helpers
+function setupCanvas(c){ c.width = c.clientWidth*2; c.height = c.clientHeight*2; return c.getContext('2d'); }
+function axes(ctx, {xMax=100, yMin=0, yMax=1, yTicks=5, xLabel='x', yLabel='y'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.strokeStyle='#cbd5e1'; ctx.fillStyle='#64748b'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(50,10); ctx.lineTo(50,h-40); ctx.lineTo(w-20,h-40); ctx.stroke();
+  ctx.font='20px system-ui'; ctx.fillText(xLabel, w-50, h-12); ctx.fillText(yLabel, 8, 24);
+  for(let i=0;i<=yTicks;i++){
+    const y = (h-40) - i*(h-50)/yTicks;
+    const val = (yMin + (i*(yMax-yMin)/yTicks)).toFixed(2);
+    ctx.fillText(val, 8, y+4);
+    ctx.beginPath(); ctx.moveTo(46,y); ctx.lineTo(50,y); ctx.stroke();
+  }
+}
+function line(ctx, pts, {xMax=100, yMin=0, yMax=1, color='#0ea5e9'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.strokeStyle = color; ctx.lineWidth=3; ctx.beginPath();
+  pts.forEach((p,i)=>{
+    const x = 50 + (p.x/xMax)*(w-70);
+    const y = (h-40) - ((p.y - yMin)/(yMax - yMin))*(h-50);
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+}
+function dots(ctx, pts, {xMax=1, yMin=0, yMax=1, r=3, color='#1f2937'}={}){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.fillStyle = color;
+  for(const p of pts){
+    const x = 50 + (p.x/xMax)*(w-70);
+    const y = (h-40) - ((p.y - yMin)/(yMax - yMin))*(h-50);
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  }
+}
+
+// -------- Gradient Descent ----------
+const gdCanvas = document.getElementById('gdChart'); const gdctx = setupCanvas(gdCanvas);
+let w= -4; let stepI=0; let running=false; let raf;
+function J(w){ return (w-3)*(w-3) + 2; }
+function dJ(w){ return 2*(w-3); }
+function drawGD(){
+  const wMin=-8, wMax=10;
+  axes(gdctx,{xLabel:'w',yLabel:'J(w)',yMin:0,yMax:50,yTicks:5});
+  // curve
+  const pts=[]; for(let x=wMin; x<=wMax; x+=0.1){ pts.push({x, y:J(x)}); }
+  line(gdctx, pts.map(p=>({x: (p.x-wMin)/(wMax-wMin)*100, y: (p.y/50)})), {xMax:100,yMin:0,yMax:1,color:'#60a5fa'});
+  // point
+  const x = (w - wMin)/(wMax - wMin)*100, y = J(w)/50;
+  dots(gdctx, [{x, y}], {xMax:100,yMin:0,yMax:1,r:5,color:'#10b981'});
+  // text
+  document.getElementById('gdStats').textContent = `Step ${stepI} — w ≈ ${w.toFixed(3)} | J(w) ≈ ${J(w).toFixed(3)}`;
+}
+function gdStep(){
+  const alpha = Number(document.getElementById('gdAlpha').value)/1000; // 0.001..0.3
+  w = w - alpha * dJ(w); stepI++; drawGD();
+}
+function gdReset(){ w = -4; stepI=0; drawGD(); }
+function gdAuto(){
+  running = !running;
+  if(running){
+    document.getElementById('gdAuto').textContent='Stop';
+    const loop=()=>{
+      if(!running) return;
+      gdStep(); if(stepI<500 && J(w)>2.0001){ raf=requestAnimationFrame(loop); } else { running=false; document.getElementById('gdAuto').textContent='Auto‑run'; }
+    };
+    loop();
+  } else {
+    document.getElementById('gdAuto').textContent='Auto‑run';
+    cancelAnimationFrame(raf);
+  }
+}
+document.getElementById('gdStep').addEventListener('click', gdStep);
+document.getElementById('gdReset').addEventListener('click', gdReset);
+document.getElementById('gdAuto').addEventListener('click', gdAuto);
+drawGD();
+
+// -------- PCA ----------
+const pcaCanvas = document.getElementById('pcaChart'); const pcactx = setupCanvas(pcaCanvas);
+let pcaPts=[];
+function regenPCA(){
+  const rho = Number(document.getElementById('pcaCorr').value)/100; // -0.9..0.9
+  const N = Number(document.getElementById('pcaN').value);
+  pcaPts=[];
+  for(let i=0;i<N;i++){
+    const u = Math.random()*2-1, v = Math.random()*2-1;
+    const x = u;
+    const y = rho*u + Math.sqrt(1-rho*rho)*v;
+    pcaPts.push({x,y});
+  }
+}
+function eig2x2(a,b,c,d){
+  const tr = a+d, det = a*d - b*c;
+  const disc = Math.sqrt(Math.max(0, tr*tr/4 - det));
+  const l1 = tr/2 + disc, l2 = tr/2 - disc;
+  function eigenvec(l){
+    // (a-l)x + b y = 0 => x = -b, y = a-l
+    let x = -b, y = a - l;
+    const norm = Math.hypot(x,y) || 1; return [x/norm, y/norm];
+  }
+  return {l1,l2, v1:eigenvec(l1), v2:eigenvec(l2)};
+}
+function drawPCA(){
+  axes(pcactx,{xLabel:'x1',yLabel:'x2',yMin:-3,yMax:3,yTicks:6});
+  const w = pcactx.canvas.width, h = pcactx.canvas.height;
+  // draw points
+  dots(pcactx, pcaPts.map(p=>({x:(p.x+3)/6, y:(p.y+3)/6})), {xMax:1,yMin:0,yMax:1,r:2,color:'#1f2937'});
+  // compute covariance
+  let sx=0, sy=0; for(const p of pcaPts){ sx+=p.x; sy+=p.y; } sx/=pcaPts.length; sy/=pcaPts.length;
+  let sxx=0, sxy=0, syy=0; for(const p of pcaPts){ const dx=p.x-sx, dy=p.y-sy; sxx+=dx*dx; sxy+=dx*dy; syy+=dy*dy; }
+  sxx/=pcaPts.length; sxy/=pcaPts.length; syy/=pcaPts.length;
+  const {l1,l2,v1,v2} = eig2x2(sxx,sxy,sxy,syy);
+  // draw eigenvectors
+  function drawVec(v, color){
+    pcactx.strokeStyle = color; pcactx.lineWidth=3; pcactx.beginPath();
+    const cx = 50 + (0.5)*(w-70), cy = (h-40) - (0.5)*(h-50);
+    const scale = 120;
+    pcactx.moveTo(cx - v[0]*scale, cy + v[1]*scale);
+    pcactx.lineTo(cx + v[0]*scale, cy - v[1]*scale);
+    pcactx.stroke();
+  }
+  drawVec(v1,'#0ea5e9'); drawVec(v2,'#f59e0b');
+  document.getElementById('pcaStats').textContent = `Explained variance (approx): PC1 ${(l1/(l1+l2)).toFixed(2)} • PC2 ${(l2/(l1+l2)).toFixed(2)}`;
+}
+document.getElementById('pcaRegen').addEventListener('click', ()=>{ regenPCA(); drawPCA(); });
+document.getElementById('pcaCorr').addEventListener('input', ()=>{ regenPCA(); drawPCA(); });
+document.getElementById('pcaN').addEventListener('input', ()=>{ regenPCA(); drawPCA(); });
+regenPCA(); drawPCA();
+
+// -------- Threshold lab + ROC/PR ----------
+const thrCanvas = document.getElementById('thrChart'); const thrctx = setupCanvas(thrCanvas);
+let thrScores=[], thrLabels=[];
+function genScores(n=600, posRate=0.2){
+  thrScores=[]; thrLabels=[];
+  for(let i=0;i<n;i++){
+    const y = Math.random() < posRate ? 1 : 0;
+    const s = y ? Math.min(1, 0.6 + Math.random()*0.4) : Math.max(0, Math.random()*0.6);
+    thrLabels.push(y); thrScores.push(s);
+  }
+}
+function thrMetrics(th){
+  let TP=0,FP=0,FN=0,TN=0;
+  for(let i=0;i<thrScores.length;i++){
+    const pred = thrScores[i] >= th ? 1 : 0;
+    const y = thrLabels[i];
+    if(pred===1 && y===1) TP++; else if(pred===1 && y===0) FP++;
+    else if(pred===0 && y===1) FN++; else TN++;
+  }
+  const precision = TP/(TP+FP||1), recall = TP/(TP+FN||1);
+  const f1 = 2*precision*recall/(precision+recall||1);
+  return {TP,FP,FN,TN,precision,recall,f1};
+}
+function drawThr(th){
+  axes(thrctx,{xLabel:'sample',yLabel:'score',yMin:0,yMax:1});
+  const pts = thrScores.map((s,i)=>({x:i, y:s}));
+  dots(thrctx, pts, {xMax:thrScores.length, yMin:0, yMax:1, r:2, color:'#1f2937'});
+  line(thrctx, [{x:0,y:th},{x:thrScores.length,y:th}], {xMax:thrScores.length,yMin:0,yMax:1,color:'#10b981'});
+}
+function recomputeThr(){
+  const th = Number(document.getElementById('thresh').value)/100;
+  const posRate = Number(document.getElementById('posRate').value)/100;
+  genScores(600, posRate);
+  drawThr(th);
+  const m = thrMetrics(th);
+  document.getElementById('thrStats').textContent =
+    `TP=${m.TP} FP=${m.FP} FN=${m.FN} TN=${m.TN} | Precision=${m.precision.toFixed(2)} Recall=${m.recall.toFixed(2)} F1=${m.f1.toFixed(2)}`;
+  redrawCurves();
+}
+document.getElementById('thresh').addEventListener('input', recomputeThr);
+document.getElementById('posRate').addEventListener('input', recomputeThr);
+document.getElementById('regen').addEventListener('click', recomputeThr);
+recomputeThr();
+
+const rocCanvas = document.getElementById('rocChart'); const rocctx = setupCanvas(rocCanvas);
+const prCanvas  = document.getElementById('prChart');  const prctx  = setupCanvas(prCanvas);
+function curveFromScores(){
+  const pairs = thrScores.map((s,i)=>({s,y:thrLabels[i]})).sort((a,b)=>b.s-a.s);
+  let P = thrLabels.filter(x=>x===1).length, N = thrLabels.length - P;
+  let TP=0, FP=0, prevS=Infinity;
+  const roc=[], pr=[];
+  for(const p of pairs){
+    if(p.s!==prevS){ // compute point
+      const TPR = TP/(P||1), FPR = FP/(N||1);
+      const precision = TP/(TP+FP||1), recall = TPR;
+      roc.push({x:FPR,y:TPR}); pr.push({x:recall,y:precision});
+      prevS = p.s;
+    }
+    if(p.y===1) TP++; else FP++;
+  }
+  roc.push({x:0,y:0}); roc.push({x:1,y:1});
+  // AUC (ROC)
+  const rocSorted = roc.sort((a,b)=>a.x-b.x);
+  let auc=0; for(let i=1;i<rocSorted.length;i++){ const dx=rocSorted[i].x-rocSorted[i-1].x; const y=(rocSorted[i].y+rocSorted[i-1].y)/2; auc+=dx*y; }
+  // AP (approx area under PR via trapezoid)
+  const prSorted = pr.sort((a,b)=>a.x-b.x);
+  let ap=0; for(let i=1;i<prSorted.length;i++){ const dx=prSorted[i].x-prSorted[i-1].x; const y=(prSorted[i].y+prSorted[i-1].y)/2; ap+=dx*y; }
+  return {roc:rocSorted, pr:prSorted, auc, ap};
+}
+function drawCurve(ctx, pts, labelx, labely){
+  axes(ctx,{xLabel:labelx,yLabel:labely,yMin:0,yMax:1});
+  line(ctx, pts.map((p,i)=>({x:p.x*100,y:p.y})), {xMax:100,yMin:0,yMax:1,color:'#0ea5e9'});
+}
+function redrawCurves(){
+  const {roc, pr, auc, ap} = curveFromScores();
+  drawCurve(rocctx, roc, 'FPR', 'TPR'); drawCurve(prctx, pr, 'Recall', 'Precision');
+  document.getElementById('rocStats').textContent = `ROC‑AUC ≈ ${auc.toFixed(3)} (higher is better)`;
+  document.getElementById('prStats').textContent  = `PR‑AUC ≈ ${ap.toFixed(3)} (more informative on imbalance)`;
+}
+
+// -------- K-Fold diagram ----------
+const cvCanvas = document.getElementById('cvChart'); const cvctx = setupCanvas(cvCanvas);
+function drawCV(k=5, rows=5){
+  const w=cvctx.canvas.width, h=cvctx.canvas.height;
+  cvctx.clearRect(0,0,w,h);
+  const pad=20, rowH=(h-pad*2)/rows, foldW=(w-pad*2)/k;
+  for(let r=0;r<rows;r++){
+    const y=pad + r*rowH;
+    for(let i=0;i<k;i++){
+      cvctx.strokeStyle='#cbd5e1'; cvctx.strokeRect(pad + i*foldW, y, foldW-6, rowH-6);
+      if(i===r){ cvctx.fillStyle='#fde68a'; } else { cvctx.fillStyle='#bfdbfe'; }
+      cvctx.fillRect(pad + i*foldW+1, y+1, foldW-8, rowH-8);
+    }
+    cvctx.fillStyle='#334155'; cvctx.fillText('Fold '+(r+1), 8, y+rowH/2);
+  }
+}
+document.getElementById('cvDraw').addEventListener('click', ()=>{
+  const k = Number(document.getElementById('kfold').value); drawCV(k, Math.min(k,6));
+});
+drawCV(5,5);
+
+// -------- Calibration ----------
+const calCanvas = document.getElementById('calChart'); const calctx = setupCanvas(calCanvas);
+let calP=[], calY=[];
+function genCal(){
+  const temp = Number(document.getElementById('temp').value)/100; // 0.5..2.0
+  const n = 800; calP=[]; calY=[];
+  for(let i=0;i<n;i++){
+    // base true probability
+    const base = Math.random()*0.9 + 0.05; // 0.05..0.95
+    // temperature scaling (lower -> sharper/confident, higher -> softer)
+    const p = Math.pow(base, 1/temp);
+    calP.push(p);
+    calY.push(Math.random() < base ? 1 : 0); // outcomes from true base
+  }
+}
+function drawReliability(){
+  axes(calctx,{xLabel:'Predicted prob', yLabel:'Observed freq', yMin:0, yMax:1});
+  // bins
+  const bins = 10; const counts=Array(bins).fill(0), sumP=Array(bins).fill(0), sumY=Array(bins).fill(0);
+  for(let i=0;i<calP.length;i++){
+    let b = Math.min(bins-1, Math.floor(calP[i]*bins));
+    counts[b]++; sumP[b]+=calP[i]; sumY[b]+=calY[i];
+  }
+  const pts=[]; let ece=0, total=0;
+  for(let b=0;b<bins;b++){
+    if(counts[b]===0) continue;
+    const conf = sumP[b]/counts[b];
+    const acc  = sumY[b]/counts[b];
+    pts.push({x: (b+0.5)/bins, y: acc});
+    ece += (counts[b]) * Math.abs(acc - conf);
+    total += counts[b];
+  }
+  ece /= (total||1);
+  // draw diagonal
+  line(calctx, [{x:0,y:0},{x:100,y:1}], {xMax:100,yMin:0,yMax:1,color:'#94a3b8'});
+  // draw points
+  dots(calctx, pts.map(p=>({x:p.x*100,y:p.y})), {xMax:100,yMin:0,yMax:1,r:4,color:'#0ea5e9'});
+  document.getElementById('calStats').textContent = `Expected Calibration Error (ECE) ≈ ${ece.toFixed(3)} (lower is better)`;
+}
+function redrawCal(){ genCal(); drawReliability(); }
+document.getElementById('calRegen').addEventListener('click', redrawCal);
+document.getElementById('temp').addEventListener('input', redrawCal);
+redrawCal();
+
+// -------- Learning Curves (simulated) ----------
+const lcCanvas = document.getElementById('lcChart'); const lcctx = setupCanvas(lcCanvas);
+function drawLC(){
+  axes(lcctx,{xLabel:'training size', yLabel:'error', yMin:0, yMax:1});
+  const noise = Number(document.getElementById('lcNoise').value)/100;
+  const xs=[...Array(40).keys()].map(i=>i+1);
+  const train = xs.map(x=>({x, y: Math.max(0.05, 0.18 + 0.15*Math.exp(-x/10) + noise*0.05*Math.random())}));
+  const valid = xs.map(x=>({x, y: Math.max(0.07, 0.6*Math.exp(-x/10) + 0.15 + noise*0.05*Math.random())}));
+  line(lcctx, train.map(p=>({x:p.x*2.5, y:p.y})), {xMax:100, yMin:0, yMax:1, color:'#10b981'});
+  line(lcctx, valid.map(p=>({x:p.x*2.5, y:p.y})), {xMax:100, yMin:0, yMax:1, color:'#ef4444'});
+}
+document.getElementById('lcRedraw').addEventListener('click', drawLC);
+document.getElementById('lcNoise').addEventListener('input', drawLC);
+drawLC();
+</script>
+</body>
+</html>
