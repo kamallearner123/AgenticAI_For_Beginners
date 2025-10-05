@@ -1,0 +1,10 @@
+/Users/kamalmukiri/Documents/1.GitHub/AgenticAIForBeginners/AgenticAI_For_Beginners/Prjects/code/target/debug/deps/libppv_lite86-884c66d422338e2d.rmeta: /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/lib.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/soft.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/types.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/generic.rs
+
+/Users/kamalmukiri/Documents/1.GitHub/AgenticAIForBeginners/AgenticAI_For_Beginners/Prjects/code/target/debug/deps/libppv_lite86-884c66d422338e2d.rlib: /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/lib.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/soft.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/types.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/generic.rs
+
+/Users/kamalmukiri/Documents/1.GitHub/AgenticAIForBeginners/AgenticAI_For_Beginners/Prjects/code/target/debug/deps/ppv_lite86-884c66d422338e2d.d: /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/lib.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/soft.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/types.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/generic.rs
+
+/Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/lib.rs:
+/Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/soft.rs:
+/Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/types.rs:
+/Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/src/generic.rs:

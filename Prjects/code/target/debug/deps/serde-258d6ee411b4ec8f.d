@@ -1,0 +1,12 @@
+/Users/kamalmukiri/Documents/1.GitHub/AgenticAIForBeginners/AgenticAI_For_Beginners/Prjects/code/target/debug/deps/libserde-258d6ee411b4ec8f.rmeta: /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /Users/kamalmukiri/Documents/1.GitHub/AgenticAIForBeginners/AgenticAI_For_Beginners/Prjects/code/target/debug/build/serde-a3e24c6e232ed657/out/private.rs
+
+/Users/kamalmukiri/Documents/1.GitHub/AgenticAIForBeginners/AgenticAI_For_Beginners/Prjects/code/target/debug/deps/serde-258d6ee411b4ec8f.d: /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /Users/kamalmukiri/Documents/1.GitHub/AgenticAIForBeginners/AgenticAI_For_Beginners/Prjects/code/target/debug/build/serde-a3e24c6e232ed657/out/private.rs
+
+/Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs:
+/Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs:
+/Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs:
+/Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs:
+/Users/kamalmukiri/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs:
+/Users/kamalmukiri/Documents/1.GitHub/AgenticAIForBeginners/AgenticAI_For_Beginners/Prjects/code/target/debug/build/serde-a3e24c6e232ed657/out/private.rs:
+
+# env-dep:OUT_DIR=/Users/kamalmukiri/Documents/1.GitHub/AgenticAIForBeginners/AgenticAI_For_Beginners/Prjects/code/target/debug/build/serde-a3e24c6e232ed657/out
